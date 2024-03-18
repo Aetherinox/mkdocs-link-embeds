@@ -1,0 +1,33 @@
+[build-system]
+requires = ['setuptools>=60.0.0']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = "Aetherinox"
+version = "0.1.1"
+authors = [
+  { name="Aetherinox", email="aetherinox@proton.me" },
+]
+description = "Mkdocs plugin which shows embedded links in a more elegant manner."
+readme = "README.md"
+requires-python = ">=2.7"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.4",
+    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7"
+]
+
+[tool.poetry.dependencies]
+mkdocs = "^1.2.0"
+beautifulsoup4 = "^4.11.0"
+
+[project.urls]
+"Homepage" = "https://github.com/Aetherinox/mkdocs-link-embeds"
+"Bug Tracker" = "https://github.com/Aetherinox/mkdocs-link-embeds/issues"

@@ -19,10 +19,16 @@ setup(
     url='https://github.com/Aetherinox/mkdocs-link-embeds',
     author='Aetherinox',
     author_email='aetherinox@proton.me',
+    dependency_links=open("requirements.txt").read().split("\n"),
     license='MIT',
+    project_urls={
+        "Bug Tracker": "https://github.com/Aetherinox/mkdocs-link-embeds/issues",
+        "Source Code": "https://github.com/Aetherinox/mkdocs-link-embeds",
+    },
     python_requires='>=2.7',
     install_requires=[
-        'mkdocs>=1.0.4'
+        'mkdocs>=1.2.0',
+        'beautifulsoup4>=4.11.0'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
