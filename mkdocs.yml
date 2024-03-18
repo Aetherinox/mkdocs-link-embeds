@@ -5,7 +5,7 @@ plugins:
   - link-embeds:
       default_name: "Untitled Link"
       default_desc: "No description found"
-      default_image: "https://path/to/default/image.png"
+      default_image: "https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/98179e23-ce03-4101-a858-56db0cd0e8f0"
 
 extra_css:
   - assets/link-embeds.css
