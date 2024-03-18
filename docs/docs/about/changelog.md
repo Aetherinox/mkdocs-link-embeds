@@ -5,7 +5,16 @@ tags:
 
 # Changelog
 
-![Version](https://img.shields.io/github/v/tag/Aetherinox/mkdocs-link-embeds?logo=GitHub&label=version&color=ba5225) ![Downloads](https://img.shields.io/github/downloads/Aetherinox/mkdocs-link-embeds/total) ![Repo Size](https://img.shields.io/github/repo-size/Aetherinox/mkdocs-link-embeds?label=size&color=59702a) ![Last Commit)](https://img.shields.io/github/last-commit/Aetherinox/mkdocs-link-embeds?color=b43bcc) [![PyPI](https://img.shields.io/pypi/v/mkdocs-embeds-plugin)](https://pypi.org/project/mkdocs-link-embeds-plugin/)
+![Version](https://img.shields.io/github/v/tag/Aetherinox/mkdocs-link-embeds?logo=GitHub&label=version&color=ba5225) ![Downloads](https://img.shields.io/github/downloads/Aetherinox/mkdocs-link-embeds/total) ![Repo Size](https://img.shields.io/github/repo-size/Aetherinox/mkdocs-link-embeds?label=size&color=59702a) ![Last Commit)](https://img.shields.io/github/last-commit/Aetherinox/mkdocs-link-embeds?color=b43bcc) ![PyPI - Version](https://img.shields.io/pypi/v/mkdocs-link-embeds-plugin)
+
+### <!-- md:version stable- --> 0.1.1 <small>March 18, 2024</small> { id="0.1.1" }
+
+- `fix`: changed matching rules so that raw-code embedded codeblocks will not render
+- `fix`: z-index on embedded link cover with mkdocs Material theme header
+- `style`: modified how embedded links appear and now utilize mkdocs css variables
+- `style`: changed default cover image for unresolved links
+
+<br />
 
 ### <!-- md:version stable- --> 0.1.0 <small>March 18, 2024</small> { id="0.1.0" }
 
@@ -16,3 +25,6 @@ tags:
 ### <!-- md:version stable- --> 0.0.6 <small>March 15, 2024</small> { id="0.0.6" }
 
 - Initial private release
+
+<br />
+<br />

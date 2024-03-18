@@ -10,6 +10,11 @@ markdown_extensions:
   - abbr
   - admonition
   - attr_list
+  - pymdownx.magiclink:
+      normalize_issue_symbols: true
+      repo_url_shorthand: true
+      user: Aetherinox
+      repo: mkdocs-link-embeds
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
@@ -121,13 +126,24 @@ theme:
     - navigation.path
     - navigation.top
 
+# Hooks
+hooks:
+  - material/overrides/hooks/shortcodes.py
+  - material/overrides/hooks/translations.py
+
 extra_css:
   - stylesheets/extra.css?v1.000
 
+extra_javascript:
+  - https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js
+  - javascripts/tablesort.js
+  - javascripts/commiters.js
+
 nav:
   - Home: 'home.md'
-  - Demo: 'demo.md'
   - Install: 'install.md'
+  - Usage: 'usage.md'
+  - Demo: 'demo.md'
   - About:
     - Changelog: 'about/changelog.md'
     - License: 'about/license.md'
@@ -135,9 +151,15 @@ nav:
 
 plugins:
   - link-embeds:
+      enabled: true
       default_name: "Untitled Link"
       default_desc: "No description found"
-      default_image: "https://path/to/default/image.png"
+      default_image: "https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/c0298d98-0910-4235-a88f-0c3e2f704ba7"
+  - git-committers:
+      repository: Aetherinox/mkdocs-link-embeds
+      docs_path: docs/docs/
+      branch: main
+      token: !!python/object/apply:os.getenv [GH_TOKEN, "NULL"]
   - search:
       separator: '[\s\u200b\-_,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
   - git-revision-date-localized:
