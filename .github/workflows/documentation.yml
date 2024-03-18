@@ -19,7 +19,8 @@ jobs:
           export DOCS_SECRET_L1=${{ secrets.DOCS_SECRET_L1 }}
           export DOCS_SECRET_L2=${{ secrets.DOCS_SECRET_L2 }}
           export GH_TOKEN=${{ secrets.GH_TOKEN }}
-
+          
+          pip install beautifulsoup4
           pip install mkdocs-material mkdocs-redirects mkdocs-glightbox pymdown-extensions mkdocs-git-revision-date-localized-plugin mkdocs-git-authors-plugin mkdocs-link-embeds-plugin
           cd docs
           mkdocs gh-deploy --force --clean

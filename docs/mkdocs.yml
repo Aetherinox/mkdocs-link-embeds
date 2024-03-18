@@ -173,7 +173,7 @@ plugins:
       enabled: true
   - redirects:
       redirect_maps:
-        docs/settings/summary.md: settings/summary.md
+        docs/home.md: home.md
 
 extra:
   generator: false
