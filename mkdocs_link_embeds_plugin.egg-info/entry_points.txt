@@ -1,0 +1,2 @@
+[mkdocs.plugins]
+link-embeds = mkdocs_link_embeds_plugin.plugin:LinkEmbedsPlugin

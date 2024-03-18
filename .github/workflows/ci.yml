@@ -1,0 +1,21 @@
+name: Release
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Python 3
+        uses: actions/setup-python@v2
+
+      - run: pip install mkdocs
+      - run: pip install beautifulsoup4
+      - run: pip install mkdocs-link-embeds-plugin
+      - run: mkdocs gh-deploy --force

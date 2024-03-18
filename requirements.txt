@@ -1,0 +1,4 @@
+mkdocs~=1.4.0
+setuptools==67.4.0
+validators~=0.20.0
+beautifulsoup4~=4.11.2

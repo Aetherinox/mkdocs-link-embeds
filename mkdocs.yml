@@ -1,0 +1,11 @@
+# Project information
+site_name: mkdocs-link-embeds-plugin
+
+plugins:
+  - link-embeds:
+      default_name: "Untitled Link"
+      default_desc: "No description found"
+      default_image: "https://path/to/default/image.png"
+
+extra_css:
+  - assets/link-embeds.css
