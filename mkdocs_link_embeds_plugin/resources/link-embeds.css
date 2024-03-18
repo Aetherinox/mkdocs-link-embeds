@@ -1,9 +1,55 @@
+@keyframes anim_glow
+{
+    0%
+    {
+        filter: drop-shadow( 0px 0px 5px #e9e4e6);
+    }
+    50%
+    {
+        filter: drop-shadow( 0px 0px 20px #e9e4e6);
+    }
+    100%
+    {
+        filter: drop-shadow( 0px 0px 5px #e9e4e6);
+    }
+}
+
+@keyframes colorful_link
+{
+    0%
+    {
+        filter: hue-rotate(0deg);
+    }
+
+    100%
+    {
+        filter: hue-rotate(360deg);
+    }
+}
+
+@keyframes anim_color {
+    from
+    {
+        filter: hue-rotate(0deg);
+    }
+    to
+    {
+        filter: hue-rotate(360deg);
+    }
+}
+
 .mkde-embed-container
 {
-    border: 1px solid  rgba( 255, 255, 255, .17 );
     overflow: hidden;
     border-radius: 5px;
-    box-shadow: rgba(0, 0, 0, 0.06) 0px 1px 3px;
+    box-shadow: var(--md-shadow-z2);
+    transition: border .25s,box-shadow .25s;
+}
+
+.mkde-embed-container:hover
+{
+    transition: border .25s,box-shadow .25s;
+    box-shadow: var(--md-shadow-z3);
 }
 
 .mkde-left-s2 > a,
@@ -114,7 +160,7 @@
 
 ._lc._sm:not( .xd ) .mkde-right
 {
-    background-color: hsla( var( --md-hue ), 0%, 13%, 1 );
+    background-color: var(--md-default-fg-color--lightest);
 }
 
 /*
@@ -127,7 +173,7 @@
     width: 100px;
     min-height: 100px;
     padding: 10px;
-    background: hsla( var( --md-hue ), 0%, 20%, 1 );
+    background: rgba( 255, 255, 255, 0.25 );
 }
 
 @media ( min-width: 360px )
@@ -304,6 +350,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: normal;
+    padding-top: 10px;
 }
 
 @media (min-width: 460px)
@@ -447,7 +495,7 @@
 
 .mkde-img
 {
-    z-index: 20;
+    z-index: 3;
 }
 
 .mkde-img:hover
@@ -465,24 +513,34 @@
     padding-bottom: 100%;
 }
 
-.t {
+.t
+{
     line-height: 1.4;
     color: inherit;
 }
 
-.item-title {
+.item-title
+{
     color: inherit;
 }
 
-.tf {
-    color: #999;
-}
-
-.item-link {
-    color: #999;
-}
-
-.mkde-left-s2 > a, .item-link-container > a, .item-title > a
+.tf
 {
-    color: #FA306d;
+    color: var( --md-typeset-a-color );
+}
+
+.item-link
+{
+    color: var( --md-typeset-a-color );
+    font-size: 12px;
+}
+
+.mkde-left-s2 > a, a.item-title-link, a.item-link
+{
+    color: var( --md-typeset-a-color );
+}
+
+.mkde-left-s2 > a, a.item-title-link:hover, a.item-link:hover
+{
+    color: var(--md-accent-fg-color);
 }
