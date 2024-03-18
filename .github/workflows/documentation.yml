@@ -20,6 +20,7 @@ jobs:
           export DOCS_SECRET_L2=${{ secrets.DOCS_SECRET_L2 }}
           export GH_TOKEN=${{ secrets.GH_TOKEN }}
 
+          pip install mkdocs
           pip install beautifulsoup4
           pip install mkdocs-material
           pip install mkdocs-git-committers-plugin-2

@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: mkdocs-link-embeds-plugin
-Version: 0.1.0
+Version: 0.1.1
 Summary: Mkdocs plugin which shows embedded links in a more elegant manner.
 Home-page: https://github.com/Aetherinox/mkdocs-link-embeds
 Author: Aetherinox
@@ -27,7 +27,7 @@ Requires-Dist: mkdocs>=1.0.4
 
 <div align="center">
 
-![Version](https://img.shields.io/github/v/tag/Aetherinox/mkdocs-link-embeds?logo=GitHub&label=version&color=ba5225) ![Downloads](https://img.shields.io/github/downloads/Aetherinox/mkdocs-link-embeds/total) ![Repo Size](https://img.shields.io/github/repo-size/Aetherinox/mkdocs-link-embeds?label=size&color=59702a) ![Last Commit)](https://img.shields.io/github/last-commit/Aetherinox/mkdocs-link-embeds?color=b43bcc) [![PyPI](https://img.shields.io/pypi/v/mkdocs-embeds-plugin)](https://pypi.org/project/mkdocs-link-embeds-plugin/)
+![Version](https://img.shields.io/github/v/tag/Aetherinox/mkdocs-link-embeds?logo=GitHub&label=version&color=ba5225) ![Downloads](https://img.shields.io/github/downloads/Aetherinox/mkdocs-link-embeds/total) ![Repo Size](https://img.shields.io/github/repo-size/Aetherinox/mkdocs-link-embeds?label=size&color=59702a) ![Last Commit)](https://img.shields.io/github/last-commit/Aetherinox/mkdocs-link-embeds?color=b43bcc) ![PyPI - Version](https://img.shields.io/pypi/v/mkdocs-link-embeds-plugin)
 
 </div>
 
