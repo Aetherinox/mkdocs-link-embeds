@@ -11,7 +11,7 @@ LOG = logging.getLogger( "mkdocs.plugins." + __name__ )
 #   define > default values
 # ----------------------------------------------
 
-meta_def_image                  = "https://user-images.githubusercontent.com/16578570/61557132-bbc14300-aa63-11e9-9a6c-188c880698ec.png"
+meta_def_image                  = "https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/98179e23-ce03-4101-a858-56db0cd0e8f0"
 meta_def_name                   = "Untitled"
 meta_def_desc                   = "No description"
 
@@ -36,13 +36,22 @@ class LinkEmbedsPlugin( BasePlugin ):
     #   Pattern / group regex
     # ----------------------------------------------
 
-    CBLOCK_PATTERN              = re.compile( r"```embed(?=[^`]*?\nurl:(?P<url>[^`\n]+))?(?=[^`]*?\nname:(?P<name>[^`\n]+))?(?=[^`]*?\nbanner:(?P<banner>[^`\n]+))?(?=[^`]*?\nimage:(?P<image>[^`\n]+))?(?=[^`]*?\ndesc:(?P<desc>[^`\n]+))?[^`]*?```")
+    #CBLOCK_PATTERN              = re.compile( r"```embed(?=[^`]*?\nurl:(?P<url>[^`\n]+))?(?=[^`]*?\nname:(?P<name>[^`\n]+))?(?=[^`]*?\nbanner:(?P<banner>[^`\n]+))?(?=[^`]*?\nimage:(?P<image>[^`\n]+))?(?=[^`]*?\ndesc:(?P<desc>[^`\n]+))?[^`]*?```")
+    CBLOCK_PATTERN              = re.compile( r"(?<=\n)\n```embed(?=[^`]*?\nurl:(?P<url>[^`\n]+))?(?=[^`]*?\nname:(?P<name>[^`\n]+))?(?=[^`]*?\nbanner:(?P<banner>[^`\n]+))?(?=[^`]*?\nimage:(?P<image>[^`\n]+))?(?=[^`]*?\ndesc:(?P<desc>[^`\n]+))?[^`]*?```")
+
+    # ----------------------------------------------
+    #   Initialize
+    # ----------------------------------------------
 
     def __init__( self ):
         self.opengraph          = OpenGraph( )
         self.url_pattern        = re.compile( "^((http|https)?://)?(?P<host>[a-zA-Z0-9./?:@\\-_=#]+\\.[a-zA-Z]{2,6})[a-zA-Z0-9.&/?:@\\-_=#가-힇]*$" )
         self.templ_fallback     = None
         self.templ_view         = None
+
+    # ----------------------------------------------
+    #   On Config
+    # ----------------------------------------------
 
     def on_config( self, config ):
         if not self.config.get( 'enabled' ):
@@ -52,6 +61,10 @@ class LinkEmbedsPlugin( BasePlugin ):
         self.templ_fallback     = pkgutil.get_data( __name__, "resources/fallback.html" ).decode( 'utf-8' )
 
         return config
+
+    # ----------------------------------------------
+    #   On Page Markdown
+    # ----------------------------------------------
 
     def on_page_markdown( self, markdown, page, config, files ):
         if not self.config.get( 'enabled' ):
