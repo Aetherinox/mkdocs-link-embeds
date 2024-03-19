@@ -1,12 +1,14 @@
 Metadata-Version: 2.1
 Name: mkdocs-link-embeds-plugin
-Version: 0.1.1
+Version: 0.1.2
 Summary: Mkdocs plugin which shows embedded links in a more elegant manner.
 Home-page: https://github.com/Aetherinox/mkdocs-link-embeds
 Author: Aetherinox
-Author-email: aetherinox@proton.me
+Author-email: Aetherinox <aetherinox@proton.me>
 License: MIT
-Keywords: mkdocs
+Project-URL: Homepage, https://github.com/Aetherinox/mkdocs-link-embeds
+Project-URL: Bug Tracker, https://github.com/Aetherinox/mkdocs-link-embeds/issues
+Keywords: mkdocs,readme,wiki
 Classifier: Development Status :: 4 - Beta
 Classifier: Intended Audience :: Developers
 Classifier: Intended Audience :: Information Technology
@@ -20,7 +22,8 @@ Classifier: Programming Language :: Python :: 3.7
 Requires-Python: >=2.7
 Description-Content-Type: text/markdown
 License-File: LICENSE
-Requires-Dist: mkdocs>=1.0.4
+Requires-Dist: mkdocs>=1.2.0
+Requires-Dist: beautifulsoup4>=4.11.0
 
 <p align="center"></p>
 <h1 align="center"><b>Link Embeds Plugin: mkdocs</b></h1>
