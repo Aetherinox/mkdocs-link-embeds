@@ -527,13 +527,14 @@
 
 .item-link-container
 {
-    -ms-flex: 1;
-    flex: 1;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;
     padding-top: 10px;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
 }
 
 @media (min-width: 460px)
@@ -657,6 +658,13 @@
     position: absolute;
     width: 100%;
     height: 100%;
+}
+
+.mkde-link-favicon
+{
+    width: 20px;
+    height: 20px;
+    padding-right: 4px;
 }
 
 .mkde-img

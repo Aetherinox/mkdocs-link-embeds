@@ -7,6 +7,22 @@ tags:
 
 ![Version](https://img.shields.io/github/v/tag/Aetherinox/mkdocs-link-embeds?logo=GitHub&label=version&color=ba5225) ![Downloads](https://img.shields.io/github/downloads/Aetherinox/mkdocs-link-embeds/total) ![Repo Size](https://img.shields.io/github/repo-size/Aetherinox/mkdocs-link-embeds?label=size&color=59702a) ![Last Commit)](https://img.shields.io/github/last-commit/Aetherinox/mkdocs-link-embeds?color=b43bcc) ![PyPI - Version](https://img.shields.io/pypi/v/mkdocs-link-embeds-plugin)
 
+### <!-- md:version stable- --> 0.1.3 <small>March 19, 2024</small> { id="0.1.3" }
+
+- `feat`: added `favicon` property for embed code blocks
+- `feat`: added `favicon_disabled` config option
+- `feat`: added `favicon_default` config option
+- `feat`: added `image_default` config option
+- `feat`: added `false` value which can be used for `image` and `favicon` properties
+- `change`: renamed all default value configs
+    - `default_name` ⮞ `name_default`
+    - `default_desc` ⮞ `desc_default`
+    - `default_image` ⮞ `image_default`
+- `change`: plugin now uses new structure
+
+
+<br />
+
 ### <!-- md:version stable- --> 0.1.2 <small>March 19, 2024</small> { id="0.1.2" }
 
 - `change`: updated plugin structure to utilize `pyproject.toml` and install dependencies

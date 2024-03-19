@@ -6,8 +6,8 @@ title: Demo
 The following example simply specifies the URL to the target website. The name, description, and image are auto-generated.
 
 ```embed
-url:    https://github.com/mkdocs/mkdocs/releases
-image:  https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/c0298d98-0910-4235-a88f-0c3e2f704ba7
+url:        https://github.com/mkdocs/mkdocs/releases
+image:      false
 ```
 
 ````

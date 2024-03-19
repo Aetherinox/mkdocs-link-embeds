@@ -53,6 +53,31 @@ You have numerous properties you can set for each embedded link:
 | `name` | Name to display at the top of the embedded link block |
 | `desc` | A description to show below the name for the codeblock |
 | `image` | An image that will display on the left side of the embedded codeblock. Name and description will show on the right of the image |
+| `favicon` | Favicon / small image that will display to the left side of the website address |
+
+<br />
+
+For `image` and `favicon`, you can supply a direct image URL, or you can specify `false` to turn them off completely.
+
+<br />
+
+```
+url:        https://github.com/mkdocs/mkdocs/releases
+image:      false
+favicon:    false
+```
+
+<br />
+
+The above example will display an embedded link without an image or favicon (_as shown below_).
+
+<br />
+
+```embed
+url:        https://github.com/mkdocs/mkdocs/releases
+image:      false
+favicon:    false
+```
 
 <br />
 <br />
@@ -60,9 +85,10 @@ You have numerous properties you can set for each embedded link:
 # Auto-Generated Metadata
 If you create an embedded link block and only specify the `url` property; the plugin will scan the website and automatically fetch information such as:
 
-- The name for the website
-- A description for the website
-- An image / logo that the plugin can display
+- The name for the website from the website tag `og:title`
+- A description for the website from the website tag `og:description`
+- An image / logo that the plugin can display, comes from the html tag `og:image`
+- A specified favicon, usually defined by the tag `icon` or `shortcut icon`
 
 <br />
 
