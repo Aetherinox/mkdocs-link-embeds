@@ -33,6 +33,7 @@ markdown_extensions:
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
+  - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
       combine_header_slug: true
@@ -59,6 +60,7 @@ theme:
   highlightjs: true
   hljs_languages:
     - yaml
+    - yml
     - rust
     - markdown
   icon:
@@ -132,7 +134,7 @@ hooks:
   - material/overrides/hooks/translations.py
 
 extra_css:
-  - stylesheets/extra.css?v1.000
+  - stylesheets/extra.css?v1.001
 
 extra_javascript:
   - https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js
@@ -152,10 +154,12 @@ nav:
 plugins:
   - link-embeds:
       enabled: true
-      image_disabled: false
       favicon_disabled: false
+      favicon_size: 25
+      favicon_default: "https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/b37da9c6-6f17-4c3f-9c94-c346a6f31bfa"
       name_default: "Untitled Link"
       desc_default: "No description found"
+      image_disabled: false
       image_default: "https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/c0298d98-0910-4235-a88f-0c3e2f704ba7"
   - git-committers:
       repository: Aetherinox/mkdocs-link-embeds
