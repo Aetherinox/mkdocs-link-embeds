@@ -3,14 +3,20 @@ requires = ['setuptools>=60.0.0']
 build-backend = 'setuptools.build_meta'
 
 [project]
-name = "Aetherinox"
-version = "0.1.1"
+name = "mkdocs-link-embeds-plugin"
+dynamic = ["version"]
+description = "Mkdocs plugin which shows embedded links in a more elegant manner."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=2.7"
 authors = [
   { name="Aetherinox", email="aetherinox@proton.me" },
 ]
-description = "Mkdocs plugin which shows embedded links in a more elegant manner."
-readme = "README.md"
-requires-python = ">=2.7"
+keywords = [
+    "mkdocs",
+    "readme",
+    "wiki",
+]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -23,11 +29,14 @@ classifiers = [
     "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7"
 ]
-
-[tool.poetry.dependencies]
-mkdocs = "^1.2.0"
-beautifulsoup4 = "^4.11.0"
+dependencies = [
+    "mkdocs>=1.2.0",
+    "beautifulsoup4>=4.11.0",
+]
 
 [project.urls]
 "Homepage" = "https://github.com/Aetherinox/mkdocs-link-embeds"
 "Bug Tracker" = "https://github.com/Aetherinox/mkdocs-link-embeds/issues"
+
+[project.entry-points."mkdocs.plugins"]
+link-embeds = "mkdocs_link_embeds_plugin.plugin:LinkEmbedsPlugin"

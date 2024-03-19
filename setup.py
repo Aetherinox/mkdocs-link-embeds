@@ -1,19 +1,17 @@
 import os
-
 from setuptools import setup, find_packages
 
-VERSION_NUMBER = '0.1.1'
+with open( "README.md", "r", encoding='UTF-8' ) as fh:
+    long_description = fh.read( )
 
-
-def read_file(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
-
+with open( "VERSION", "r", encoding='UTF-8' ) as version_file:
+    version_num = version_file.read( ).strip( )
 
 setup(
     name='mkdocs-link-embeds-plugin',
-    version=VERSION_NUMBER,
+    version=version_num,
     description='Mkdocs plugin which shows embedded links in a more elegant manner.',
-    long_description=read_file('README.md'),
+    long_description=long_description,
     long_description_content_type='text/markdown',
     keywords='mkdocs',
     url='https://github.com/Aetherinox/mkdocs-link-embeds',
@@ -22,6 +20,7 @@ setup(
     dependency_links=open("requirements.txt").read().split("\n"),
     license='MIT',
     project_urls={
+        "Documentation": "https://aetherinox.github.io/mkdocs-link-embeds",
         "Bug Tracker": "https://github.com/Aetherinox/mkdocs-link-embeds/issues",
         "Source Code": "https://github.com/Aetherinox/mkdocs-link-embeds",
     },
@@ -46,8 +45,6 @@ setup(
     package_data={'': ['resources/template.html']},
     include_package_data=True,
     entry_points={
-        'mkdocs.plugins': [
-            'link-embeds = mkdocs_link_embeds_plugin.plugin:LinkEmbedsPlugin'
-        ]
+        'mkdocs.plugins': ['link-embeds = mkdocs_link_embeds_plugin.plugin:LinkEmbedsPlugin']
     }
 )
