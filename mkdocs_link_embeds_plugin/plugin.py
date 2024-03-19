@@ -15,6 +15,7 @@ meta_def_name                   = "Untitled"
 meta_def_desc                   = "No description"
 meta_def_image                  = "https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/98179e23-ce03-4101-a858-56db0cd0e8f0"
 meta_def_favicon                = "https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/b37da9c6-6f17-4c3f-9c94-c346a6f31bfa"
+favicon_def_size                = 25
 
 # ------------------------------------------------------------------------------------------------------------------------------------------
 #   Link Embed Plugin
@@ -32,6 +33,7 @@ class LinkEmbedsPlugin( BasePlugin ):
         ( 'desc_default',       config_options.Type( str, default=f'{meta_def_desc}' ) ),
         ( "favicon_disabled",   config_options.Type( bool, default=False ) ),
         ( 'favicon_default',    config_options.Type( str, default=f'{meta_def_favicon}' ) ),
+        ( 'favicon_size',       config_options.Type( int, default=favicon_def_size ) ),
         ( "image_disabled",     config_options.Type( bool, default=False ) ),
         ( 'image_default',      config_options.Type( str, default=f'{meta_def_image}' ) ),
     )
@@ -46,7 +48,8 @@ class LinkEmbedsPlugin( BasePlugin ):
     #CBLOCK_PATTERN             = re.compile( r"```embed$(?=[^`]*?\nurl:(?P<url>[^`\n]+))?(?=[^`]*?\nname:(?P<name>[^`\n]+))?(?=[^`]*?\nbanner:(?P<banner>[^`\n]+))?(?=[^`]*?\nimage:(?P<image>[^`\n]+))?(?=[^`]*?\ndesc:(?P<desc>[^`\n]+))?[^`]*?```")
     #CBLOCK_PATTERN             = re.compile( r"(?<=\n)\n```embed(?=[^`]*?\nurl:(?P<url>[^`\n]+))?(?=[^`]*?\nname:(?P<name>[^`\n]+))?(?=[^`]*?\nbanner:(?P<banner>[^`\n]+))?(?=[^`]*?\nimage:(?P<image>[^`\n]+))?(?=[^`]*?\ndesc:(?P<desc>[^`\n]+))?[^`]*?```")
     #CBLOCK_PATTERN             = re.compile( r"(?<=\n)\n```embed(?=[^`]*?\nurl:(?P<url>[^`\n]+))?(?=[^`]*?\nname:(?P<name>[^`\n]+))?(?=[^`]*?\nbanner:(?P<banner>[^`\n]+))?(?=[^`]*?\nfavicon:(?P<favicon>[^`\n]+))?(?=[^`]*?\nimage:(?P<image>[^`\n]+))?(?=[^`]*?\ndesc:(?P<desc>[^`\n]+))?[^`]*?```" )
-    CBLOCK_PATTERN              = re.compile( r"(?<=\n)\n```\bembed\b(?=[^`]*?\nurl:(?P<url>[^`\n]+))?(?=[^`]*?\nname:(?P<name>[^`\n]+))?(?=[^`]*?\nbanner:(?P<banner>[^`\n]+))?(?=[^`]*?\nfavicon:(?P<favicon>[^`\n]+))?(?=[^`]*?\nimage:(?P<image>[^`\n]+))?(?=[^`]*?\ndesc:(?P<desc>[^`\n]+))?[^`]*?```" )
+    #CBLOCK_PATTERN             = re.compile( r"(?<=\n)\n```\bembed\b(?=[^`]*?\nurl:(?P<url>[^`\n]+))?(?=[^`]*?\nname:(?P<name>[^`\n]+))?(?=[^`]*?\nbanner:(?P<banner>[^`\n]+))?(?=[^`]*?\nfavicon:(?P<favicon>[^`\n]+))?(?=[^`]*?\nimage:(?P<image>[^`\n]+))?(?=[^`]*?\ndesc:(?P<desc>[^`\n]+))?[^`]*?```" )
+    CBLOCK_PATTERN              = re.compile( r"(?<=\n)\n```\bembed\b(?=[^`]*?\nurl:(?P<url>[^`\n]+))?(?=[^`]*?\nname:(?P<name>[^`\n]+))?(?=[^`]*?\nbanner:(?P<banner>[^`\n]+))?(?=[^`]*?\nfavicon:(?P<favicon>[^`\n]+))?(?=[^`]*?\nfavicon_size:(?P<favicon_size>[^`\n]+))?(?=[^`]*?\nimage:(?P<image>[^`\n]+))?(?=[^`]*?\ndesc:(?P<desc>[^`\n]+))?[^`]*?```" )
 
     # ------------------------------------------------------------------------------------------------------------------------------------------
     #   Initialize
@@ -79,21 +82,22 @@ class LinkEmbedsPlugin( BasePlugin ):
         if not self.config.get( 'enabled' ):
             return markdown
 
-        converted_markdown      = ""
-        idx                     = 0
+        converted_markdown          = ""
+        idx                         = 0
 
         for site in self.CBLOCK_PATTERN.finditer( markdown ):
-            start               = site.start( )
-            end                 = site.end( ) - 1
+            start                   = site.start( )
+            end                     = site.end( ) - 1
 
-            input_url           = site.group( "url" )
-            input_name          = site.group( "name" )
-            input_desc          = site.group( "desc" )
-            input_image         = site.group( "image" )
-            input_favicon       = site.group( "favicon" )
+            input_url               = site.group( "url" )
+            input_name              = site.group( "name" )
+            input_desc              = site.group( "desc" )
+            input_image             = site.group( "image" )
+            input_favicon           = site.group( "favicon" )
+            input_favicon_size      = site.group( "favicon_size" )
 
-            lines               = input_url.splitlines( )
-            html_output         = ""
+            lines                   = input_url.splitlines( )
+            html_output             = ""
             
             for i in lines:
                 i = i.replace( " ", "" )
@@ -102,19 +106,20 @@ class LinkEmbedsPlugin( BasePlugin ):
                     i = i[ 1: ]
 
                 try:
-                    soup                = self.opengraph.get_page( i )
-                    html_view           = self.templ_view
-                    link                = i
+                    soup                    = self.opengraph.get_page( i )
+                    html_view               = self.templ_view
+                    link                    = i
 
                     # -----------------------------------------------------------------------------------------
                     #   Normal Template
                     #   fetch metadata for website (if available)
                     # -----------------------------------------------------------------------------------------
 
-                    box_name            = self.opengraph.get_title( soup )
-                    box_desc            = self.opengraph.get_description( soup )
-                    box_image           = self.opengraph.get_image( soup )
-                    box_favicon         = self.opengraph.get_favicon( soup )
+                    box_name                = self.opengraph.get_title( soup )
+                    box_desc                = self.opengraph.get_description( soup )
+                    box_image               = self.opengraph.get_image( soup )
+                    box_favicon             = self.opengraph.get_favicon( soup )
+                    box_favicon_size        = str( self.config[ 'favicon_size' ] )
 
                     # -----------------------------------------------------------------------------------------
                     #   Normal Template
@@ -122,15 +127,17 @@ class LinkEmbedsPlugin( BasePlugin ):
                     # -----------------------------------------------------------------------------------------
 
                     if input_name:
-                        box_name        = input_name.strip( )
-                        box_name        = re.sub( "[\"\']", "", box_name )    # clean quotation marks
+                        box_name            = input_name.strip( )
+                        box_name            = re.sub( "[\"\']", "", box_name )    # clean quotation marks
                     if input_desc:
-                        box_desc        = input_desc.strip( )
-                        box_desc        = re.sub( "[\"\']", "", box_desc )    # clean quotation marks
+                        box_desc            = input_desc.strip( )
+                        box_desc            = re.sub( "[\"\']", "", box_desc )    # clean quotation marks
                     if input_image:
-                        box_image       = input_image.strip( )
+                        box_image           = input_image.strip( )
                     if input_favicon:
-                        box_favicon     = input_favicon.strip( )
+                        box_favicon         = input_favicon.strip( )
+                    if input_favicon_size:
+                        box_favicon_size    = str( input_favicon_size.strip( ) )
 
                     # -----------------------------------------------------------------------------------------
                     #   Normal Template
@@ -181,7 +188,7 @@ class LinkEmbedsPlugin( BasePlugin ):
                     if ( box_favicon == 'false' ) or ( box_favicon is None ) or ( not box_favicon ) or ( self.config.get( 'favicon_disabled' ) ):
                         style_favicon       = "display:none; padding-right: 0px;"
                     else:
-                        style_favicon       = "padding-right: 7px;"
+                        style_favicon       = f"padding-right: 7px; width: {box_favicon_size}px"
 
                     # -----------------------------------------------------------------------------------------
                     #   build normal template
@@ -241,13 +248,15 @@ class LinkEmbedsPlugin( BasePlugin ):
                     # -----------------------------------------------------------------------------------------
 
                     if input_name:
-                        box_name    = input_name
+                        box_name            = input_name
                     if input_desc:
-                        box_desc    = input_desc
+                        box_desc            = input_desc
                     if input_image:
-                        box_image   = input_image
+                        box_image           = input_image
                     if input_favicon:
-                        box_favicon = input_favicon
+                        box_favicon         = input_favicon
+                    if input_favicon_size:
+                        box_favicon_size    = input_favicon_size
 
                     # -----------------------------------------------------------------------------------------
                     #   build fallback template
