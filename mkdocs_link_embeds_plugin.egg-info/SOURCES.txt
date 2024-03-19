@@ -1,7 +1,9 @@
 LICENSE
 MANIFEST.in
 README.md
+VERSION
 pyproject.toml
+requirements.txt
 setup.py
 mkdocs_link_embeds_plugin/__init__.py
 mkdocs_link_embeds_plugin/opengraph.py
