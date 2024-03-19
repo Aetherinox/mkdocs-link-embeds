@@ -164,7 +164,7 @@ class LinkEmbedsPlugin( BasePlugin ):
                             box_image       = meta_def_image
 
                     if ( box_image == 'false' ) or ( box_image is None ) or ( not box_image ) or ( self.config.get( 'image_disabled' ) ):
-                        style_image         = "display:none; padding-right: 0px;"
+                        style_image         = "display:none;"
                     else:
                         style_image         = ""
 
@@ -194,7 +194,7 @@ class LinkEmbedsPlugin( BasePlugin ):
                     html_view           = html_view.replace( "{{ desc }}", box_desc )
                     html_view           = html_view.replace( "{{ favicon }}", box_favicon )
                     html_view           = html_view.replace( "{{ favicon-style }}", style_favicon )
-                    
+
                     html_output         += html_view
 
                 # -----------------------------------------------------------------------------------------

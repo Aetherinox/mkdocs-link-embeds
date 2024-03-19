@@ -1,5 +1,7 @@
 import urllib.request
+
 from bs4 import BeautifulSoup
+from urllib.parse import urlparse, urljoin
 
 class OpenGraph:
 
@@ -39,5 +41,15 @@ class OpenGraph:
             return
 
     def get_favicon( self, soup ):
-        for item in soup.find_all('link', attrs={'rel': re.compile("^(shortcut icon|icon)$", re.I)}):
-            print(item.get('href'))
+        favicon_link        = soup.find( 'link', rel='icon' ) or soup.find( 'link', rel='shortcut icon' )
+
+        if favicon_link:
+            favicon_url     = favicon_link.get('href')
+            parsed_url      = urlparse( favicon_url )
+
+            if parsed_url.netloc != '':
+                return favicon_url
+            else:
+                return
+        else:
+            return

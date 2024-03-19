@@ -7,7 +7,6 @@ The following example simply specifies the URL to the target website. The name, 
 
 ```embed
 url:        https://github.com/mkdocs/mkdocs/releases
-image:      false
 ```
 
 ````

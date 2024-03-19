@@ -153,6 +153,7 @@ plugins:
   - link-embeds:
       enabled: true
       image_disabled: false
+      favicon_disabled: false
       name_default: "Untitled Link"
       desc_default: "No description found"
       image_default: "https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/c0298d98-0910-4235-a88f-0c3e2f704ba7"
