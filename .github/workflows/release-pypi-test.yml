@@ -60,31 +60,55 @@ jobs:
         run: |
           twine check dist/*
   
-  build-pypi-test:
-      name: "Publish: Pypi Test"
-      runs-on: ubuntu-latest
-      # Specifying a GitHub environment is optional, but strongly encouraged
-      environment: Orion
-      permissions:
-        id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
-
-      steps:
-      - name: "Pypi : Test API"
-        uses: pypa/gh-action-pypi-publish@release/v1
-        if: ${{ github.event.inputs.opt_pypi_type == 'Test' }}
+      - name: Store the distribution packages
+        uses: actions/upload-artifact@v3
         with:
-          user: __token__
-          #password: ${{ secrets.PYPI_API_TEST_TOKEN }}
-          repository-url: https://test.pypi.org/legacy/
-          packages-dir: dist/
-          print-hash: true
+          name: python-package-distributions
+          path: dist/
 
-      - name: "Pypi : Official API"
-        uses: pypa/gh-action-pypi-publish@release/v1
-        if: ${{ github.event.inputs.opt_pypi_type == 'Official' }}
-        with:
-          user: __token__
-          #password: ${{ secrets.PYPI_API_TEST_TOKEN }}
-          repository-url: https://test.pypi.org/legacy/
-          packages-dir: dist/
-          print-hash: true
+  publish-to-pypi:
+    name: >-
+      Publish Python 🐍 distribution 📦 to PyPI
+    if: ${{ github.event.inputs.opt_pypi_type == 'Official' }}
+    needs:
+    - build
+    runs-on: ubuntu-latest
+    environment:
+      name: Orion
+      url: https://pypi.org/p/mkdocs-link-embeds-plugin
+    permissions:
+      id-token: write  # IMPORTANT: mandatory for trusted publishing
+
+    steps:
+    - name: Download all the dists
+      uses: actions/download-artifact@v3
+      with:
+        name: python-package-distributions
+        path: dist/
+    - name: Publish distribution 📦 to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+
+  publish-to-testpypi:
+    name: Publish Python 🐍 distribution 📦 to TestPyPI
+    if: ${{ github.event.inputs.opt_pypi_type == 'Test' }}
+    needs:
+    - build
+    runs-on: ubuntu-latest
+
+    environment:
+      name: Orion
+      url: https://test.pypi.org/p/mkdocs-link-embeds-plugin
+
+    permissions:
+      id-token: write  # IMPORTANT: mandatory for trusted publishing
+
+    steps:
+    - name: Download all the dists
+      uses: actions/download-artifact@v3
+      with:
+        name: python-package-distributions
+        path: dist/
+    - name: Publish distribution 📦 to TestPyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        repository-url: https://test.pypi.org/legacy/
