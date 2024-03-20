@@ -66,9 +66,9 @@ jobs:
           name: python-package-distributions
           path: dist/
 
-  publish-to-pypi:
+  pypi-publish-official:
     name: >-
-      Publish Python 🐍 distribution 📦 to PyPI
+      PyPI › Official
     if: ${{ github.event.inputs.opt_pypi_type == 'Official' }}
     needs:
     - build
@@ -88,13 +88,13 @@ jobs:
     - name: Publish distribution 📦 to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
 
-  publish-to-testpypi:
-    name: Publish Python 🐍 distribution 📦 to TestPyPI
+  pypi-publish-test:
+    name: >-
+      PyPI › Test Api
     if: ${{ github.event.inputs.opt_pypi_type == 'Test' }}
     needs:
     - build
     runs-on: ubuntu-latest
-
     environment:
       name: Orion
       url: https://test.pypi.org/p/mkdocs-link-embeds-plugin
