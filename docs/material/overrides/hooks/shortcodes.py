@@ -78,13 +78,14 @@ def on_page_markdown(
 # -----------------------------------------------------------------------------
 
 # Create a flag of a specific type
-def flag(args: str, page: Page, files: Files):
+def flag( args: str, page: Page, files: Files ):
     type, *_ = args.split(" ", 1)
-    if   type == "experimental":  return _badge_for_experimental(page, files)
-    elif type == "required":      return _badge_for_required(page, files)
-    elif type == "customization": return _badge_for_customization(page, files)
-    elif type == "metadata":      return _badge_for_metadata(page, files)
-    elif type == "multiple":      return _badge_for_multiple(page, files)
+    if   type == "experimental":  return _badge_for_experimental( page, files )
+    elif type == "required":      return _badge_for_required( page, files )
+    elif type == "customization": return _badge_for_customization( page, files )
+    elif type == "metadata":      return _badge_for_metadata( page, files )
+    elif type == "multiple":      return _badge_for_multiple( page, files )
+
     raise RuntimeError(f"Unknown type: {type}")
 
 # -----------------------------------------------------------------------------
@@ -107,12 +108,12 @@ def control( args: str, page: Page, files: Files ):
     raise RuntimeError(f"Unknown type: {type}")
 
 # Create a linkable option
-def option(type: str):
+def option( type: str ):
     _, *_, name = re.split(r"[.:]", type)
     return f"[`{name}`](#+{type}){{ #+{type} }}\n\n"
 
 # Create a linkable setting - @todo append them to the bottom of the page
-def setting(type: str):
+def setting( type: str ):
     _, *_, name = re.split(r"[.*]", type)
     return f"`{name}` {{ #{type} }}\n\n[{type}]: #{type}\n\n"
 
@@ -145,56 +146,58 @@ def _badge(icon: str, text: str = "", type: str = ""):
 
 # Create sponsors badge
 def _badge_for_sponsors(page: Page, files: Files):
-    icon = "material-heart"
-    href = _resolve_path("insiders/index.md", page, files)
+    icon        = "material-heart"
+    href        = _resolve_path("insiders/index.md", page, files)
+
     return _badge(
-        icon = f"[:{icon}:]({href} 'Sponsors only')",
-        type = "heart"
+        icon    = f"[:{icon}:]({href} 'Sponsors only')",
+        type    = "heart"
     )
 
 # Create badge for version
 def version( text: str, page: Page, files: Files ):
-    spec = text
-    path = f"home/changelog.md#{spec}"
+    spec        = text
+    path        = f"about/changelog.md#{spec}"
 
     # Return badge
-    icon = "aetherx-axs-box"
-    href = _resolve_path("about/conventions.md#version", page, files)
+    icon        = "aetherx-axs-box"
+    href        = _resolve_path("about/conventions.md#version", page, files)
+
     return _badge(
-        icon = f"[:{icon}:]({href} 'Gistr Release')",
-        text = f"[{text}]({_resolve_path(path, page, files)})" if spec else ""
+        icon    = f"[:{icon}:]({href} 'Gistr Release')",
+        text    = f"[{text}]({_resolve_path(path, page, files)})" if spec else ""
     )
 
 # Create badge for version of beta
 def version_stable( text: str, page: Page, files: Files ):
-    spec = text.replace( "stable-", "" )
-    path = f"home/changelog.md#{spec}"
+    spec        = text.replace( "stable-", "" )
+    path        = f"about/changelog.md#{spec}"
 
     # Return badge
-    icon = "aetherx-axs-tag"
-    href = _resolve_path( "about/conventions.md#version-beta", page, files )
-    output  = ""
+    icon        = "aetherx-axs-tag"
+    href        = _resolve_path( "about/conventions.md#version-beta", page, files )
+    output      = ""
 
     # spec not empty
     if spec:
-        output = f"Requires version {spec}"
+        output  = f"Requires version {spec}"
     else:
-        output = f"Stable Release"
+        output  = f"Stable Release"
     
     return _badge(
-        icon = f"[:{icon}:]({href} '{output}' )",
-        text = f"[{spec}]({_resolve_path(path, page, files)})" if spec else ""
+        icon    = f"[:{icon}:]({href} '{output}' )",
+        text    = f"[{spec}]({_resolve_path(path, page, files)})" if spec else ""
     )
 
 # Create badge for version of beta
 def version_beta( text: str, page: Page, files: Files ):
-    spec = text.replace( "beta-", "" )
-    path = f"home/changelog.md#{spec}"
+    spec        = text.replace( "beta-", "" )
+    path        = f"about/changelog.md#{spec}"
 
     # Return badge
-    icon    = "aetherx-axs-b"
-    href    = _resolve_path( "about/conventions.md#version-beta", page, files )
-    output  = ""
+    icon        = "aetherx-axs-b"
+    href        = _resolve_path( "about/conventions.md#version-beta", page, files )
+    output      = ""
 
     # spec not empty
     if spec:
@@ -203,17 +206,18 @@ def version_beta( text: str, page: Page, files: Files ):
         output = f"Beta Release"
 
     return _badge(
-        icon = f"[:{icon}:]({href} '{output}' )",
-        text = f"[{text}]({_resolve_path(path, page, files)})" if spec else ""
+        icon    = f"[:{icon}:]({href} '{output}' )",
+        text    = f"[{text}]({_resolve_path(path, page, files)})" if spec else ""
     )
 
 # Create badge for feature
 def _badge_for_feature(text: str, page: Page, files: Files):
-    icon = "material-toggle-switch"
-    href = _resolve_path("about/conventions.md#feature", page, files)
+    icon        = "material-toggle-switch"
+    href        = _resolve_path("about/conventions.md#feature", page, files)
+
     return _badge(
-        icon = f"[:{icon}:]({href} 'Optional feature')",
-        text = text
+        icon    = f"[:{icon}:]({href} 'Optional feature')",
+        text    = text
     )
 
 # Create badge for plugin

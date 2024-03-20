@@ -6,7 +6,7 @@ title: Demo
 The following example simply specifies the URL for the target website. The name, description, favicon, and image are auto-generated.
 
 ```embed
-url: https://squidfunk.github.io/mkdocs-material/
+url:        https://squidfunk.github.io/mkdocs-material/
 ```
 
 ````ini
@@ -49,7 +49,7 @@ The following example displays a website, however, removes the image and favicon
 url:            https://squidfunk.github.io/mkdocs-material/
 name:           Github: Download Mkdocs
 desc:           MkDocs is a fast, simple and downright gorgeous static site generator that's geared towards building project documentation. Documentation source files are written in Markdown, and configured with a single YAML configuration file. It is designed to be easy to use and can be extended with third-party themes, plugins, and Markdown extensions.
-image:          false
+image:          
 favicon:        false
 ```
 
