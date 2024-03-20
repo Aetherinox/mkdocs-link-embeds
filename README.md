@@ -68,7 +68,6 @@ plugins:
       favicon_size: 25
       target: "blank"
 
-  
 extra_css:
   - path/to/link-embeds.css
 ```
