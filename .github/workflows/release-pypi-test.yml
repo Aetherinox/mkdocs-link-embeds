@@ -19,72 +19,72 @@ on:
 # alias python='python3'
 
 jobs:
-    build-prepare:
-        name: Prepare Package
-        runs-on: ubuntu-latest
-        # Specifying a GitHub environment is optional, but strongly encouraged
-        environment: Orion
-        permissions:
-          id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
+  build:
+    name: Prepare Package
+    runs-on: ubuntu-latest
+    # Specifying a GitHub environment is optional, but strongly encouraged
+    environment: Orion
+    permissions:
+      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
 
-        steps:
-        - name: ✅ Start
-          run: | 
-                echo "Starting build: ${{ github.event.inputs.opt_build_type }}" / ${{ inputs.opt_build_type }}
+    steps:
+      - name: ✅ Start
+        run: | 
+              echo "Starting build: ${{ github.event.inputs.opt_build_type }}" / ${{ inputs.opt_build_type }}
 
-        - name: ☑️ Checkout
-          uses: actions/checkout@v3
-        - name: 🐍 Set up Python
-          uses: actions/setup-python@v4
-          with:
-            python-version: "3.x"
+      - name: ☑️ Checkout
+        uses: actions/checkout@v3
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
 
-        - name: 🐍 Install Build Tools
-          run: |
-            python -m pip install --upgrade pip
-            pip install setuptools wheel twine build
+      - name: 🐍 Install Build Tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools wheel twine build
 
-        - name: ☸️ Build tarball
-          run: |
-            if [ "${{ github.event.inputs.opt_build_type }}" = "py setup.py" ]; then
-              echo "Starting build: py setup.py"
-              python setup.py sdist
-            fi
+      - name: ☸️ Build tarball
+        run: |
+          if [ "${{ github.event.inputs.opt_build_type }}" = "py setup.py" ]; then
+            echo "Starting build: py setup.py"
+            python setup.py sdist
+          fi
 
-            if [ "${{ github.event.inputs.opt_build_type }}" = "py build" ]; then
-              echo "Starting build: py build"
-              python -m build . --sdist
-            fi
+          if [ "${{ github.event.inputs.opt_build_type }}" = "py build" ]; then
+            echo "Starting build: py build"
+            python -m build . --sdist
+          fi
 
-        - name: "🪢 Twine: Check Dist"
-          run: |
-            twine check dist/*
-   
-    build-pypi-test:
-        name: Prepare Package
-        runs-on: ubuntu-latest
-        # Specifying a GitHub environment is optional, but strongly encouraged
-        environment: Orion
-        permissions:
-          id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
+      - name: "🪢 Twine: Check Dist"
+        run: |
+          twine check dist/*
+  
+  build-pypi-test:
+      name: "Publish: Pypi Test"
+      runs-on: ubuntu-latest
+      # Specifying a GitHub environment is optional, but strongly encouraged
+      environment: Orion
+      permissions:
+        id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
 
-        steps:
-        - name: "Pypi : Test API"
-          uses: pypa/gh-action-pypi-publish@release/v1
-          if: ${{ github.event.inputs.opt_build_type == 'Test' }}
-          with:
-            user: __token__
-            #password: ${{ secrets.PYPI_API_TEST_TOKEN }}
-            repository-url: https://test.pypi.org/legacy/
-            packages-dir: dist/
-            print-hash: true
+      steps:
+      - name: "Pypi : Test API"
+        uses: pypa/gh-action-pypi-publish@release/v1
+        if: ${{ github.event.inputs.opt_build_type == 'Test' }}
+        with:
+          user: __token__
+          #password: ${{ secrets.PYPI_API_TEST_TOKEN }}
+          repository-url: https://test.pypi.org/legacy/
+          packages-dir: dist/
+          print-hash: true
 
-        - name: "Pypi : Official API"
-          uses: pypa/gh-action-pypi-publish@release/v1
-          if: ${{ github.event.inputs.opt_build_type == 'Official' }}
-          with:
-            user: __token__
-            #password: ${{ secrets.PYPI_API_TEST_TOKEN }}
-            repository-url: https://test.pypi.org/legacy/
-            packages-dir: dist/
-            print-hash: true
+      - name: "Pypi : Official API"
+        uses: pypa/gh-action-pypi-publish@release/v1
+        if: ${{ github.event.inputs.opt_build_type == 'Official' }}
+        with:
+          user: __token__
+          #password: ${{ secrets.PYPI_API_TEST_TOKEN }}
+          repository-url: https://test.pypi.org/legacy/
+          packages-dir: dist/
+          print-hash: true
