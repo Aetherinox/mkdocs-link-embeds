@@ -16,6 +16,7 @@ meta_def_desc                   = "No description"
 meta_def_image                  = "https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/98179e23-ce03-4101-a858-56db0cd0e8f0"
 meta_def_favicon                = "https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/b37da9c6-6f17-4c3f-9c94-c346a6f31bfa"
 favicon_def_size                = 25
+target_def_id                   = "new"
 
 # ------------------------------------------------------------------------------------------------------------------------------------------
 #   Link Embed Plugin
@@ -31,11 +32,12 @@ class LinkEmbedsPlugin( BasePlugin ):
         ( "enabled",            config_options.Type( bool, default=True ) ),
         ( 'name_default',       config_options.Type( str, default=f'{meta_def_name}' ) ),
         ( 'desc_default',       config_options.Type( str, default=f'{meta_def_desc}' ) ),
+        ( "image_disabled",     config_options.Type( bool, default=False ) ),
+        ( 'image_default',      config_options.Type( str, default=f'{meta_def_image}' ) ),
         ( "favicon_disabled",   config_options.Type( bool, default=False ) ),
         ( 'favicon_default',    config_options.Type( str, default=f'{meta_def_favicon}' ) ),
         ( 'favicon_size',       config_options.Type( int, default=favicon_def_size ) ),
-        ( "image_disabled",     config_options.Type( bool, default=False ) ),
-        ( 'image_default',      config_options.Type( str, default=f'{meta_def_image}' ) ),
+        ( 'target',             config_options.Type( str, default=f'{target_def_id}' ) ),
     )
 
     # ------------------------------------------------------------------------------------------------------------------------------------------
@@ -49,7 +51,8 @@ class LinkEmbedsPlugin( BasePlugin ):
     #CBLOCK_PATTERN             = re.compile( r"(?<=\n)\n```embed(?=[^`]*?\nurl:(?P<url>[^`\n]+))?(?=[^`]*?\nname:(?P<name>[^`\n]+))?(?=[^`]*?\nbanner:(?P<banner>[^`\n]+))?(?=[^`]*?\nimage:(?P<image>[^`\n]+))?(?=[^`]*?\ndesc:(?P<desc>[^`\n]+))?[^`]*?```")
     #CBLOCK_PATTERN             = re.compile( r"(?<=\n)\n```embed(?=[^`]*?\nurl:(?P<url>[^`\n]+))?(?=[^`]*?\nname:(?P<name>[^`\n]+))?(?=[^`]*?\nbanner:(?P<banner>[^`\n]+))?(?=[^`]*?\nfavicon:(?P<favicon>[^`\n]+))?(?=[^`]*?\nimage:(?P<image>[^`\n]+))?(?=[^`]*?\ndesc:(?P<desc>[^`\n]+))?[^`]*?```" )
     #CBLOCK_PATTERN             = re.compile( r"(?<=\n)\n```\bembed\b(?=[^`]*?\nurl:(?P<url>[^`\n]+))?(?=[^`]*?\nname:(?P<name>[^`\n]+))?(?=[^`]*?\nbanner:(?P<banner>[^`\n]+))?(?=[^`]*?\nfavicon:(?P<favicon>[^`\n]+))?(?=[^`]*?\nimage:(?P<image>[^`\n]+))?(?=[^`]*?\ndesc:(?P<desc>[^`\n]+))?[^`]*?```" )
-    CBLOCK_PATTERN              = re.compile( r"(?<=\n)\n```\bembed\b(?=[^`]*?\nurl:(?P<url>[^`\n]+))?(?=[^`]*?\nname:(?P<name>[^`\n]+))?(?=[^`]*?\nbanner:(?P<banner>[^`\n]+))?(?=[^`]*?\nfavicon:(?P<favicon>[^`\n]+))?(?=[^`]*?\nfavicon_size:(?P<favicon_size>[^`\n]+))?(?=[^`]*?\nimage:(?P<image>[^`\n]+))?(?=[^`]*?\ndesc:(?P<desc>[^`\n]+))?[^`]*?```" )
+    #CBLOCK_PATTERN             = re.compile( r"(?<=\n)\n```\bembed\b(?=[^`]*?\nurl:(?P<url>[^`\n]+))?(?=[^`]*?\nname:(?P<name>[^`\n]+))?(?=[^`]*?\nbanner:(?P<banner>[^`\n]+))?(?=[^`]*?\nfavicon:(?P<favicon>[^`\n]+))?(?=[^`]*?\nfavicon_size:(?P<favicon_size>[^`\n]+))?(?=[^`]*?\nimage:(?P<image>[^`\n]+))?(?=[^`]*?\ndesc:(?P<desc>[^`\n]+))?[^`]*?```" )
+    CBLOCK_PATTERN              = re.compile( r"(?<=\n)\n```\bembed\b(?=[^`]*?\nurl:(?P<url>[^`\n]+))?(?=[^`]*?\nname:(?P<name>[^`\n]+))?(?=[^`]*?\nbanner:(?P<banner>[^`\n]+))?(?=[^`]*?\nfavicon:(?P<favicon>[^`\n]+))?(?=[^`]*?\nfavicon_size:(?P<favicon_size>[^`\n]+))?(?=[^`]*?\ntarget:(?P<target>[^`\n]+))?(?=[^`]*?\nimage:(?P<image>[^`\n]+))?(?=[^`]*?\ndesc:(?P<desc>[^`\n]+))?[^`]*?```" )
 
     # ------------------------------------------------------------------------------------------------------------------------------------------
     #   Initialize
@@ -89,12 +92,39 @@ class LinkEmbedsPlugin( BasePlugin ):
             start                   = site.start( )
             end                     = site.end( ) - 1
 
+            # -----------------------------------------------------------------------------------------
+            #   set defaults
+            # -----------------------------------------------------------------------------------------
+
+            if self.config[ 'name_default' ] and self.config[ 'name_default' ] != '':
+                box_name            = self.config[ 'name_default' ]
+
+            if self.config[ 'desc_default' ] and self.config[ 'desc_default' ] != '':
+                box_desc            = self.config[ 'desc_default' ]
+
+            if self.config[ 'image_default' ] and self.config[ 'image_default' ] != '':
+                box_image           = self.config[ 'image_default' ]
+
+            if self.config[ 'favicon_default' ] and self.config[ 'favicon_default' ] != '':
+                box_favicon         = self.config[ 'favicon_default' ]
+
+            if self.config[ 'favicon_size' ] and self.config[ 'favicon_size' ] != '':
+                box_favicon_size    = self.config[ 'favicon_size' ]
+
+            if self.config[ 'target' ] and self.config[ 'target' ] != '':
+                box_target          = self.config[ 'target' ]
+
+            # -----------------------------------------------------------------------------------------
+            #   pull any user inputs provided
+            # -----------------------------------------------------------------------------------------
+
             input_url               = site.group( "url" )
             input_name              = site.group( "name" )
             input_desc              = site.group( "desc" )
             input_image             = site.group( "image" )
             input_favicon           = site.group( "favicon" )
             input_favicon_size      = site.group( "favicon_size" )
+            input_target            = site.group( "target" )
 
             lines                   = input_url.splitlines( )
             html_output             = ""
@@ -120,6 +150,7 @@ class LinkEmbedsPlugin( BasePlugin ):
                     box_image               = self.opengraph.get_image( soup )
                     box_favicon             = self.opengraph.get_favicon( soup )
                     box_favicon_size        = str( self.config[ 'favicon_size' ] )
+                    box_target              = str( self.config[ 'target' ] )
 
                     # -----------------------------------------------------------------------------------------
                     #   Normal Template
@@ -138,6 +169,132 @@ class LinkEmbedsPlugin( BasePlugin ):
                         box_favicon         = input_favicon.strip( )
                     if input_favicon_size:
                         box_favicon_size    = str( input_favicon_size.strip( ) )
+                    if input_target:
+                        box_target          = str( input_target.strip( ) )
+
+                    # -----------------------------------------------------------------------------------------
+                    #   Normal Template
+                    #   check for null values
+                    # -----------------------------------------------------------------------------------------
+
+                    if box_name is None:
+                        if self.config[ 'name_default' ]:
+                            box_name        = self.config[ 'name_default' ]
+                        else:
+                            box_name        = meta_def_name
+
+                        box_name            = re.sub( "[\"\']", "", box_name )
+
+                    if box_desc is None:
+                        if self.config[ 'desc_default' ]:
+                            box_desc        = self.config[ 'desc_default' ]
+                        else:
+                            box_desc        = meta_def_desc
+
+                        box_desc            = re.sub( "[\"\']", "", box_desc )
+
+                    # -----------------------------------------------------------------------------------------
+                    #   Object > Image
+                    # -----------------------------------------------------------------------------------------
+
+                    if box_image is None:
+                        if self.config[ 'image_default' ]:
+                            box_image       = self.config[ 'image_default' ]
+                        else:
+                            box_image       = meta_def_image
+
+                    if ( box_image == 'false' ) or ( box_image is None ) or ( not box_image ) or ( self.config.get( 'image_disabled' ) ):
+                        style_image         = "display:none;"
+                    else:
+                        style_image         = ""
+
+                    # -----------------------------------------------------------------------------------------
+                    #   Object > Fav Icon
+                    # -----------------------------------------------------------------------------------------
+
+                    if box_favicon is None:
+                        if self.config[ 'favicon_default' ]:
+                            box_favicon     = self.config[ 'favicon_default' ]
+                        else:
+                            box_favicon     = meta_def_favicon
+
+                    if ( box_favicon == 'false' ) or ( box_favicon is None ) or ( not box_favicon ) or ( self.config.get( 'favicon_disabled' ) ):
+                        style_favicon       = "display:none; padding-right: 0px;"
+                    else:
+                        style_favicon       = f"padding-right: 7px; width: {box_favicon_size}px"
+
+                    # -----------------------------------------------------------------------------------------
+                    #   Object > Target = None
+                    # -----------------------------------------------------------------------------------------
+
+                    if box_target is None:
+                        if self.config[ 'target' ]:
+                            box_target      = self.config[ 'target' ]
+                        else:
+                            box_target      = meta_def_favicon
+
+                    # -----------------------------------------------------------------------------------------
+                    #   Object > Target = Define Keywords
+                    # -----------------------------------------------------------------------------------------
+
+                    if box_target == "_self" or box_target == "self" or box_target == "same" or box_target == "current":
+                        box_target      = "_self"
+                    elif box_target == "_blank" or box_target == "blank" or box_target == "new" or box_target == "window" or box_target == "open":
+                        box_target      = "_blank"
+                    else:
+                        box_target      = self.config[ 'target' ]
+
+                    # -----------------------------------------------------------------------------------------
+                    #   build normal template
+                    # -----------------------------------------------------------------------------------------
+
+                    html_view           = html_view.replace( "{{ link }}", link )
+                    html_view           = html_view.replace( "{{ image-url }}", box_image )
+                    html_view           = html_view.replace( "{{ image-style }}", style_image )
+                    html_view           = html_view.replace( "{{ name }}", box_name )
+                    html_view           = html_view.replace( "{{ desc }}", box_desc )
+                    html_view           = html_view.replace( "{{ favicon }}", box_favicon )
+                    html_view           = html_view.replace( "{{ favicon-style }}", style_favicon )
+                    html_view           = html_view.replace( "{{ target }}", box_target )
+
+                    html_output         += html_view
+
+                # -----------------------------------------------------------------------------------------
+                #   opengraph found invalid data
+                # -----------------------------------------------------------------------------------------
+
+                except:
+
+                    # -----------------------------------------------------------------------------------------
+                    #   extract the url that was provided and use that as the name
+                    # -----------------------------------------------------------------------------------------
+
+                    url_match       = self.url_pattern.match( i )
+                    
+                    if url_match:
+                        box_name    = url_match.group( 'host' )
+                    else:
+                        box_name    = "Invalid URL"
+
+                    # -----------------------------------------------------------------------------------------
+                    #   Default Template
+                    #   check for user input values
+                    # -----------------------------------------------------------------------------------------
+
+                    if input_name:
+                        box_name            = input_name.strip( )
+                        box_name            = re.sub( "[\"\']", "", box_name )    # clean quotation marks
+                    if input_desc:
+                        box_desc            = input_desc.strip( )
+                        box_desc            = re.sub( "[\"\']", "", box_desc )    # clean quotation marks
+                    if input_image:
+                        box_image           = input_image.strip( )
+                    if input_favicon:
+                        box_favicon         = input_favicon.strip( )
+                    if input_favicon_size:
+                        box_favicon_size    = str( input_favicon_size.strip( ) )
+                    if input_target:
+                        box_target          = str( input_target.strip( ) )
 
                     # -----------------------------------------------------------------------------------------
                     #   Normal Template
@@ -191,72 +348,25 @@ class LinkEmbedsPlugin( BasePlugin ):
                         style_favicon       = f"padding-right: 7px; width: {box_favicon_size}px"
 
                     # -----------------------------------------------------------------------------------------
-                    #   build normal template
+                    #   Object > Target = None
                     # -----------------------------------------------------------------------------------------
 
-                    html_view           = html_view.replace( "{{ link }}", link )
-                    html_view           = html_view.replace( "{{ image-url }}", box_image )
-                    html_view           = html_view.replace( "{{ image-style }}", style_image )
-                    html_view           = html_view.replace( "{{ name }}", box_name )
-                    html_view           = html_view.replace( "{{ desc }}", box_desc )
-                    html_view           = html_view.replace( "{{ favicon }}", box_favicon )
-                    html_view           = html_view.replace( "{{ favicon-style }}", style_favicon )
-
-                    html_output         += html_view
-
-                # -----------------------------------------------------------------------------------------
-                #   opengraph found invalid data
-                # -----------------------------------------------------------------------------------------
-
-                except:
-                    url_match       = self.url_pattern.match( i )
-                    
-                    if url_match:
-                        box_name    = url_match.group( 'host' )
-                    else:
-                        box_name    = "Invalid URL"
-
-                    # -----------------------------------------------------------------------------------------
-                    #   Default Template
-                    #   fallback values
-                    # -----------------------------------------------------------------------------------------
-
-                    if box_name is None:
-                        if self.config[ 'name_default' ] and self.config[ 'name_default' ] != '':
-                            box_name    = self.config[ 'name_default' ]
+                    if box_target is None:
+                        if self.config[ 'target' ] and self.config[ 'target' ] != '':
+                            box_target      = self.config[ 'target' ]
                         else:
-                            box_name    = meta_def_name
-
-                    if self.config[ 'desc_default' ] and self.config[ 'desc_default' ] != '':
-                        box_desc        = self.config[ 'desc_default' ]
-                    else:
-                        box_desc        = meta_def_desc
-
-                    if self.config[ 'image_default' ] and self.config[ 'image_default' ] != '':
-                        box_image       = self.config[ 'image_default' ]
-                    else:
-                        box_image       = meta_def_image
-
-                    if self.config[ 'favicon_default' ] and self.config[ 'favicon_default' ] != '':
-                        box_favicon     = self.config[ 'favicon_default' ]
-                    else:
-                        box_favicon     = meta_def_favicon
+                            box_target      = meta_def_favicon
 
                     # -----------------------------------------------------------------------------------------
-                    #   Default Template
-                    #   check for user input values
+                    #   Object > Target = Define Keywords
                     # -----------------------------------------------------------------------------------------
 
-                    if input_name:
-                        box_name            = input_name
-                    if input_desc:
-                        box_desc            = input_desc
-                    if input_image:
-                        box_image           = input_image
-                    if input_favicon:
-                        box_favicon         = input_favicon
-                    if input_favicon_size:
-                        box_favicon_size    = input_favicon_size
+                    if box_target == "_self" or box_target == "self" or box_target == "same" or box_target == "current":
+                        box_target      = "_self"
+                    elif box_target == "_blank" or box_target == "blank" or box_target == "new" or box_target == "window" or box_target == "open":
+                        box_target      = "_blank"
+                    else:
+                        box_target      = self.config[ 'target' ]
 
                     # -----------------------------------------------------------------------------------------
                     #   build fallback template
@@ -265,9 +375,12 @@ class LinkEmbedsPlugin( BasePlugin ):
                     html_fallback   = self.templ_fallback
                     html_fallback   = html_fallback.replace( "{{ link }}", i )
                     html_fallback   = html_fallback.replace( "{{ image-url }}", box_image )
+                    html_fallback   = html_fallback.replace( "{{ image-style }}", style_image )
                     html_fallback   = html_fallback.replace( "{{ name }}", box_name )
                     html_fallback   = html_fallback.replace( "{{ desc }}", box_desc )
                     html_fallback   = html_fallback.replace( "{{ favicon }}", box_favicon )
+                    html_fallback   = html_fallback.replace( "{{ favicon-style }}", style_favicon )
+                    html_fallback   = html_fallback.replace( "{{ target }}", box_target )
 
                     html_output     += html_fallback
 
