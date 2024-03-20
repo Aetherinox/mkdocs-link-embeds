@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: mkdocs-link-embeds-plugin
-Version: 0.1.5
+Version: 0.1.6
 Summary: Mkdocs plugin which shows embedded links in a more elegant manner.
 Home-page: https://github.com/Aetherinox/mkdocs-link-embeds
 Author: Aetherinox
@@ -47,11 +47,11 @@ This plugin allows you to display embedded links in a more elegant and modern wa
 
 <br />
 
-<p align="center"><img style="width: 85%;text-align: center;border: 1px solid #353535;" src="https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/5eab3f3a-b4bc-4c1a-a914-05df344f7ee0"></p>
+<p align="center"><img style="width: 85%;text-align: center;border: 1px solid #353535;" src="https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/afc068d8-fd8e-448e-ab1c-b026cd5076d2"></p>
 
 <br />
 
-<p align="center"><img style="width: 85%;text-align: center;border: 1px solid #353535;" src="https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/252fda99-47c7-40d1-9103-e98b40fce997"></p>
+<p align="center"><img style="width: 85%;text-align: center;border: 1px solid #353535;" src="https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/a30aff26-8cba-4a90-ab60-75105c5189d6"></p>
 
 <br />
 
@@ -59,17 +59,26 @@ This plugin allows you to display embedded links in a more elegant and modern wa
 
 <br />
 
+# Documentation
+If you wish to view the complete docuemtnation for this plugin, including installation and usage; visit https://aetherinox.github.io/mkdocs-link-embeds/
+
+<br />
+
+---
+
+<br />
 
 # Install
 
+Install the package for this plugin by running the command:
+
 ```text
-pip install beautifulsoup4
 pip install mkdocs-link-embeds-plugin
 ```
 
 <br />
 
-Once you [install](#install) the packages above, open your `mkdocs.yml` and add a few new lines:
+Once you [install](#install) the package above, open your `mkdocs.yml` and add a few new lines:
 
 <br />
 
@@ -77,9 +86,15 @@ Once you [install](#install) the packages above, open your `mkdocs.yml` and add 
 plugins:
   - link-embeds:
       enabled: true
-      default_name: "Untitled Link"
-      default_desc: "No description found"
-      default_image: "https://path/to/default/image.png"
+      name_default: "Untitled Link"
+      desc_default: "No description found"
+      image_default: "https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/c0298d98-0910-4235-a88f-0c3e2f704ba7"
+      image_disabled: false
+      favicon_default: "https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/b37da9c6-6f17-4c3f-9c94-c346a6f31bfa"
+      favicon_disabled: false
+      favicon_size: 25
+      target: "blank"
+
   
 extra_css:
   - path/to/link-embeds.css
@@ -102,21 +117,27 @@ Once you have installed this plugin, you may now create a new page in your mkdoc
 
 ````markdown
 ```embed
-url:    https://github.com/mkdocs/mkdocs/releases
-image:  https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjFUDe-vdiprKpCsiLoRmfCdUq0WS5tqUR9fyEzJjQ0g&s
-name:   Github: Download Mkdocs
-desc:   MkDocs is a fast, simple and downright gorgeous static site generator that's geared towards building project documentation. Documentation source files are written in Markdown, and configured with a single YAML configuration file. It is designed to be easy to use and can be extended with third-party themes, plugins, and Markdown extensions.
+url:            https://github.com/mkdocs/mkdocs/releases
+image:          https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjFUDe-vdiprKpCsiLoRmfCdUq0WS5tqUR9fyEzJjQ0g&s
+name:           Github: Download Mkdocs
+desc:           MkDocs is a fast, simple and downright gorgeous static site generator that's geared towards building project documentation. Documentation source files are written in Markdown, and configured with a single YAML configuration file. It is designed to be easy to use and can be extended with third-party themes, plugins, and Markdown extensions.
+favicon:        https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/b37da9c6-6f17-4c3f-9c94-c346a6f31bfa
+favicon_size:   25
+target:         new
 ```
 ````
 
 <br />
 
-This plugin takes 4 values:
-- `url`: The URL to the link
-- `image`: Image to display on the left side of each embedded website.
-- `name`: Name / Title to show at the top of each embed
+This plugin accepts numerous values:
+- `url`: The URL to the link.
+- `name`: Name / Title to show at the top of each embed.
 - `desc`: A description of what the site is for.
-
+- `image`: Image to display on the left side of each embedded website.
+- `favicon`: Favicon to display at the bottom, next to the link.
+- `favicon_size`: Favicon size.
+- `target`: Determines whether link opens in new window or same window.
+  
 <br />
 
 The only **required** value is `url`.
