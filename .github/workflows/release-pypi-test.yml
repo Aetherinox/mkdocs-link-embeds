@@ -51,10 +51,10 @@ jobs:
             twine check dist/*
             
         - name: Publish package to TestPyPI
-          uses: pypa/gh-action-pypi-publish@v1
+          uses: pypa/gh-action-pypi-publish@release/v1
           with:
             user: __token__
             password: ${{ secrets.PYPI_API_TEST_TOKEN }}
-            repository_url: https://test.pypi.org/legacy/
+            repository-url: https://test.pypi.org/legacy/
             packages-dir: dist/
             print-hash: true
