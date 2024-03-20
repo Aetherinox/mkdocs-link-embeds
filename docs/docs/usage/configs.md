@@ -32,7 +32,7 @@ The config options listed above can all be specified within your `mkdocs.yml` fi
 ``` yaml
 plugins:
   - link-embeds:
-      enabled: true
+      enabled: !ENV CI # (1)!
       name_default: "Untitled Link"
       desc_default: "No description found"
       image_default: "https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/c0298d98-0910-4235-a88f-0c3e2f704ba7"
@@ -40,5 +40,18 @@ plugins:
       favicon_default: "https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/b37da9c6-6f17-4c3f-9c94-c346a6f31bfa"
       favicon_disabled: false
       favicon_size: 25
-      target: "blank"
+      target: "blank" # (2)!
 ```
+
+1.  Use this setting to enable or disable the plugin. If you only want to use this plugin for better organization and
+    always want to enable the plugins that are part of it, use:
+
+    ``` yaml
+    plugins:
+      - link-embeds:
+          enabled: true
+    ```
+
+2.  Available options:
+      - New Window:`blank`
+      - Current Window: `self`

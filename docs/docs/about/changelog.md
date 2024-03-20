@@ -7,6 +7,13 @@ tags:
 
 ![Version](https://img.shields.io/github/v/tag/Aetherinox/mkdocs-link-embeds?logo=GitHub&label=version&color=ba5225) ![Downloads](https://img.shields.io/github/downloads/Aetherinox/mkdocs-link-embeds/total) ![Repo Size](https://img.shields.io/github/repo-size/Aetherinox/mkdocs-link-embeds?label=size&color=59702a) ![Last Commit)](https://img.shields.io/github/last-commit/Aetherinox/mkdocs-link-embeds?color=b43bcc) ![PyPI - Version](https://img.shields.io/pypi/v/mkdocs-link-embeds-plugin)
 
+### <!-- md:version stable- --> 0.1.6 <small>March 19, 2024</small> { id="0.1.6" }
+
+- `feat`: added `target` property for embed code blocks
+- `change`: updated fallback.html template to match that of the view.html template
+
+<br />
+
 ### <!-- md:version stable- --> 0.1.5 <small>March 19, 2024</small> { id="0.1.5" }
 
 - `feat`: added `favicon_size` property for embed code blocks
