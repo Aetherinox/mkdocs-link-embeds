@@ -26,6 +26,7 @@ setup(
     },
     python_requires='>=2.7',
     install_requires=[
+        'requests',
         'mkdocs>=1.2.0',
         'beautifulsoup4>=4.11.0'
     ],

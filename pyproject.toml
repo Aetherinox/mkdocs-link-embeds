@@ -32,6 +32,7 @@ classifiers = [
 dependencies = [
     "mkdocs>=1.2.0",
     "beautifulsoup4>=4.11.0",
+    "requests>=2.20.0",
 ]
 
 [project.urls]
