@@ -169,6 +169,7 @@ plugins:
       favicon_disabled: false
       favicon_size: 25
       target: "blank"
+      accent: "ffffff1a"
   - git-committers:
       repository: Aetherinox/mkdocs-link-embeds
       docs_path: docs/docs/
