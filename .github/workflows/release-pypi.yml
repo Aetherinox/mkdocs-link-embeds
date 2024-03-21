@@ -1,4 +1,4 @@
-name: "Pypi Release - Test"
+name: "Pypi Release"
 
 on:
     workflow_dispatch:
@@ -22,10 +22,6 @@ jobs:
   build:
     name: Prepare Package
     runs-on: ubuntu-latest
-    # Specifying a GitHub environment is optional, but strongly encouraged
-    environment: Orion
-    permissions:
-      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
 
     steps:
       - name: ✅ Start
