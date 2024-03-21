@@ -7,6 +7,19 @@ tags:
 
 ![Version](https://img.shields.io/github/v/tag/Aetherinox/mkdocs-link-embeds?logo=GitHub&label=version&color=ba5225) ![Downloads](https://img.shields.io/github/downloads/Aetherinox/mkdocs-link-embeds/total) ![Repo Size](https://img.shields.io/github/repo-size/Aetherinox/mkdocs-link-embeds?label=size&color=59702a) ![Last Commit)](https://img.shields.io/github/last-commit/Aetherinox/mkdocs-link-embeds?color=b43bcc) ![PyPI - Version](https://img.shields.io/pypi/v/mkdocs-link-embeds-plugin)
 
+### <!-- md:version stable- --> 0.1.7 <small>March 21, 2024</small> { id="0.1.7" }
+
+- `refactor`: removal of fallback template
+    - plugin now uses one template to control all links
+- `refactor`: updated and cleaned css file to remove excess properties
+- `change`: updated regex rule
+    - now ignores spaces between property and value
+- `change`: `BeautifulSoup` now handles all links through the same methods, both valid and invalid
+- `change`: `fetchurl` module now utilized to grab link metadata
+- `change`: added css properties to define additional properties for users using different mkdocs themes
+
+<br />
+
 ### <!-- md:version stable- --> 0.1.6 <small>March 19, 2024</small> { id="0.1.6" }
 
 - `feat`: added `target` property for embed code blocks
