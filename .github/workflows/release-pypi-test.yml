@@ -88,6 +88,12 @@ jobs:
   
     - name: Release 📦 PyPI Official
       uses: pypa/gh-action-pypi-publish@release/v1
+      if: ${{ github.event.inputs.opt_build_type == 'Test' }}
+      with:
+        user: __token__
+        #password: ${{ secrets.PYPI_API_TOKEN }}
+        packages-dir: dist/
+        print-hash: true
 
   pypi-publish-test:
     name: >-
