@@ -60,7 +60,7 @@ class FetchURL:
         if soup.findAll( "meta", property="og:description" ):
             return soup.find( "meta", property="og:description")["content"]
         elif soup.findAll( 'meta', attrs={'name': 'description'} ):
-            asdasd = soup.find( 'meta', attrs={ 'name': 'description' } )
+            return soup.find( 'meta', attrs={ 'name': 'description' } )["content"]
         else:
             return desc
 
