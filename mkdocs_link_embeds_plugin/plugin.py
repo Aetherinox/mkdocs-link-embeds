@@ -181,8 +181,6 @@ class LinkEmbedsPlugin( BasePlugin ):
                 box_favicon_size        = str( self.config[ 'favicon_size' ] )
                 box_target              = str( self.config[ 'target' ] )
 
-                #print( box_desc )
-
                 # -----------------------------------------------------------------------------------------
                 #   Handle > Input Override > Name
                 # -----------------------------------------------------------------------------------------
