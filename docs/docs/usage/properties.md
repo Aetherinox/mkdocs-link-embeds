@@ -21,6 +21,7 @@ You have numerous properties you can set for each embedded link:
 | `favicon` | Favicon / small image that will display to the left side of the website address |
 | `favicon_size` | Size of the favicon to display next to the website link |
 | `target` | Specifies how a link will open, either in the same window, or a new window |
+| `accent` | An accent color which borders the embedded link box |
 
 <br />
 
@@ -140,6 +141,16 @@ image:    false
 <!-- md:default `false` -->
 
 A favicon is a small, 16x16 pixel icon used on web browsers to represent a website or a web page. Short for “favorite icon,”' favicons are commonly displayed on tabs at the top of a web browser, but they're also found on your browser's bookmark bar, history and in search results, alongside the page url.
+
+<br />
+
+!!! warning annotate "Favicon Performance Impact"
+
+    Numerous libraries were tested for scraping websites for favicons, which presented a series of issues and slow performance. This plugin presents a custom method for scaping websites for favicons, which does improve performance, however, if your documentation contains a lot of links; building the documentation may take a bit of time. 
+
+    If you provide an override favicon path; the plugin will not waste the resources trying to find the website favicon which improves performance. If you disable favicons all-together via your `mkdocs.yml`, or for a certain links; it will also improve performance.
+
+    This only affects building your mkdocs, not using the website as a visitor.
 
 <br />
 
@@ -278,9 +289,37 @@ If no target is specified; all links will open in a **new window**.
 
 ### Accent
 <!-- md:version stable-0.1.7 -->
-<!-- md:default `ffffff1a` -->
+<!-- md:default `FFFFFF1A` -->
 
 The `accent` property allows you to change the outline color which surrounds the embedded link box. It accepts `hex` values with an opacity
+
+<br />
+
+```embed
+url:      https://squidfunk.github.io/mkdocs-material/
+accent:   D84689FF
+```
+
+````ini
+```embed
+url:      https://squidfunk.github.io/mkdocs-material/
+accent:   D84689FF
+```
+````
+
+<br />
+
+```embed
+url:      https://squidfunk.github.io/mkdocs-material/
+accent:   4C59BFE0
+```
+
+````ini
+```embed
+url:      https://squidfunk.github.io/mkdocs-material/
+accent:   4C59BFE0
+```
+````
 
 <br />
 
@@ -440,6 +479,15 @@ name:   Online Color Picker
 image:  https://play-lh.googleusercontent.com/DoTrq2XuQOteT32rxsxOgiw2vwjU5nZJP8FFB_0D4VrXfb17c_LEUoW0Rj3my4mAbg
 ```
 
+<br />
+
+For a color picker with Hex + Opacity, visit:
+
+```embed
+url:    https://rgbcolorpicker.com/0-1
+name:   Online Color Picker with Opacity
+image:  https://is4-ssl.mzstatic.com/image/thumb/Purple124/v4/46/71/a9/4671a9a2-bfdd-ffda-5a8b-5b88f7520c7f/AppIcon-1x_U007emarketing-0-7-0-85-220.png/256x256bb.jpg
+```
 
 <br />
 <br />

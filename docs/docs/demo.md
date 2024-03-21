@@ -49,7 +49,7 @@ The following example displays a website, however, removes the image and favicon
 url:            https://squidfunk.github.io/mkdocs-material/
 name:           Github: Download Mkdocs
 desc:           MkDocs is a fast, simple and downright gorgeous static site generator that's geared towards building project documentation. Documentation source files are written in Markdown, and configured with a single YAML configuration file. It is designed to be easy to use and can be extended with third-party themes, plugins, and Markdown extensions.
-image:          
+image:          false
 favicon:        false
 ```
 
@@ -60,6 +60,23 @@ name:           Github: Download Mkdocs
 desc:           MkDocs is a fast, simple and downright gorgeous static site generator that's geared towards building project documentation. Documentation source files are written in Markdown, and configured with a single YAML configuration file. It is designed to be easy to use and can be extended with third-party themes, plugins, and Markdown extensions.
 image:          false
 favicon:        false
+```
+````
+
+<br />
+
+# Accent Color
+The following presents an embedded link with a custom accent color border
+
+```embed
+url:        https://github.com/Aetherinox/mkdocs-link-embeds
+accent:     f01348e0
+```
+
+````ini
+```embed
+url:        https://github.com/Aetherinox/mkdocs-link-embeds
+accent:     f01348e0
 ```
 ````
 

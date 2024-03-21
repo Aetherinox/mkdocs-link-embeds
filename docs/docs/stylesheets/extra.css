@@ -262,7 +262,7 @@
     border-radius: 5px;
     box-shadow: var(--md-shadow-z2);
     transition: border .25s,box-shadow .25s;
-    border: 2px solid #ffffff1a;
+    border: 2px solid #FFFFFF1A;
     background-color: var(--md-default-fg-color--lightest);
 }
 

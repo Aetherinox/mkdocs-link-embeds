@@ -9,7 +9,13 @@ tags:
 
 ### <!-- md:version stable- --> 0.1.8 <small>March 21, 2024</small> { id="0.1.8" }
 
+- `feat`: add `accent` property
+- `feat`: advanced favicon fetching
+- `dep`: added package `request` to dependencies
 - `change`: ability to give custom names, descriptions, and images for invalid links
+- `change`: add backup metadata sources for all properties, e.g: `og:description` and `description`
+- `change`: added user agent to keep certain sites from blocking crawling
+- `fix`: certain websites returning nil values for missing metadata
 
 ### <!-- md:version stable- --> 0.1.7 <small>March 21, 2024</small> { id="0.1.7" }
 

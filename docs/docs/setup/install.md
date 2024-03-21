@@ -53,7 +53,7 @@ url:          https://aetherinox.github.io/mkdocs-link-embeds/setup/stylesheet/
 name:         Install (Step 2): Stylesheet
 desc:         Instructions on installing the stylesheet needed for the Link Embeds plugin.
 favicon:      https://icons.iconarchive.com/icons/martz90/hex/512/css-3-icon.png
-image:        https://icons.iconarchive.com/icons/martz90/hex/512/css-3-icon.png
+image:        https://media.geeksforgeeks.org/wp-content/uploads/20230803130837/CSS.webp
 target:       same
 ```
 

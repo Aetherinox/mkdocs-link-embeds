@@ -80,4 +80,20 @@ In the example above, only `url` and `name` were specified. By specifying a cust
 
 However, since only the `name` was specified, the other properties will still use the automatically fetched information captured from the specified website.
 
+<br />
+<br />
 
+## Accent Colors
+When specifying an accent color for your embedded links, you may specify a hex color with or without the pound symbol `#` Both examples are acceptable:
+
+<br />
+
+=== ":octicons-paintbrush-16: `Example 1`"
+    ```
+    accent:  d9204ce0
+    ```
+
+=== ":octicons-paintbrush-16: `Example 2`"
+    ```
+    accent:  #d9204ce0
+    ```
