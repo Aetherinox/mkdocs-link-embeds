@@ -18,7 +18,7 @@ You may download this plugin from Pypi:
 url:      https://pypi.org/project/mkdocs-link-embeds-plugin/
 name:     Pypi: Download Mkdocs Link Embeds
 desc:     The Link Embeds plugin for mkdocs displays links with a more modern appearance. Links will automatically be populated with an image, description, and title for the target website; or you can override the values to specify your own. 
-favicon:  https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/25a032c6-515f-4cc8-a278-d9bc6b13dbe5
+image:    https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRQQv4xyxsz5jL0zrbu6aajZT0iRpNTMpkifUVHWiYbw&s
 ```
 
 <br />

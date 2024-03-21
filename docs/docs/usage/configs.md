@@ -23,6 +23,7 @@ You have numerous properties you can set for each embedded link:
 | `favicon_disabled` | All embedded links will hide the favicon by default. |
 | `favicon_size` | Default size to use on all favicons if the user has not specified a custom size. |
 | `target` | Defines how all embedded links will open by default, unless the user specifies a custom property for each link |
+| `accent` | Specifies the default border color each embedded link will be outlined with |
 
 <br />
 
@@ -41,6 +42,7 @@ plugins:
       favicon_disabled: false
       favicon_size: 25
       target: "blank" # (2)!
+      accent: "ffffff1a"
 ```
 
 1.  Use this setting to enable or disable the plugin. If you only want to use this plugin for better organization and
