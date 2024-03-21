@@ -88,7 +88,6 @@ jobs:
   
     - name: Release 📦 PyPI Official
       uses: pypa/gh-action-pypi-publish@release/v1
-      if: ${{ github.event.inputs.opt_build_type == 'Test' }}
       with:
         user: __token__
         #password: ${{ secrets.PYPI_API_TOKEN }}
@@ -105,7 +104,6 @@ jobs:
     environment:
       name: Orion
       url: https://test.pypi.org/p/mkdocs-link-embeds-plugin
-
     permissions:
       id-token: write  # IMPORTANT: mandatory for trusted publishing
 
