@@ -139,7 +139,8 @@ This plugin accepts numerous values:
 - `favicon`: Favicon to display at the bottom, next to the link.
 - `favicon_size`: Favicon size.
 - `target`: Determines whether link opens in new window or same window.
-  
+- `accent`: Specify accent color for embedded link surrounding border
+
 <br />
 
 The only **required** value is `url`.
@@ -160,3 +161,4 @@ If you do provide values such as `desc`, `name`, or `image`; those user inputs w
 
 ## Other
 This plugin was originally based on ` mkdocs-link-preview-plugin`. However, that plugin stopped being updated, and the style needed to be modernized. As well as giving more control for customization.
+The plugin has been completely re-written with a large number of added features.
