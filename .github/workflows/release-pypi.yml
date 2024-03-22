@@ -107,7 +107,10 @@ jobs:
       - name: "👁️‍🗨️ Debug › Get Package Version"
         id: build_package_version
         run: |
-          VER=$(cat VERSION)
+          # VER=$(cat VERSION)
+          # echo "PACKAGE_VERSION=$VER" >> $GITHUB_OUTPUT
+
+          VER=$( python3 setup.py -V | tail -1 )
           echo "PACKAGE_VERSION=$VER" >> $GITHUB_OUTPUT
 
       # ---------------------------------------------------------------------------------------
@@ -424,7 +427,7 @@ jobs:
           generate_release_notes: false
           files: |
             ${{ env.PACKAGE_FILENAME }}
-            checksum.txt
+            SHA256SUMS.txt
           prerelease: false
           body: |
             ${{ steps.changelog-categorized.outputs.changelog }}
@@ -446,7 +449,7 @@ jobs:
           generate_release_notes: false
           files: |
             ${{ env.PACKAGE_FILENAME }}
-            checksum.txt
+            SHA256SUMS.txt
           prerelease: false
           body: |
             > [!WARNING]
