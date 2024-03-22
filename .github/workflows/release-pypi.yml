@@ -70,9 +70,11 @@ jobs:
       - name: Get Package Version
         id: get_package_version
         run: |
+          cat VERSION
           VER=$(cat VERSION)
           echo "PACKAGE_VERSION=$VER" >> $GITHUB_ENV
           echo ${{ env.PACKAGE_VERSION }}
+          ls
 
       # ---------------------------------------------------------------------------------------
       #   install pip, setuptools, wheel, twine, etc
