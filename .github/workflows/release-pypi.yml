@@ -121,7 +121,7 @@ jobs:
             python -m build . --sdist
           fi
 
-          PACKAGE=$(find *tar.gz -type f -printf "%f\n")
+          PACKAGE=$(find dist/*tar.gz -type f -printf "%f\n")
           echo "PACKAGE_FILENAME=dist/$PACKAGE" >> $GITHUB_OUTPUT
 
       - name: Print Package Info
