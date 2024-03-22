@@ -24,18 +24,41 @@ env:
 on:
     workflow_dispatch:
       inputs:
+
+        # ---------------------------------------------------------------------------------------
+        #   Python Build Type
+        #   setup and build
+        # ---------------------------------------------------------------------------------------
+
         opt_build_type:
           type: choice
           description: Build Type
           options:
           - py setup.py
           - py build
+
+        # ---------------------------------------------------------------------------------------
+        #   Pypi Service
+        #   Official or Test
+        # ---------------------------------------------------------------------------------------
+
         opt_pypi_type:
           type: choice
           description: Pypi Service
           options:
           - Official
           - Test
+
+        # ---------------------------------------------------------------------------------------
+        #   ENABLE:   released version will be marked as pre-release
+        #   DISABLE:  release version will be marked as stable / normal release
+        # ---------------------------------------------------------------------------------------
+
+        PRERELEASE:
+          description:  "🧪 Build RC (Pre-release)"
+          required:     true
+          default:      false
+          type:         boolean
 
 # ---------------------------------------------------------------------------------------
 #   jobs
@@ -188,14 +211,6 @@ jobs:
     steps:
 
       # ---------------------------------------------------------------------------------------
-      #   [ Debug ]: Get Env Variables
-      # ---------------------------------------------------------------------------------------
-
-      - name: 🐍 Get Variables
-        run: |
-          echo ${{ env.PACKAGE_VERSION }}
-
-      # ---------------------------------------------------------------------------------------
       #   Checkout
       # ---------------------------------------------------------------------------------------
 
@@ -203,12 +218,15 @@ jobs:
         with:
           fetch-depth: 0
 
+      # ---------------------------------------------------------------------------------------
+      #   [ Artifact ]: Download
+      # ---------------------------------------------------------------------------------------
+
       - name: "Download › Saved Artifacts"
         uses: actions/download-artifact@v4
         with:
           name: python-package-distributions
           path: dist/
-
 
       # ---------------------------------------------------------------------------------------
       #   [ Tag ]: Pre Create
@@ -222,7 +240,50 @@ jobs:
           tag_exists_error: false
           message: "Latest release"
 
+      # ---------------------------------------------------------------------------------------
+      #   [ Tag ]: Confirm
+      # ---------------------------------------------------------------------------------------
+
       - name: "🔖 [ Tag ]: Confirm ${{ env.PACKAGE_VERSION }}"
         run: |
           echo "Tag already present: ${{ env.TAG_EXISTS }}"
           echo "Tag already present: ${{ steps.tag_create.outputs.tag_exists }}"
+
+      # ---------------------------------------------------------------------------------------
+      #   [ Release Candidate ]: Checksum
+      # ---------------------------------------------------------------------------------------
+
+      - name: "🆔 [ Checksum ]: Stable"
+        id: checksum-st
+        if: ${{ startsWith( inputs.PRERELEASE, false ) }}
+        run: |
+          filename_zip="${{ inputs.PLUGIN_NAME }}-${{ env.PACKAGE_VERSION }}.zip"
+          sha256="$(shasum --algorithm 256 ${filename_zip} | awk '{ print $1 }')"
+          shasum --algorithm 256 ${filename_zip} > SHA256SUMS.txt
+          echo "FILE_ZIP=${filename_zip}" >> $GITHUB_ENV
+          echo "SHA256SUM=${sha256}" >> $GITHUB_ENV
+          echo ${{ env.SHA256SUM }}
+
+
+      - name: "🆔 [ Checksum ]: Release Candidate"
+        id: checksum-rc
+        if: ${{ startsWith( inputs.PRERELEASE, true ) }}
+        run: |
+          filename_zip="${{ inputs.PLUGIN_NAME }}-${{ env.PACKAGE_VERSION }}-rc.${{ inputs.VERSION_RC }}.zip"
+          sha256="$(shasum --algorithm 256 ${filename_zip} | awk '{ print $1 }')"
+          shasum --algorithm 256 ${filename_zip} > SHA256SUMS.txt
+          echo "FILE_ZIP=${filename_zip}" >> $GITHUB_ENV
+          echo "SHA256SUM=${sha256}" >> $GITHUB_ENV
+          echo ${{ env.SHA256SUM }}
+
+      # ---------------------------------------------------------------------------------------
+      #   Contributor Images
+      # ---------------------------------------------------------------------------------------
+
+      - name: "🥸 [ Contributors ]: Generate"
+        id: contribs-generate
+        uses: jaywcjlove/github-action-contributors@main
+        with:
+          filter-author: (renovate\[bot\]|renovate-bot|dependabot\[bot\])
+          output: CONTRIBUTORS.svg
+          avatarSize: 42
