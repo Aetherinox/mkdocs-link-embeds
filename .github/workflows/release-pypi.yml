@@ -30,7 +30,7 @@ on:
         #   setup and build
         # ---------------------------------------------------------------------------------------
 
-        opt_build_type:
+        OPT_BUILD_TYPE:
           type: choice
           description: Build Type
           options:
@@ -42,7 +42,7 @@ on:
         #   Official or Test
         # ---------------------------------------------------------------------------------------
 
-        opt_pypi_type:
+        OPT_PYPI_TYPE:
           type: choice
           description: Pypi Service
           options:
@@ -54,12 +54,36 @@ on:
         #   CANDIDATE:    release candidate
         # ---------------------------------------------------------------------------------------
 
-        PRERELEASE:
+        OPT_RELEASE_TYPE:
           type: choice
           description: 📦 Build Type
           options:
           - Stable
           - Release Candidate
+
+      # ---------------------------------------------------------------------------------------
+      #   ENABLE:   the changelog generated in releases tab will only display single commits.
+      #   DISABLE:  the changelog shows pull requests completed based on their labels
+      # ---------------------------------------------------------------------------------------
+
+        CHANGELOG_MODE_COMMIT:
+          description:  "📑 Use Commits Instead of PRs"
+          required:     true
+          default:      true
+          type:         boolean
+
+      # ---------------------------------------------------------------------------------------
+      #   ENABLE:   Will show all types of commits, including uncategorized
+      #   DISABLE:  WIll only show actions that have been categorized using the format
+      #                type(scope): description
+      #                type: description
+      # ---------------------------------------------------------------------------------------
+
+        SHOW_UNCATEGORIZED:
+          description:  "🗂️ Show Uncategorized Commits"
+          required:     true
+          default:      false
+          type:         boolean
 
 # ---------------------------------------------------------------------------------------
 #   jobs
@@ -73,14 +97,14 @@ jobs:
       package_version: ${{ steps.build_package_version.outputs.PACKAGE_VERSION }}
       package_filename: ${{ steps.build_handle_tarball.outputs.PACKAGE_FILENAME }}
     steps:
-      - name: ✅ Start
+      - name: "✅ Start"
         run: | 
-              echo "Starting build: ${{ github.event.inputs.opt_build_type }}" / ${{ inputs.opt_build_type }}
+              echo "Starting build: ${{ github.event.inputs.OPT_BUILD_TYPE }}" / ${{ inputs.OPT_BUILD_TYPE }}
 
-      - name: ☑️ Checkout
+      - name: "☑️ Checkout"
         uses: actions/checkout@v4
 
-      - name: Get Package Version
+      - name: "👁️‍🗨️ Debug › Get Package Version"
         id: build_package_version
         run: |
           VER=$(cat VERSION)
@@ -90,7 +114,7 @@ jobs:
       #   setup python
       # ---------------------------------------------------------------------------------------
 
-      - name: 🐍 Set up Python
+      - name: "🐍 Python › Setup"
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
@@ -99,7 +123,7 @@ jobs:
       #   install pip, setuptools, wheel, twine, etc
       # ---------------------------------------------------------------------------------------
 
-      - name: 🐍 Install Build Tools
+      - name: "🐍 Python › Build Tools"
         run: |
           python -m pip install --upgrade pip
           pip install setuptools wheel twine build
@@ -108,15 +132,15 @@ jobs:
       #   build python script
       # ---------------------------------------------------------------------------------------
 
-      - name: ☸️ Build tarball
+      - name: "🐍 Python › Build Tarball"
         id: build_handle_tarball
         run: |
-          if [ "${{ github.event.inputs.opt_build_type }}" = "py setup.py" ]; then
+          if [ "${{ github.event.inputs.OPT_BUILD_TYPE }}" = "py setup.py" ]; then
             echo "Starting build: py setup.py"
             python setup.py sdist
           fi
 
-          if [ "${{ github.event.inputs.opt_build_type }}" = "py build" ]; then
+          if [ "${{ github.event.inputs.OPT_BUILD_TYPE }}" = "py build" ]; then
             echo "Starting build: py build"
             python -m build . --sdist
           fi
@@ -124,7 +148,7 @@ jobs:
           PACKAGE=$(find dist/*tar.gz -type f -printf "%f\n")
           echo "PACKAGE_FILENAME=dist/$PACKAGE" >> $GITHUB_OUTPUT
 
-      - name: Print Package Info
+      - name: "👁️‍🗨️ Debug › Print Package Info"
         id: build_print_package
         run: |
           echo ${{ steps.build_package_version.outputs.PACKAGE_VERSION }}
@@ -134,7 +158,7 @@ jobs:
         run: |
           twine check dist/*
   
-      - name: Store the distribution packages
+      - name: "📁 Upload › Artifact"
         uses: actions/upload-artifact@v4
         with:
           name: python-package-distributions
@@ -147,7 +171,7 @@ jobs:
   pypi-publish-official:
     name: >-
       📦 PyPI › Official
-    if: ${{ github.event.inputs.opt_pypi_type == 'Official' }}
+    if: ${{ github.event.inputs.OPT_PYPI_TYPE == 'Official' }}
     needs:
     - build
     runs-on: ubuntu-latest
@@ -158,7 +182,7 @@ jobs:
       url: https://pypi.org/p/mkdocs-link-embeds-plugin
 
     steps:
-    - name: "Download › Saved Artifacts"
+    - name: "📁 Download › Saved Artifacts"
       uses: actions/download-artifact@v4
       with:
         name: python-package-distributions
@@ -179,7 +203,7 @@ jobs:
   pypi-publish-test:
     name: >-
       📦 PyPI › Test Api
-    if: ${{ github.event.inputs.opt_pypi_type == 'Test' }}
+    if: ${{ github.event.inputs.OPT_PYPI_TYPE == 'Test' }}
     needs:
     - build
     runs-on: ubuntu-latest
@@ -190,7 +214,7 @@ jobs:
       url: https://test.pypi.org/p/mkdocs-link-embeds-plugin
 
     steps:
-    - name: "Download › Saved Artifacts"
+    - name: "📁 Download › Saved Artifacts"
       uses: actions/download-artifact@v4
       with:
         name: python-package-distributions
@@ -201,6 +225,10 @@ jobs:
      # with:
      #   repository-url: https://test.pypi.org/legacy/
 
+  # ---------------------------------------------------------------------------------------
+  #   Job > Distribute Release on Github Releases
+  # ---------------------------------------------------------------------------------------
+
   dist-release:
     name: >-
       📦 Github › Release
@@ -208,6 +236,7 @@ jobs:
     needs: [ build, pypi-publish-official, pypi-publish-test ]
     env:
       PACKAGE_VERSION: ${{ needs.build.outputs.package_version }}
+      PACKAGE_FILENAME: ${{ needs.build.outputs.package_filename }}
     if: |
       always()
       && contains(needs.*.result, 'success')
@@ -217,28 +246,29 @@ jobs:
     steps:
 
       # ---------------------------------------------------------------------------------------
-      #   Checkout
+      #   Dist Releases > Checkout
       # ---------------------------------------------------------------------------------------
 
-      - uses: actions/checkout@v4
+      - name: "☑️ Checkout"
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       # ---------------------------------------------------------------------------------------
-      #   [ Artifact ]: Download
+      #   Dist Releases > [ Artifact ]: Download
       # ---------------------------------------------------------------------------------------
 
-      - name: "Download › Saved Artifacts"
+      - name: "📁 Download › Saved Artifacts"
         uses: actions/download-artifact@v4
         with:
           name: python-package-distributions
           path: dist/
 
       # ---------------------------------------------------------------------------------------
-      #   [ Tag ]: Pre Create
+      #   Dist Releases > [ Tag ]: Pre Create
       # ---------------------------------------------------------------------------------------
 
-      - name: "🔖 [ Tag ]: Pre Create ${{ env.PACKAGE_VERSION }}"
+      - name: "🔖 Tag › Pre Create ${{ env.PACKAGE_VERSION }}"
         uses: rickstaa/action-create-tag@v1
         id: "tag_create"
         with:
@@ -247,49 +277,177 @@ jobs:
           message: "Latest release"
 
       # ---------------------------------------------------------------------------------------
-      #   [ Tag ]: Confirm
+      #   Dist Releases > [ Tag ]: Confirm
       # ---------------------------------------------------------------------------------------
 
-      - name: "🔖 [ Tag ]: Confirm ${{ env.PACKAGE_VERSION }}"
+      - name: "🔖 Tag › Confirm ${{ env.PACKAGE_VERSION }}"
         run: |
-          echo "Tag already present: ${{ env.TAG_EXISTS }}"
           echo "Tag already present: ${{ steps.tag_create.outputs.tag_exists }}"
 
       # ---------------------------------------------------------------------------------------
-      #   [ Release Candidate ]: Checksum
+      #   Dist Releases > [ Release Candidate ]: Checksum
       # ---------------------------------------------------------------------------------------
 
-      - name: "🆔 [ Checksum ]: Stable"
+      - name: "🆔 Checksum › Stable"
         id: checksum-st
-        if: ${{ startsWith( inputs.PRERELEASE, false ) }}
+        if: ${{ github.event.inputs.OPT_RELEASE_TYPE == 'Stable' }}
         run: |
-          filename_zip="${{ inputs.PLUGIN_NAME }}-${{ env.PACKAGE_VERSION }}.zip"
-          sha256="$(shasum --algorithm 256 ${filename_zip} | awk '{ print $1 }')"
-          shasum --algorithm 256 ${filename_zip} > SHA256SUMS.txt
-          echo "FILE_ZIP=${filename_zip}" >> $GITHUB_ENV
+          filename_tar="${{ env.PACKAGE_FILENAME }}"
+          sha256="$(shasum --algorithm 256 ${filename_tar} | awk '{ print $1 }')"
+          shasum --algorithm 256 ${filename_tar} > SHA256SUMS.txt
+          echo "FILE_ZIP=${filename_tar}" >> $GITHUB_ENV
           echo "SHA256SUM=${sha256}" >> $GITHUB_ENV
-          echo ${{ env.SHA256SUM }}
+          echo ${ SHA256SUM }
 
 
-      - name: "🆔 [ Checksum ]: Release Candidate"
+      - name: "🆔 Checksum › Release Candidate"
         id: checksum-rc
-        if: ${{ startsWith( inputs.PRERELEASE, true ) }}
+        if: ${{ github.event.inputs.OPT_RELEASE_TYPE == 'Release Candidate' }}
         run: |
-          filename_zip="${{ inputs.PLUGIN_NAME }}-${{ env.PACKAGE_VERSION }}-rc.${{ inputs.VERSION_RC }}.zip"
-          sha256="$(shasum --algorithm 256 ${filename_zip} | awk '{ print $1 }')"
-          shasum --algorithm 256 ${filename_zip} > SHA256SUMS.txt
-          echo "FILE_ZIP=${filename_zip}" >> $GITHUB_ENV
+          filename_tar="${{ env.PACKAGE_FILENAME }}"
+          sha256="$(shasum --algorithm 256 ${filename_tar} | awk '{ print $1 }')"
+          shasum --algorithm 256 ${filename_tar} > SHA256SUMS.txt
+          echo "FILE_ZIP=${filename_tar}" >> $GITHUB_ENV
           echo "SHA256SUM=${sha256}" >> $GITHUB_ENV
-          echo ${{ env.SHA256SUM }}
+          echo ${ SHA256SUM }
 
       # ---------------------------------------------------------------------------------------
-      #   Contributor Images
+      #   Dist Releases > Contributor Images
       # ---------------------------------------------------------------------------------------
 
-      - name: "🥸 [ Contributors ]: Generate"
+      - name: "🥸 Contributors › Generate"
         id: contribs-generate
         uses: jaywcjlove/github-action-contributors@main
         with:
           filter-author: (renovate\[bot\]|renovate-bot|dependabot\[bot\])
           output: CONTRIBUTORS.svg
           avatarSize: 42
+  
+      # ---------------------------------------------------------------------------------------
+      #   Generate Changelog
+      #
+      #   generates a changelog from the github api. requires a PREVIOUS_TAG in order to figure
+      #   out the changes made between the two versions.
+      #
+      #   outputs:
+      #     ${{ steps.changelog.outputs.changelog }}
+      # ---------------------------------------------------------------------------------------
+
+      - name: "📝 Changelog › Pre Setup (Categorized Commits)"
+        run: |
+          echo "TAG_LAST=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+          echo "COMMIT_LAST=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
+      - name: "📝 Changelog › Build (Categorized)"
+        id: changelog-categorized
+        if: ${{ startsWith( inputs.SHOW_UNCATEGORIZED, false ) }}
+        uses: mikepenz/release-changelog-builder-action@v4
+        with:
+          #fromTag: "${{ env.TAG_LAST }}"
+          #toTag: "${{ github.ref }}"
+          configuration: ".github/changelog-configuration.json"
+          ignorePreReleases: false
+          commitMode: ${{ inputs.CHANGELOG_MODE_COMMIT }}
+          fetchReleaseInformation: true
+          fetchViaCommits: true
+          configurationJson: |
+            {
+              "template": "## Release Info <sup>(${{ steps.dotenv.outputs.UUID }})</sup>\n- <sub>**Version began on**: <sub>........</sub>`#{{FROM_TAG_DATE}}`</sub>\n- <sub>**SHA256**: <sub>................................</sub>`${{ env.SHA256SUM }} 🔺 ${{ env.FILE_ZIP }}`</sub>\n- <sub>**GUID**: <sub>.......................................</sub>`${{ steps.dotenv.outputs.GUID }}`</sub>\n- <sub>**UUID**: <sub>.......................................</sub>`${{ steps.dotenv.outputs.UUID }}</sub>`\n- <sub>**Stamp**: <sub>....................................</sub>`#{{FROM_TAG}}-#{{FROM_TAG_DATE}} 🔺 #{{TO_TAG}}-#{{TO_TAG_DATE}}`</sub>\n- <sub>**Last Release**: <sub>......................</sub>`#{{DAYS_SINCE}} days ago`</sub>\n\n<br>\n\n---\n\n<br>\n\n### What's New\nThis release contains the following changes:\n\n<br>\n\n---\n\n<br>\n\n### Statistics\nHow the files have changed:\n<ul><li><a href='#{{RELEASE_DIFF}}'>Changed files</a>  : <b>#{{CHANGED_FILES}}</b> </li><li>Commits : <b>#{{COMMITS}}</b> </li><li>Additions : <b>#{{ADDITIONS}}</b></li><li>Deletions : <b>#{{DELETIONS}}</b></li>\n<br />\n</ul>\n\n<br>\n\n---\n\n<br>\n\n### Pull Requests\n#{{CHANGELOG}}\n\n<br>\n\n---\n\n<br>\n\n"
+            }
+        env:
+          GITHUB_TOKEN: ${{ secrets.ADMINSERV_TOKEN }}
+
+      # ---------------------------------------------------------------------------------------
+      #   shows only categorized commits using the commit standards
+      #                type(scope): description
+      #                type: description
+      # ---------------------------------------------------------------------------------------
+
+      - name: "📝 Changelog › Build (Uncategorized)"
+        id: changelog-uncategorized
+        if: ${{ startsWith( inputs.SHOW_UNCATEGORIZED, true ) }}
+        uses: mikepenz/release-changelog-builder-action@v4
+        with:
+          #fromTag: "${{ env.TAG_LAST }}"
+          #toTag: "${{ github.ref }}"
+          configuration: ".github/changelog-configuration.json"
+          ignorePreReleases: false
+          commitMode: ${{ inputs.CHANGELOG_MODE_COMMIT }}
+          fetchReleaseInformation: true
+          fetchViaCommits: true
+          configurationJson: |
+            {
+              "template": "## Release Info <sup>(${{ steps.dotenv.outputs.UUID }})</sup>\n- <sub>**Version began on**: <sub>........</sub>`#{{FROM_TAG_DATE}}`</sub>\n- <sub>**SHA256**: <sub>................................</sub>`${{ env.SHA256SUM }} 🔺 ${{ env.FILE_ZIP }}`</sub>\n- <sub>**GUID**: <sub>.......................................</sub>`${{ steps.dotenv.outputs.GUID }}`</sub>\n- <sub>**UUID**: <sub>.......................................</sub>`${{ steps.dotenv.outputs.UUID }}</sub>`\n- <sub>**Stamp**: <sub>....................................</sub>`#{{FROM_TAG}}-#{{FROM_TAG_DATE}} 🔺 #{{TO_TAG}}-#{{TO_TAG_DATE}}`</sub>\n- <sub>**Last Release**: <sub>......................</sub>`#{{DAYS_SINCE}} days ago`\n</sup>\n\n<br>\n\n---\n\n<br>\n\n### What's New\nThis release contains the following changes:\n\n<br>\n\n---\n\n<br>\n\n### Statistics\nHow the files have changed:\n<ul><li><a href='#{{RELEASE_DIFF}}'>Changed files</a>  : <b>#{{CHANGED_FILES}}</b> </li><li>Commits : <b>#{{COMMITS}}</b> </li><li>Additions : <b>#{{ADDITIONS}}</b></li><li>Deletions : <b>#{{DELETIONS}}</b></li>\n<br />\n</ul>\n\n<br>\n\n---\n\n<br>\n\n### Commits (#{{UNCATEGORIZED_COUNT}})\n#{{UNCATEGORIZED}}\n\n<br>\n\n---\n\n<br>\n\n### Pull Requests\n#{{CHANGELOG}}\n\n<br>\n\n---\n\n<br>\n\n"
+            }
+        env:
+          GITHUB_TOKEN: ${{ secrets.ADMINSERV_TOKEN }}
+
+      # ---------------------------------------------------------------------------------------
+      #   Fetch Changelog
+      # ---------------------------------------------------------------------------------------
+
+      - name: "📝 Changelog › Get (Categorized)"
+        if: ${{ startsWith( inputs.SHOW_UNCATEGORIZED, false ) }}
+        run: |
+          echo "${{ steps.changelog-categorized.outputs.changelog }}"
+
+      - name: "📝 Changelog › Get (Uncategorized)"
+        if: ${{ startsWith( inputs.SHOW_UNCATEGORIZED, true ) }}
+        run: |
+          echo "${{ steps.changelog-uncategorized.outputs.changelog }}"
+
+      # ---------------------------------------------------------------------------------------
+      #   [ Release ]: Post Release
+      #
+      #   outputs:
+      #     [RELEASE ID]:
+      #       ${{ steps.bundle-rc.outputs.id
+      #       ${{ steps.bundle-st.outputs.id
+      # ---------------------------------------------------------------------------------------
+
+      - name: "🏳️ Post › Stable"
+        if: ${{ github.event.inputs.OPT_RELEASE_TYPE == 'Stable' }}
+        uses: softprops/action-gh-release@v2
+        id: bundle-st
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: v${{ env.PACKAGE_VERSION }}
+          tag_name: ${{ env.PACKAGE_VERSION }}
+          target_commitish: ${{ github.event.inputs.branch }}
+          draft: false
+          generate_release_notes: false
+          files: |
+            ${{ env.PACKAGE_FILENAME }}
+            checksum.txt
+          prerelease: false
+          body: |
+            ${{ steps.changelog-categorized.outputs.changelog }}
+            ${{ steps.changelog-uncategorized.outputs.changelog }}
+            ---
+
+      - name: "🏳️ Post › Release Candidate"
+        if: ${{ github.event.inputs.OPT_RELEASE_TYPE == 'Release Candidate' }}
+        uses: softprops/action-gh-release@v2
+        id: bundle-rc
+        env:
+          GITHUB_TOKEN: ${{ secrets.ADMINSERV_TOKEN }}
+        with:
+          name: v${{ env.PACKAGE_VERSION }}
+          tag_name: ${{ env.PACKAGE_VERSION }}
+          target_commitish: ${{ github.event.inputs.branch }}
+          draft: false
+          generate_release_notes: false
+          files: |
+            ${{ env.PACKAGE_FILENAME }}
+            checksum.txt
+          prerelease: false
+          body: |
+            > [!WARNING]
+            > This is a **release candidate**, which means it is not a stable release and could contain bugs. You should download it at your own risk.
+
+            ${{ steps.changelog-categorized.outputs.changelog }}
+            ${{ steps.changelog-uncategorized.outputs.changelog }}
+            ---
+
+          
