@@ -55,6 +55,7 @@ class LinkEmbedsPlugin( BasePlugin ):
         ( 'favicon_size',       config_options.Type( int, default=meta_def_favicon_size ) ),
         ( 'target',             config_options.Type( str, default=f'{target_def_id}' ) ),
         ( 'accent',             config_options.Type( str, default=f'{accent_def}' ) ),
+        ( "verbose",            config_options.Type( bool, default=False ) ),
     )
 
     # ------------------------------------------------------------------------------------------------------------------------------------------
@@ -64,28 +65,29 @@ class LinkEmbedsPlugin( BasePlugin ):
     #           not work in script. replaced using \bembed\b until it can be investigated.
     # ------------------------------------------------------------------------------------------------------------------------------------------
 
-    #CBLOCK_PATTERN             = re.compile( r"(?<=\n)\n```\bembed\b(?=[^`]*?\nurl:(?P<url>[^`\n]+))?(?=[^`]*?\nname:(?P<name>[^`\n]+))?(?=[^`]*?\nbanner:(?P<banner>[^`\n]+))?(?=[^`]*?\nfavicon:(?P<favicon>[^`\n]+))?(?=[^`]*?\nfavicon_size:(?P<favicon_size>[^`\n]+))?(?=[^`]*?\nimage:(?P<image>[^`\n]+))?(?=[^`]*?\ndesc:(?P<desc>[^`\n]+))?[^`]*?```" )
-    #CBLOCK_PATTERN             = re.compile( r"(?<=\n)\n```\bembed\b(?=[^`]*?\nurl:[\s+](?P<url>[^`\n]+))?(?=[^`]*?\nname:[\s+](?P<name>[^`\n]+))?(?=[^`]*?\nbanner:[\s+](?P<banner>[^`\n]+))?(?=[^`]*?\nfavicon:[\s+](?P<favicon>[^`\n]+))?(?=[^`]*?\nfavicon_size:[\s+](?P<favicon_size>[^`\n]+))?(?=[^`]*?\ntarget:[\s+](?P<target>[^`\n]+))?(?=[^`]*?\nimage:[\s+](?P<image>[^`\n]+))?(?=[^`]*?\ndesc:[\s+](?P<desc>[^`\n]+))?[^`]*?```" ) # replace \s with [^\S\n]++
-    CBLOCK_PATTERN              = re.compile( r"(?<=\n)\n```\bembed\b(?=[^`]*?\nurl:? +(?P<url>[^`\n]*))?(?=[^`]*?\nname:? +(?P<name>[^`\n]*))?(?=[^`]*?\nimage:? +(?P<image>[^`\n]*))?(?=[^`]*?\nfavicon:? +(?P<favicon>[^`\n]*))?(?=[^`]*?\nfavicon_size:? +(?P<favicon_size>[^`\n]*))?(?=[^`]*?\ntarget:? +(?P<target>[^`\n]*))?(?=[^`]*?\naccent:? +(?P<accent>[^`\n]*))?(?=[^`]*?\ndesc:? +(?P<desc>[^`\n]*))?[^`]*?```" )
+    #CBLOCK_PATTERN         = re.compile( r"(?<=\n)\n```\bembed\b(?=[^`]*?\nurl:(?P<url>[^`\n]+))?(?=[^`]*?\nname:(?P<name>[^`\n]+))?(?=[^`]*?\nbanner:(?P<banner>[^`\n]+))?(?=[^`]*?\nfavicon:(?P<favicon>[^`\n]+))?(?=[^`]*?\nfavicon_size:(?P<favicon_size>[^`\n]+))?(?=[^`]*?\nimage:(?P<image>[^`\n]+))?(?=[^`]*?\ndesc:(?P<desc>[^`\n]+))?[^`]*?```" )
+    #CBLOCK_PATTERN         = re.compile( r"(?<=\n)\n```\bembed\b(?=[^`]*?\nurl:[\s+](?P<url>[^`\n]+))?(?=[^`]*?\nname:[\s+](?P<name>[^`\n]+))?(?=[^`]*?\nbanner:[\s+](?P<banner>[^`\n]+))?(?=[^`]*?\nfavicon:[\s+](?P<favicon>[^`\n]+))?(?=[^`]*?\nfavicon_size:[\s+](?P<favicon_size>[^`\n]+))?(?=[^`]*?\ntarget:[\s+](?P<target>[^`\n]+))?(?=[^`]*?\nimage:[\s+](?P<image>[^`\n]+))?(?=[^`]*?\ndesc:[\s+](?P<desc>[^`\n]+))?[^`]*?```" ) # replace \s with [^\S\n]++
+    CBLOCK_PATTERN          = re.compile( r"(?<=\n)\n```\bembed\b(?=[^`]*?\nurl:? +(?P<url>[^`\n]*))?(?=[^`]*?\nname:? +(?P<name>[^`\n]*))?(?=[^`]*?\nimage:? +(?P<image>[^`\n]*))?(?=[^`]*?\nfavicon:? +(?P<favicon>[^`\n]*))?(?=[^`]*?\nfavicon_size:? +(?P<favicon_size>[^`\n]*))?(?=[^`]*?\ntarget:? +(?P<target>[^`\n]*))?(?=[^`]*?\naccent:? +(?P<accent>[^`\n]*))?(?=[^`]*?\ndesc:? +(?P<desc>[^`\n]*))?[^`]*?```" )
 
     # ------------------------------------------------------------------------------------------------------------------------------------------
     #   Initialize
     # ------------------------------------------------------------------------------------------------------------------------------------------
 
     def __init__( self ):
-        self.fetchurl           = FetchURL( )
-        self.url_pattern        = re.compile( "^((http|https)?://)?(?P<host>[a-zA-Z0-9./?:@\\-_=#]+\\.[a-zA-Z]{2,6})[a-zA-Z0-9.&/?:@\\-_=#가-힇]*$" )
-        self.templ_view         = None
+        self.fetchurl       = FetchURL( )
+        self.url_pattern    = re.compile( "^((http|https)?://)?(?P<host>[a-zA-Z0-9./?:@\\-_=#]+\\.[a-zA-Z]{2,6})[a-zA-Z0-9.&/?:@\\-_=#가-힇]*$" )
+        self.templ_view     = None
 
     # ------------------------------------------------------------------------------------------------------------------------------------------
     #   On Config
     # ------------------------------------------------------------------------------------------------------------------------------------------
 
-    def on_config( self, config ):
+    def on_config( self, config: config_options.Config, **kwargs ):
         if not self.config.get( 'enabled' ):
             return config
 
-        self.templ_view         = pkgutil.get_data( __name__, "resources/view.html" ).decode( 'utf-8' )
+        self.fetchurl       = FetchURL( config=self.config )
+        self.templ_view     = pkgutil.get_data( __name__, "resources/view.html" ).decode( 'utf-8' )
 
         return config
 
@@ -94,15 +96,16 @@ class LinkEmbedsPlugin( BasePlugin ):
     # ------------------------------------------------------------------------------------------------------------------------------------------
 
     def on_page_markdown( self, markdown, page, config, files ):
+    
         if not self.config.get( 'enabled' ):
             return markdown
 
-        converted_markdown          = ""
-        idx                         = 0
+        converted_markdown  = ""
+        idx                 = 0
 
         for site in self.CBLOCK_PATTERN.finditer( markdown ):
-            start                   = site.start( )
-            end                     = site.end( ) - 1
+            start           = site.start( )
+            end             = site.end( ) - 1
 
             # -----------------------------------------------------------------------------------------
             #   set defaults
@@ -186,7 +189,7 @@ class LinkEmbedsPlugin( BasePlugin ):
                 # -----------------------------------------------------------------------------------------
     
                 if input_name:
-                    box_name        = input_name
+                    box_name            = input_name
 
                 # -----------------------------------------------------------------------------------------
                 #   Handle > Input Override > Desc
