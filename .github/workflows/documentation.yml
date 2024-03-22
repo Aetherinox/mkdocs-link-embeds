@@ -39,7 +39,9 @@
             pip install mkdocs-material
             pip install mkdocs-git-committers-plugin-2
             pip install mkdocs-redirects mkdocs-glightbox pymdown-extensions mkdocs-git-revision-date-localized-plugin mkdocs-git-authors-plugin mkdocs-link-embeds-plugin
-          env:
+            cd docs
+            mkdocs gh-deploy --force --clean
+           env:
             # Note: It is not the same as ${{ secrets.ADMINSERV_TOKEN }} !
             GH_TOKEN: ${{ secrets.ADMINSERV_TOKEN }}
   
