@@ -196,13 +196,13 @@ jobs:
         name: python-package-distributions
         path: dist/
   
-  #  - name: Release 📦 PyPI Official
-   #   uses: pypa/gh-action-pypi-publish@release/v1
-  #    with:
-   #     user: __token__
-   #     #password: ${{ secrets.PYPI_API_TOKEN }}
-   #     packages-dir: dist/
-    #    print-hash: true
+    - name: Release 📦 PyPI Official
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        #password: ${{ secrets.PYPI_API_TOKEN }}
+        packages-dir: dist/
+        print-hash: true
 
 # ---------------------------------------------------------------------------------------
 #   Pypi: Test API
@@ -228,10 +228,10 @@ jobs:
         name: python-package-distributions
         path: dist/
 
-    #- name: Release 📦 PyPI Test
-    #  uses: pypa/gh-action-pypi-publish@release/v1
-     # with:
-     #   repository-url: https://test.pypi.org/legacy/
+    - name: Release 📦 PyPI Test
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        repository-url: https://test.pypi.org/legacy/
 
   # ---------------------------------------------------------------------------------------
   #   Job > Distribute Release on Github Releases
