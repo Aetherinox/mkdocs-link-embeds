@@ -45,6 +45,8 @@ jobs:
   build:
     name: Prepare Package
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get_package_version.outputs.PACKAGE_VERSION }}
 
     steps:
       - name: ✅ Start
