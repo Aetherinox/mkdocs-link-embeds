@@ -345,6 +345,7 @@ jobs:
         if: ${{ startsWith( inputs.SHOW_UNCATEGORIZED, false ) }}
         uses: mikepenz/release-changelog-builder-action@v4
         with:
+          token: ${{ secrets.ADMINSERV_TOKEN }}
           #fromTag: "${{ env.TAG_LAST }}"
           #toTag: "${{ github.ref }}"
           configuration: ".github/changelog-configuration.json"
@@ -370,6 +371,7 @@ jobs:
         if: ${{ startsWith( inputs.SHOW_UNCATEGORIZED, true ) }}
         uses: mikepenz/release-changelog-builder-action@v4
         with:
+          token: ${{ secrets.ADMINSERV_TOKEN }}
           #fromTag: "${{ env.TAG_LAST }}"
           #toTag: "${{ github.ref }}"
           configuration: ".github/changelog-configuration.json"
@@ -388,12 +390,12 @@ jobs:
       #   Fetch Changelog
       # ---------------------------------------------------------------------------------------
 
-      - name: "📝 Changelog › Get (Categorized)"
+      - name: "📝 Changelog › Print (Categorized)"
         if: ${{ startsWith( inputs.SHOW_UNCATEGORIZED, false ) }}
         run: |
           echo "${{ steps.changelog-categorized.outputs.changelog }}"
 
-      - name: "📝 Changelog › Get (Uncategorized)"
+      - name: "📝 Changelog › Print (Uncategorized)"
         if: ${{ startsWith( inputs.SHOW_UNCATEGORIZED, true ) }}
         run: |
           echo "${{ steps.changelog-uncategorized.outputs.changelog }}"
@@ -414,7 +416,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: v${{ env.PACKAGE_VERSION }}
+          token: ${{ secrets.ADMINSERV_TOKEN }}
+          name: ${{ env.PACKAGE_VERSION }}
           tag_name: ${{ env.PACKAGE_VERSION }}
           target_commitish: ${{ github.event.inputs.branch }}
           draft: false
@@ -435,6 +438,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ADMINSERV_TOKEN }}
         with:
+          token: ${{ secrets.ADMINSERV_TOKEN }}
           name: v${{ env.PACKAGE_VERSION }}
           tag_name: ${{ env.PACKAGE_VERSION }}
           target_commitish: ${{ github.event.inputs.branch }}
