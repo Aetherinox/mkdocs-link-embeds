@@ -285,7 +285,7 @@ jobs:
           echo "Tag already present: ${{ steps.tag_create.outputs.tag_exists }}"
 
       # ---------------------------------------------------------------------------------------
-      #   Dist Releases > [ Release Candidate ]: Checksum
+      #   Dist Releases > Checksum
       # ---------------------------------------------------------------------------------------
 
       - name: "🆔 Checksum › Stable"
@@ -297,9 +297,6 @@ jobs:
           shasum --algorithm 256 ${filename_tar} > SHA256SUMS.txt
           echo "FILE_ZIP=${filename_tar}" >> $GITHUB_ENV
           echo "SHA256SUM=${sha256}" >> $GITHUB_ENV
-          echo SHA256SUM
-          echo $SHA256SUM
-
 
       - name: "🆔 Checksum › Release Candidate"
         id: checksum-rc
@@ -310,8 +307,11 @@ jobs:
           shasum --algorithm 256 ${filename_tar} > SHA256SUMS.txt
           echo "FILE_ZIP=${filename_tar}" >> $GITHUB_ENV
           echo "SHA256SUM=${sha256}" >> $GITHUB_ENV
-          echo SHA256SUM
-          echo $SHA256SUM
+
+      - name: "🆔 Checksum › Print"
+        id: checksum-st-check
+        run: |
+          echo ${{ env.SHA256SUM }}
 
       # ---------------------------------------------------------------------------------------
       #   Dist Releases > Contributor Images
