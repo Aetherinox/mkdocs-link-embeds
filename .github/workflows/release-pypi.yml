@@ -176,7 +176,7 @@ jobs:
     name: >-
       📦 Github › Release
     runs-on: ubuntu-latest
-    needs: [ pypi-publish-official, pypi-publish-test ]
+    needs: [ build, pypi-publish-official, pypi-publish-test ]
     env:
       PACKAGE_VERSION: ${{ needs.build.outputs.package_version }}
     if: |
