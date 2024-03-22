@@ -71,7 +71,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       package_version: ${{ steps.get_package_version.outputs.PACKAGE_VERSION }}
-      package_filename: ${{ steps.build_handle_tarball.outputs.PACKAGE_VERSION }}
+      package_filename: ${{ steps.build_handle_tarball.outputs.PACKAGE_FILENAME }}
     steps:
       - name: ✅ Start
         run: | 
@@ -129,7 +129,9 @@ jobs:
         run: |
           echo ${{ needs.build.outputs.PACKAGE_VERSION }}
           echo ${{ env.PACKAGE_VERSION }}
+          echo ${{ env.package_version }}
           echo ${{ env.PACKAGE_FILENAME }}
+          echo ${{ env.package_filename }}
 
       - name: "🪢 Twine › Check Dist"
         run: |
