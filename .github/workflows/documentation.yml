@@ -41,6 +41,7 @@
             pip install mkdocs-redirects mkdocs-glightbox pymdown-extensions mkdocs-git-revision-date-localized-plugin mkdocs-git-authors-plugin mkdocs-link-embeds-plugin
             cd docs
             mkdocs build
+            dir
           env:
             # Note: It is not the same as ${{ secrets.ADMINSERV_TOKEN }} !
             GH_TOKEN: ${{ secrets.ADMINSERV_TOKEN }}
@@ -49,4 +50,4 @@
           uses: peaceiris/actions-gh-pages@v3
           with:
             personal_token: ${{ secrets.ADMINSERV_TOKEN }}
-            publish_dir: ./site
+            publish_dir: ./docs/site
