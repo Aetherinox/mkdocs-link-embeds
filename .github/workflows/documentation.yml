@@ -1,3 +1,10 @@
+# ---------------------------------------------------------------------------------------
+#   @parent     : github workflow
+#   @desc       : build documentation
+#   @author     : Aetherinox
+#   @url        : https://github.com/Aetherinox
+# ---------------------------------------------------------------------------------------
+
 name: Build Documentation
 on:
   release:
@@ -9,10 +16,14 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - name: "Checkout"
+        uses: actions/checkout@v4
+
+      - name: "Setup Python"
+        uses: actions/setup-python@v5
         with:
           python-version: 3.x
+
       - name: "Build Documentation"
         run: |
           export DOCS_NAME=${{ secrets.DOCS_NAME }}
@@ -21,9 +32,16 @@ jobs:
           export GH_TOKEN=${{ secrets.GH_TOKEN }}
 
           pip install mkdocs
-          pip install beautifulsoup4
           pip install mkdocs-material
           pip install mkdocs-git-committers-plugin-2
           pip install mkdocs-redirects mkdocs-glightbox pymdown-extensions mkdocs-git-revision-date-localized-plugin mkdocs-git-authors-plugin mkdocs-link-embeds-plugin
           cd docs
+          mkdocs gh-deploy --force --clean
+        env:
+          # Note: It is not the same as ${{ secrets.GH_TOKEN }} !
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      - run: |
+          git config user.name "AdminServ"
+          git config user.email "adminservx@users.noreply.github.com"
+      - run: |
           mkdocs gh-deploy --force --clean

@@ -1,3 +1,10 @@
+# ---------------------------------------------------------------------------------------
+#   @parent     : github workflow
+#   @desc       : pypi release
+#   @author     : Aetherinox
+#   @url        : https://github.com/Aetherinox
+# ---------------------------------------------------------------------------------------
+
 name: "Pypi Release"
 
 on:
@@ -15,8 +22,6 @@ on:
           options:
           - Official
           - Test
-
-# alias python='python3'
 
 jobs:
   build:
@@ -53,7 +58,7 @@ jobs:
             python -m build . --sdist
           fi
 
-      - name: "🪢 Twine: Check Dist"
+      - name: "🪢 Twine › Check Dist"
         run: |
           twine check dist/*
   
@@ -63,21 +68,25 @@ jobs:
           name: python-package-distributions
           path: dist/
 
+# ---------------------------------------------------------------------------------------
+#   Pypi: Official Stable Release
+# ---------------------------------------------------------------------------------------
+
   pypi-publish-official:
     name: >-
-      PyPI › Official
+      📦 PyPI › Official
     if: ${{ github.event.inputs.opt_pypi_type == 'Official' }}
     needs:
     - build
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # IMPORTANT: mandatory for trusted publishing
     environment:
       name: Orion
       url: https://pypi.org/p/mkdocs-link-embeds-plugin
-    permissions:
-      id-token: write  # IMPORTANT: mandatory for trusted publishing
 
     steps:
-    - name: Download all the dists
+    - name: "Download › Saved Artifacts"
       uses: actions/download-artifact@v4
       with:
         name: python-package-distributions
@@ -91,21 +100,25 @@ jobs:
         packages-dir: dist/
         print-hash: true
 
+# ---------------------------------------------------------------------------------------
+#   Pypi: Test API
+# ---------------------------------------------------------------------------------------
+
   pypi-publish-test:
     name: >-
-      PyPI › Test Api
+      📦 PyPI › Test Api
     if: ${{ github.event.inputs.opt_pypi_type == 'Test' }}
     needs:
     - build
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # IMPORTANT: mandatory for trusted publishing
     environment:
       name: Orion
       url: https://test.pypi.org/p/mkdocs-link-embeds-plugin
-    permissions:
-      id-token: write  # IMPORTANT: mandatory for trusted publishing
 
     steps:
-    - name: Download all the dists
+    - name: "Download › Saved Artifacts"
       uses: actions/download-artifact@v4
       with:
         name: python-package-distributions
