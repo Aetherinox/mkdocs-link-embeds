@@ -70,7 +70,8 @@ jobs:
       - name: Get Package Version
         id: get_package_version
         run: |
-          echo "PACKAGE_VERSION=$(cat VERSION" >> $GITHUB_ENV
+          VER=$(cat VERSION)
+          echo "PACKAGE_VERSION=$VER" >> $GITHUB_ENV
           echo ${{ env.PACKAGE_VERSION }}
 
       # ---------------------------------------------------------------------------------------
