@@ -270,7 +270,11 @@ jobs:
           path: dist/
 
       # ---------------------------------------------------------------------------------------
-      #   Dist Releases > [ Tag ]: Pre Create
+      #   [ Tag ]: Pre Create
+      #
+      #   in order to use the changelog github action, you must pre-create the tag otherwise
+      #   the changelog action will have no idea what tag you are going to be creating and
+      #   the list of commits will not be for the correct release.
       # ---------------------------------------------------------------------------------------
 
       - name: "🔖 Tag › Pre Create ${{ env.PACKAGE_VERSION }}"
@@ -419,7 +423,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         id: bundle-st
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ADMINSERV_TOKEN }}
         with:
           token: ${{ secrets.ADMINSERV_TOKEN }}
           name: ${{ env.PACKAGE_VERSION }}
@@ -461,4 +465,25 @@ jobs:
             ${{ steps.changelog-uncategorized.outputs.changelog }}
             ---
 
-          
+      # ---------------------------------------------------------------------------------------
+      #   Print Status
+      # ---------------------------------------------------------------------------------------
+
+      - name: "🎛️ [ Status ]: Print"
+        run: |
+          echo "Printing Variables"
+          echo 
+          echo "---- CHANGELOG ---------------------------------------------------------------"
+          echo "${{ steps.changelog-categorized.outputs.changelog }}"
+          echo "${{ steps.changelog-uncategorized.outputs.changelog }}"
+          echo "---- CHANGELOG ---------------------------------------------------------------"
+          echo ""
+          echo ""
+          echo "---- VARIABLES ---------------------------------------------------------------"
+          echo "Package Version ............ ${{ env.PACKAGE_VERSION }}"
+          echo "Tag: Previous .............. ${{ env.TAG_LAST }}"
+          echo "Tag: Now.... ............... ${{ github.ref }}"
+          echo "Last Commit ................ ${{ env.COMMIT_LAST }}"
+          echo "ST Output ID ............... ${{ steps.bundle-st.outputs.id }}"
+          echo "RC Output ID ............... ${{ steps.bundle-rc.outputs.id }}"
+          echo "---- CHANGELOG ---------------------------------------------------------------"
