@@ -122,7 +122,7 @@ jobs:
           fi
 
           PACKAGE=$(find *tar.gz -type f -printf "%f\n")
-          echo "PACKAGE_FILENAME=$PACKAGE" >> $GITHUB_OUTPUT
+          echo "PACKAGE_FILENAME=dist/$PACKAGE" >> $GITHUB_OUTPUT
 
       - name: Print Package Info
         id: build_print_package
