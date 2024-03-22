@@ -127,11 +127,8 @@ jobs:
       - name: Print Package Info
         id: build_print_package
         run: |
-          echo ${{ needs.build.outputs.PACKAGE_VERSION }}
-          echo ${{ env.PACKAGE_VERSION }}
-          echo ${{ env.package_version }}
-          echo ${{ env.PACKAGE_FILENAME }}
-          echo ${{ env.package_filename }}
+          echo ${{ steps.get_package_version.outputs.PACKAGE_VERSION }}
+          echo ${{ steps.get_package_version.outputs.PACKAGE_FILENAME }}
 
       - name: "🪢 Twine › Check Dist"
         run: |
