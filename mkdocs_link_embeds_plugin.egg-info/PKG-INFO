@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: mkdocs-link-embeds-plugin
-Version: 0.1.8
+Version: 0.1.9
 Summary: Mkdocs plugin which shows embedded links in a more elegant manner.
 Home-page: https://github.com/Aetherinox/mkdocs-link-embeds
 Author: Aetherinox
@@ -96,6 +96,7 @@ plugins:
       favicon_size: 25
       target: "blank"
       accent: "FFFFFF1A"
+      verbose: false
 
 extra_css:
   - path/to/link-embeds.css
@@ -131,7 +132,7 @@ accent:         4C59BFE0
 
 <br />
 
-This plugin accepts numerous values:
+This plugin accepts numerous properties:
 - `url`: The URL to the link.
 - `name`: Name / Title to show at the top of each embed.
 - `desc`: A description of what the site is for.
