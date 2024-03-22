@@ -82,6 +82,7 @@ jobs:
 
       - name: 🐍 Install Build Tools
         run: |
+          echo ${{ env.PACKAGE_VERSION }}
           python -m pip install --upgrade pip
           pip install setuptools wheel twine build
 
