@@ -39,8 +39,9 @@ jobs:
         env:
           # Note: It is not the same as ${{ secrets.GH_TOKEN }} !
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-      - run: |
-          git config --global user.name "AdminServ"
-          git config --global user.email "161414668+AdminServ@users.noreply.github.com"
-      - run: |
-          mkdocs gh-deploy --force --clean
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.GH_TOKEN }}
+          publish_dir: ./docs
