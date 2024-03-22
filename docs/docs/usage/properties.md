@@ -139,6 +139,7 @@ image:    false
 ### Favicon
 <!-- md:version stable-0.1.3 -->
 <!-- md:default `false` -->
+<!-- md:flag experimental -->
 
 A favicon is a small, 16x16 pixel icon used on web browsers to represent a website or a web page. Short for “favorite icon,”' favicons are commonly displayed on tabs at the top of a web browser, but they're also found on your browser's bookmark bar, history and in search results, alongside the page url.
 
