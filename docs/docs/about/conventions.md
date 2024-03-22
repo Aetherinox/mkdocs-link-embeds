@@ -1,3 +1,7 @@
+---
+title: "Convention List"
+---
+
 # Conventions
 This documentation use some symbols for illustration purposes. Before you read
 on, please make sure you've made yourself familiar with the following list of

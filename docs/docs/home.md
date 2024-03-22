@@ -1,5 +1,7 @@
 ---
 title: About This Plugin
+tags:
+  - home
 ---
 
 ## About

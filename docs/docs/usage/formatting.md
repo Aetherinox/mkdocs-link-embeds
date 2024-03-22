@@ -1,5 +1,5 @@
 ---
-title: How to use Link Embeds
+title: Formatting Links
 tags:
   - usage
 ---

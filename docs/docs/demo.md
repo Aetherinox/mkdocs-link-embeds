@@ -1,5 +1,7 @@
 ---
-title: Demo
+title: Example Embeds
+tags:
+  - demo
 ---
 
 # Auto-fetch Metadata
