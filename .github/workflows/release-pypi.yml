@@ -72,6 +72,7 @@ jobs:
         run: |
           VER=$(cat VERSION)
           echo "PACKAGE_VERSION=$VER" >> $GITHUB_ENV
+          echo ${{ env.PACKAGE_VERSION }}
 
       # ---------------------------------------------------------------------------------------
       #   install pip, setuptools, wheel, twine, etc
