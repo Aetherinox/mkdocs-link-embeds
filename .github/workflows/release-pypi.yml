@@ -71,7 +71,7 @@ jobs:
         id: get_package_version
         run: |
           VER=$(cat VERSION)
-          echo "VERSION=$VER" >> $GITHUB_ENV
+          echo "PACKAGE_VERSION=$VER" >> $GITHUB_ENV
 
       # ---------------------------------------------------------------------------------------
       #   install pip, setuptools, wheel, twine, etc
@@ -180,6 +180,19 @@ jobs:
       && !contains(needs.*.result, 'failure')
     steps:
 
-      - name: Test
+      # ---------------------------------------------------------------------------------------
+      #   [ Tag ]: Pre Create
+      # ---------------------------------------------------------------------------------------
+
+      - name: "🔖 [ Tag ]: Pre Create ${{ env.PACKAGE_VERSION }}"
+        uses: rickstaa/action-create-tag@v1
+        id: "tag_create"
+        with:
+          tag: ${{ env.PACKAGE_VERSION }}
+          tag_exists_error: false
+          message: "Latest release"
+
+      - name: "🔖 [ Tag ]: Confirm ${{ env.PACKAGE_VERSION }}"
         run: |
-          echo "yes"
+          echo "Tag already present: ${{ env.TAG_EXISTS }}"
+          echo "Tag already present: ${{ steps.tag_create.outputs.tag_exists }}"
