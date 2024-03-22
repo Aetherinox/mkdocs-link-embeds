@@ -61,6 +61,12 @@ jobs:
           VER=$(cat VERSION)
           echo "PACKAGE_VERSION=$VER" >> $GITHUB_ENV
 
+      - name: Print Package Version
+        id: print_package_version
+        run: |
+          echo ${{ needs.build.outputs.PACKAGE_VERSION }}
+          echo ${{ env.PACKAGE_VERSION }}
+
       # ---------------------------------------------------------------------------------------
       #   setup python
       # ---------------------------------------------------------------------------------------
