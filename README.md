@@ -67,6 +67,7 @@ plugins:
       favicon_disabled: false
       favicon_size: 25
       target: "blank"
+      accent: "FFFFFF1A"
 
 extra_css:
   - path/to/link-embeds.css
