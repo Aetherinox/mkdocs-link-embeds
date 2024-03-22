@@ -46,7 +46,7 @@ jobs:
     name: Prepare Package
     runs-on: ubuntu-latest
     outputs:
-      PACKAGE_VERSION: ${{ steps.get_package_version.outputs.PACKAGE_VERSION }}
+      package_version: ${{ steps.get_package_version.outputs.PACKAGE_VERSION }}
     steps:
       - name: ✅ Start
         run: | 
@@ -59,7 +59,7 @@ jobs:
         id: get_package_version
         run: |
           VER=$(cat VERSION)
-          echo "PACKAGE_VERSION=$VER" >> $GITHUB_ENV
+          echo "PACKAGE_VERSION=$VER" >> $GITHUB_OUTPUT
 
       - name: Print Package Version
         id: print_package_version
@@ -189,7 +189,7 @@ jobs:
 
       - name: 🐍 Test Package
         run: |
-          echo ${{ needs.build.outputs.PACKAGE_VERSION }}
+          echo ${{ needs.build.outputs.package_version }}
 
       - name: "🔖 [ Tag ]: Pre Create ${{ env.PACKAGE_VERSION }}"
         uses: rickstaa/action-create-tag@v1
