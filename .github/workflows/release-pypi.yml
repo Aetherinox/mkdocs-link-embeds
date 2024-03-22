@@ -5,7 +5,8 @@
 #   @url        : https://github.com/Aetherinox
 # ---------------------------------------------------------------------------------------
 
-name: "Pypi Release"
+name: "Release: Pypi"
+run-name: "Release: Pypi"
 
 # ---------------------------------------------------------------------------------------
 #   environment variables
@@ -103,6 +104,8 @@ jobs:
 
       - name: "☑️ Checkout"
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: "👁️‍🗨️ Debug › Get Package Version"
         id: build_package_version
