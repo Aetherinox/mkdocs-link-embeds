@@ -68,6 +68,7 @@ plugins:
       favicon_size: 25
       target: "blank"
       accent: "FFFFFF1A"
+      verbose: false
 
 extra_css:
   - path/to/link-embeds.css
@@ -103,7 +104,7 @@ accent:         4C59BFE0
 
 <br />
 
-This plugin accepts numerous values:
+This plugin accepts numerous properties:
 - `url`: The URL to the link.
 - `name`: Name / Title to show at the top of each embed.
 - `desc`: A description of what the site is for.
