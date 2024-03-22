@@ -47,7 +47,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       PACKAGE_VERSION: ${{ steps.get_package_version.outputs.PACKAGE_VERSION }}
-
     steps:
       - name: ✅ Start
         run: | 
@@ -55,6 +54,12 @@ jobs:
 
       - name: ☑️ Checkout
         uses: actions/checkout@v4
+
+      - name: Get Package Version
+        id: get_package_version
+        run: |
+          VER=$(cat VERSION)
+          echo "PACKAGE_VERSION=$VER" >> $GITHUB_ENV
 
       # ---------------------------------------------------------------------------------------
       #   setup python
@@ -64,16 +69,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
-
-      # ---------------------------------------------------------------------------------------
-      #   Get version from VERSION file
-      # ---------------------------------------------------------------------------------------
-          
-      - name: Get Package Version
-        id: get_package_version
-        run: |
-          VER=$(cat VERSION)
-          echo "PACKAGE_VERSION=$VER" >> $GITHUB_ENV
 
       # ---------------------------------------------------------------------------------------
       #   install pip, setuptools, wheel, twine, etc
