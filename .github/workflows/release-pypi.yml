@@ -70,7 +70,7 @@ jobs:
     name: Prepare Package
     runs-on: ubuntu-latest
     outputs:
-      package_version: ${{ steps.get_package_version.outputs.PACKAGE_VERSION }}
+      package_version: ${{ steps.build_package_version.outputs.PACKAGE_VERSION }}
       package_filename: ${{ steps.build_handle_tarball.outputs.PACKAGE_FILENAME }}
     steps:
       - name: ✅ Start
@@ -81,7 +81,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Get Package Version
-        id: get_package_version
+        id: build_package_version
         run: |
           VER=$(cat VERSION)
           echo "PACKAGE_VERSION=$VER" >> $GITHUB_OUTPUT
@@ -127,8 +127,8 @@ jobs:
       - name: Print Package Info
         id: build_print_package
         run: |
-          echo ${{ steps.get_package_version.outputs.PACKAGE_VERSION }}
-          echo ${{ steps.get_package_version.outputs.PACKAGE_FILENAME }}
+          echo ${{ steps.build_package_version.outputs.PACKAGE_VERSION }}
+          echo ${{ steps.build_handle_tarball.outputs.PACKAGE_FILENAME }}
 
       - name: "🪢 Twine › Check Dist"
         run: |
