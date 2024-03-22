@@ -11,7 +11,9 @@
       types:
         - published
     workflow_dispatch:
-    
+    schedule:
+      - cron: "0 */12 * * *"
+
   jobs:
     deploy:
       runs-on: ubuntu-latest
