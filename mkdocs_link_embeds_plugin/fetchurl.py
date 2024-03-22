@@ -1,9 +1,15 @@
+import logging
 import re
 import urllib.request
 import requests
 
+from mkdocs.plugins import BasePlugin
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse, urljoin
+
+LOG             = logging.getLogger( "mkdocs.plugins." + __name__ )
+LOG.setLevel    ( logging.DEBUG )
+LOG.addHandler  ( logging.StreamHandler( ) )
 
 class FetchURL:
 
@@ -11,10 +17,11 @@ class FetchURL:
     #   Initialize
     # -----------------------------------------------------------------------------------------
 
-    def __init__( self ):
+    def __init__( self, config={} ):
         self.html_parser    = 'html.parser'
         self.encoding       = "utf-8"
         self.agent          = { 'User-Agent': 'Mozilla/5.0 (Windows NT 6.0; WOW64; rv:24.0) Gecko/20100101 Firefox/24.0' }
+        self.config         = config
         pass
 
     # -----------------------------------------------------------------------------------------
@@ -24,6 +31,7 @@ class FetchURL:
     # -----------------------------------------------------------------------------------------
 
     def get_page( self, url ):
+
         try:
             opener              = urllib.request.build_opener( )
             opener.addheaders   = [('User-agent', 'Mozilla/5.0')]
@@ -104,6 +112,9 @@ class FetchURL:
         pattern             = r"^(?P<scheme>[^:\/?#]+):(?:\/\/)?(?:(?:(?P<login>[^:]+)(?::(?P<password>[^@]+)?)?@)?(?P<host>[^@\/?#:]*)(?::(?P<port>\d+)?)?)?(?P<path>[^?#]*)(?:\?(?P<query>[^#]*))?(?:#(?P<fragment>.*))?"
 
         if lnk_favicon:
+            if self.config.get( 'verbose' ):
+                print("\n")
+
             url_favicon     = lnk_favicon.get( 'href' )
             url_parsed      = urlparse( url_favicon )
 
@@ -123,15 +134,26 @@ class FetchURL:
                 url_icon_local      = ( url_favicon[1:] if url_favicon.startswith('/') else url_favicon )   #   remove forward slash from local icon path if found
                 domain              = url_http + "://" + url_host                            #   https://domain.com
 
+                if self.config.get( 'verbose' ):
+                    LOG.debug( 'Favicon: URL HTTP ........ ' + url_http )
+                    LOG.debug( 'Favicon: URL HOST ........ ' + url_host )
+                    LOG.debug( 'Favicon: URL PATH ........ ' + url_path )
+                    LOG.debug( 'Favicon: URL ICON ........ ' + url_icon_local )
+                    LOG.debug( 'Favicon: DOMAIN .......... ' + domain )
+
                 if domain and url_icon_local:
                     url_icon_local      = domain + "/" + url_icon_local     # create https://domain.com/ favicon.png
                     response            = requests.get( url_icon_local, headers=self.agent, timeout=( 1, 1 ) )
                     bSuccess            = False
-                    
+                
                     if response.status_code == 404:
                         bSuccess = False
+                        if self.config.get( 'verbose' ):
+                            LOG.debug( 'Favicon: 1st Try [FAIL] .. ' + url_icon_local )
                     else:
                         bSuccess = True
+                        if self.config.get( 'verbose' ):
+                            LOG.debug( 'Favicon: 1st Try [PASS] .. ' + url_icon_local )
 
                     if not bSuccess:
                         domain          = url_http + "://" + url_host + "/" + url_path       # add /path/ to end of domain
@@ -141,8 +163,15 @@ class FetchURL:
 
                         if response.status_code == 404:
                             bSuccess = False
+                            if self.config.get( 'verbose' ):
+                                LOG.debug( 'Favicon: 2nd Try [FAIL] .. ' + url_icon_local )
                         else:
                             bSuccess = True
+                            if self.config.get( 'verbose' ):
+                                LOG.debug( 'Favicon: 2nd Try [PASS] .. ' + url_icon_local )
+
+                    if self.config.get( 'verbose' ):
+                        print("\n")
 
                     if bSuccess:
                         return url_icon_local
