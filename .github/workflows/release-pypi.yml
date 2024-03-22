@@ -186,7 +186,7 @@ jobs:
 
       - name: 🐍 Test Package
         run: |
-          echo ${{ env.PACKAGE_VERSION }}
+          echo ${{ needs.build.outputs.PACKAGE_VERSION }}
 
       - name: "🔖 [ Tag ]: Pre Create ${{ env.PACKAGE_VERSION }}"
         uses: rickstaa/action-create-tag@v1
