@@ -183,15 +183,29 @@ jobs:
       always()
       && contains(needs.*.result, 'success')
       && !contains(needs.*.result, 'failure')
+    permissions:
+      contents: write
     steps:
+
+      # ---------------------------------------------------------------------------------------
+      #   [ Debug ]: Get Env Variables
+      # ---------------------------------------------------------------------------------------
+
+      - name: 🐍 Get Variables
+        run: |
+          echo ${{ env.PACKAGE_VERSION }}
+
+      # ---------------------------------------------------------------------------------------
+      #   Checkout
+      # ---------------------------------------------------------------------------------------
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       # ---------------------------------------------------------------------------------------
       #   [ Tag ]: Pre Create
       # ---------------------------------------------------------------------------------------
-
-      - name: 🐍 Test Package
-        run: |
-          echo ${{ env.PACKAGE_VERSION }}
 
       - name: "🔖 [ Tag ]: Pre Create ${{ env.PACKAGE_VERSION }}"
         uses: rickstaa/action-create-tag@v1
