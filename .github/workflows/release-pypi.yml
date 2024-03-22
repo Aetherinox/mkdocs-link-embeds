@@ -297,7 +297,8 @@ jobs:
           shasum --algorithm 256 ${filename_tar} > SHA256SUMS.txt
           echo "FILE_ZIP=${filename_tar}" >> $GITHUB_ENV
           echo "SHA256SUM=${sha256}" >> $GITHUB_ENV
-          echo ${ SHA256SUM }
+          echo SHA256SUM
+          echo $SHA256SUM
 
 
       - name: "🆔 Checksum › Release Candidate"
@@ -309,7 +310,8 @@ jobs:
           shasum --algorithm 256 ${filename_tar} > SHA256SUMS.txt
           echo "FILE_ZIP=${filename_tar}" >> $GITHUB_ENV
           echo "SHA256SUM=${sha256}" >> $GITHUB_ENV
-          echo ${ SHA256SUM }
+          echo SHA256SUM
+          echo $SHA256SUM
 
       # ---------------------------------------------------------------------------------------
       #   Dist Releases > Contributor Images
