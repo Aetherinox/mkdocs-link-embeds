@@ -234,6 +234,29 @@ jobs:
       with:
         repository-url: https://test.pypi.org/legacy/
 
+# ---------------------------------------------------------------------------------------
+#   Pypi: Skip
+# ---------------------------------------------------------------------------------------
+
+  pypi-publish-skip:
+    name: >-
+      📦 PyPI › Skip
+    if: ${{ github.event.inputs.OPT_PYPI_TYPE == 'Skip' }}
+    needs:
+    - build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: "📁 Download › Saved Artifacts"
+      uses: actions/download-artifact@v4
+      with:
+        name: python-package-distributions
+        path: dist/
+
+    - name: "❌ Skip Pypi.org upload"
+      run: |
+        echo "Skipping Pypi.org publish"
+        
   # ---------------------------------------------------------------------------------------
   #   Job > Distribute Release on Github Releases
   # ---------------------------------------------------------------------------------------
@@ -242,14 +265,14 @@ jobs:
     name: >-
       📦 Github › Release
     runs-on: ubuntu-latest
-    needs: [ build, pypi-publish-official ]
+    needs: [ build, pypi-publish-official, pypi-publish-skip ]
     env:
       PACKAGE_VERSION: ${{ needs.build.outputs.package_version }}
       PACKAGE_FILENAME: ${{ needs.build.outputs.package_filename }}
-    #if: |
-    #  always()
-    #  && contains(needs.*.result, 'success')
-    #  && !contains(needs.*.result, 'failure')
+    if: |
+      always()
+      && contains(needs.*.result, 'success')
+      && !contains(needs.*.result, 'failure')
     permissions:
       contents: write
     steps:
