@@ -126,17 +126,6 @@
         -webkit-mask-image: var(--md-admonition-icon--pied-piper);
         mask-image: var(--md-admonition-icon--pied-piper);
     }
-      
-
-    .md-typeset .mdx-badge svg
-    {
-        color: #8B88EE;
-    }
-
-    small
-    {
-        font-size: 60%;
-    }
 
     .md-typeset figcaption
     {
@@ -145,6 +134,15 @@
     }
 }
 
+.md-typeset .mdx-badge svg
+{
+    color: #8B88EE;
+}
+
+small
+{
+    font-size: 60%;
+}
 
 /*
     Using favicons for navigation menu
