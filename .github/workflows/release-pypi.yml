@@ -28,24 +28,24 @@ on:
 
         # ---------------------------------------------------------------------------------------
         #   Python Build Type
-        #   setup and build
+        #   determines what method python uses to build the script
         # ---------------------------------------------------------------------------------------
 
         OPT_BUILD_METHOD:
           type: choice
-          description: Build Method
+          description: ⛓️ Build Method
           options:
           - py setup.py
           - py build
 
         # ---------------------------------------------------------------------------------------
         #   Pypi Service
-        #   Official or Test
+        #   specifies which pypi service your package is uploaded to (or skip for no upload)
         # ---------------------------------------------------------------------------------------
 
         OPT_PYPI_TYPE:
           type: choice
-          description: Upload to PyPi.org Service
+          description: 🐍 Upload to PyPi.org Service
           options:
           - Skip
           - Official
