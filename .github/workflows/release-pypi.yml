@@ -465,7 +465,6 @@ jobs:
           body: |
             ${{ steps.changelog-categorized.outputs.changelog }}
             ${{ steps.changelog-uncategorized.outputs.changelog }}
-            ---
 
       - name: "🏳️ Post › Release Candidate"
         if: ${{ github.event.inputs.OPT_RELEASE_TYPE == 'Release Candidate' }}
@@ -490,7 +489,6 @@ jobs:
 
             ${{ steps.changelog-categorized.outputs.changelog }}
             ${{ steps.changelog-uncategorized.outputs.changelog }}
-            ---
 
       # ---------------------------------------------------------------------------------------
       #   Print Status
