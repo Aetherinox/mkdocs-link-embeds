@@ -31,9 +31,9 @@ on:
         #   setup and build
         # ---------------------------------------------------------------------------------------
 
-        OPT_BUILD_TYPE:
+        OPT_BUILD_METHOD:
           type: choice
-          description: Build Type
+          description: Build Method
           options:
           - py setup.py
           - py build
@@ -45,7 +45,7 @@ on:
 
         OPT_PYPI_TYPE:
           type: choice
-          description: Pypi Service
+          description: Upload to PyPi.org Service
           options:
           - Skip
           - Official
@@ -58,7 +58,7 @@ on:
 
         OPT_RELEASE_TYPE:
           type: choice
-          description: 📦 Build Type
+          description: 📦 Release Type
           options:
           - Stable
           - Release Candidate
@@ -101,7 +101,7 @@ jobs:
     steps:
       - name: "✅ Start"
         run: | 
-              echo "Starting build: ${{ github.event.inputs.OPT_BUILD_TYPE }}" / ${{ inputs.OPT_BUILD_TYPE }}
+              echo "Starting build: ${{ github.event.inputs.OPT_BUILD_METHOD }}" / ${{ inputs.OPT_BUILD_METHOD }}
 
       - name: "☑️ Checkout"
         uses: actions/checkout@v4
@@ -144,12 +144,12 @@ jobs:
       - name: "🐍 Python › Build Tarball"
         id: build_handle_tarball
         run: |
-          if [ "${{ github.event.inputs.OPT_BUILD_TYPE }}" = "py setup.py" ]; then
+          if [ "${{ github.event.inputs.OPT_BUILD_METHOD }}" = "py setup.py" ]; then
             echo "Starting build: py setup.py"
             python setup.py sdist
           fi
 
-          if [ "${{ github.event.inputs.OPT_BUILD_TYPE }}" = "py build" ]; then
+          if [ "${{ github.event.inputs.OPT_BUILD_METHOD }}" = "py build" ]; then
             echo "Starting build: py build"
             python -m build . --sdist
           fi
