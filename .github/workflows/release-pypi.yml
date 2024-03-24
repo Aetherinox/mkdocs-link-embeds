@@ -1,12 +1,12 @@
 # ---------------------------------------------------------------------------------------
 #   @parent     : github workflow
-#   @desc       : pypi release
+#   @desc       : releases mkdocs plugin to pypi and github releases
 #   @author     : Aetherinox
 #   @url        : https://github.com/Aetherinox
 # ---------------------------------------------------------------------------------------
 
-name: "Release: Pypi"
-run-name: "Release: Pypi"
+name: "📦 Plugin › Release"
+run-name: "📦 Plugin › Release"
 
 # ---------------------------------------------------------------------------------------
 #   environment variables
