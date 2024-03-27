@@ -197,6 +197,7 @@ nav.md-nav > ul.md-nav__list > li.md-nav__item > a.md-nav__link > span::before
 {
     white-space: nowrap;
     background-color: var(--md-code-bg-color);
+    min-width: 25%;
 }
 
 /*
