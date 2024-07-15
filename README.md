@@ -1,6 +1,6 @@
 <div align="center">
 <h6>Mkdocs Plugin</h6>
-<h1>♾️ Links Embed ♾️</h1>
+<h1>♾️ Link Embeds ♾️</h1>
 
 <br />
 
