@@ -5,8 +5,8 @@
 #   @url        : https://github.com/Aetherinox
 # ---------------------------------------------------------------------------------------
 
-name: "📒 Documentation › Build"
-run-name: "📒 Documentation › Build"
+name: "📒 Docs › Build"
+run-name: "📒 Docs › Build"
 
 # ---------------------------------------------------------------------------------------
 #   environment variables
