@@ -65,7 +65,6 @@ class LinkEmbedsPlugin( BasePlugin ):
     #           not work in script. replaced using \bembed\b until it can be investigated.
     # ------------------------------------------------------------------------------------------------------------------------------------------
 
-    # (?<=)(?=[^`]*?url:? +(?P<url>[^`\n]*))?(?=[^`]*?\n?name:? +(?P<name>[^`\n]*))?(?=[^`]*?\n?image:? +(?P<image>[^`\n]*))?(?=[^`]*?\n?favicon:? +(?P<favicon>[^`\n]*))?(?=[^`]*?\n?favicon_size:? +(?P<favicon_size>[^`\n]*))?(?=[^`]*?\ntarget:? +(?P<target>[^`\n]*))?(?=[^`]*?\n?accent:? +(?P<accent>[^`\n]*))?(?=[^`]*?\n?desc:? +(?P<desc>[^`\n]*))?[^`]*?
     #CBLOCK_PATTERN         = re.compile( r"(?<=\n)\n```\bembed\b(?=[^`]*?\nurl:(?P<url>[^`\n]+))?(?=[^`]*?\nname:(?P<name>[^`\n]+))?(?=[^`]*?\nbanner:(?P<banner>[^`\n]+))?(?=[^`]*?\nfavicon:(?P<favicon>[^`\n]+))?(?=[^`]*?\nfavicon_size:(?P<favicon_size>[^`\n]+))?(?=[^`]*?\nimage:(?P<image>[^`\n]+))?(?=[^`]*?\ndesc:(?P<desc>[^`\n]+))?[^`]*?```" )
     #CBLOCK_PATTERN         = re.compile( r"(?<=\n)\n```\bembed\b(?=[^`]*?\nurl:[\s+](?P<url>[^`\n]+))?(?=[^`]*?\nname:[\s+](?P<name>[^`\n]+))?(?=[^`]*?\nbanner:[\s+](?P<banner>[^`\n]+))?(?=[^`]*?\nfavicon:[\s+](?P<favicon>[^`\n]+))?(?=[^`]*?\nfavicon_size:[\s+](?P<favicon_size>[^`\n]+))?(?=[^`]*?\ntarget:[\s+](?P<target>[^`\n]+))?(?=[^`]*?\nimage:[\s+](?P<image>[^`\n]+))?(?=[^`]*?\ndesc:[\s+](?P<desc>[^`\n]+))?[^`]*?```" ) # replace \s with [^\S\n]++
     CBLOCK_PATTERN          = re.compile( r"(?<=\n)\n```\bembed\b(?=[^`]*?\nurl:? +(?P<url>[^`\n]*))?(?=[^`]*?\nname:? +(?P<name>[^`\n]*))?(?=[^`]*?\nimage:? +(?P<image>[^`\n]*))?(?=[^`]*?\nfavicon:? +(?P<favicon>[^`\n]*))?(?=[^`]*?\nfavicon_size:? +(?P<favicon_size>[^`\n]*))?(?=[^`]*?\ntarget:? +(?P<target>[^`\n]*))?(?=[^`]*?\naccent:? +(?P<accent>[^`\n]*))?(?=[^`]*?\ndesc:? +(?P<desc>[^`\n]*))?[^`]*?```" )
@@ -178,10 +177,10 @@ class LinkEmbedsPlugin( BasePlugin ):
                 #   fetch metadata for website (if available)
                 # -----------------------------------------------------------------------------------------
 
-                box_name                = self.fetchurl.get_title( soup, box_name )
-                box_desc                = self.fetchurl.get_description( soup, box_desc, link )
-                box_image               = self.fetchurl.get_image( soup, box_image )
-                box_favicon             = not self.config.get( 'favicon_disabled' ) and self.fetchurl.get_favicon( soup, input_url, box_favicon, input_favicon ) or ""
+                box_name                = not input_name and self.fetchurl.get_title( soup, box_name ) or input_name
+                box_desc                = not input_desc and self.fetchurl.get_description( soup, box_desc, link ) or input_desc
+                box_image               = not input_image and self.fetchurl.get_image( soup, box_image ) or input_image
+                box_favicon             = not self.config.get( 'favicon_disabled' ) and ( not input_favicon and self.fetchurl.get_favicon( soup, input_url, box_favicon, input_favicon ) or input_favicon ) or ""
                 box_favicon_size        = str( self.config[ 'favicon_size' ] )
                 box_target              = str( self.config[ 'target' ] )
 
