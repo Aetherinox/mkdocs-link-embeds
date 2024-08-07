@@ -56,7 +56,7 @@ class FetchURL:
         if soup.findAll( "meta", property="og:title" ):
             return soup.find( "meta", property="og:title")["content"]
         elif soup.findAll( 'title' ):
-            return soup.find(' title' )
+            return soup.find( 'title' ).string
         else:
             return title
 
@@ -80,7 +80,7 @@ class FetchURL:
         if soup.findAll( "meta", property="og:site_name" ):
             return soup.find( "meta", property="og:site_name")["content"]
         elif soup.findAll( 'title' ):
-            return soup.find(' title' )
+            return soup.find( 'title' ).string
         else:
             return name
 
