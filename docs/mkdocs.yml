@@ -55,7 +55,7 @@ markdown_extensions:
       normalize_issue_symbols: true
       repo_url_shorthand: true
       user: Aetherinox
-      repo: obsidian-gistr
+      repo: mkdocs-link-embeds
   - pymdownx.keys
   - pymdownx.snippets:
       url_download: true
@@ -102,7 +102,7 @@ theme:
         name: Switch to dark mode
 
     # Palette toggle for dark mode
-    - scheme: gistr
+    - scheme: main
       primary: custom
       accent: custom
       toggle:

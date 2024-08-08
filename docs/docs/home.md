@@ -11,14 +11,14 @@ The [Link Embeds](https://pypi.org/project/mkdocs-link-embeds-plugin/) plugin al
 <br />
 
 <figure markdown="span">
-  ![Gistr image settings](https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/afc068d8-fd8e-448e-ab1c-b026cd5076d2){ width="100%" }
+  ![Image settings](https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/afc068d8-fd8e-448e-ab1c-b026cd5076d2){ width="100%" }
   <figcaption>Light Theme</figcaption>
 </figure>
 
 <br />
 
 <figure markdown="span">
-  ![Gistr image settings](https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/a30aff26-8cba-4a90-ab60-75105c5189d6){ width="100%" }
+  ![Image settings](https://github.com/Aetherinox/mkdocs-link-embeds/assets/118329232/a30aff26-8cba-4a90-ab60-75105c5189d6){ width="100%" }
   <figcaption>Dark Theme</figcaption>
 </figure>
 

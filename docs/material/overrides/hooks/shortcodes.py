@@ -164,7 +164,7 @@ def version( text: str, page: Page, files: Files ):
     href        = _resolve_path("about/conventions.md#version", page, files)
 
     return _badge(
-        icon    = f"[:{icon}:]({href} 'Gistr Release')",
+        icon    = f"[:{icon}:]({href} 'Release')",
         text    = f"[{text}]({_resolve_path(path, page, files)})" if spec else ""
     )
 
