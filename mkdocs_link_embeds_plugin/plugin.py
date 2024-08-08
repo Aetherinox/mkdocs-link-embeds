@@ -124,6 +124,8 @@ class LinkEmbedsPlugin( BasePlugin ):
 
     # ------------------------------------------------------------------------------------------------------------------------------------------
     #   On Page Markdown
+    #
+    #   @ref    : https://www.mkdocs.org/dev-guide/plugins/
     # ------------------------------------------------------------------------------------------------------------------------------------------
 
     def on_page_markdown( self, markdown, page, config, files ):
@@ -131,7 +133,8 @@ class LinkEmbedsPlugin( BasePlugin ):
         if not self.config.get( 'enabled' ):
             return markdown
 
-        converted_markdown  = ""
+        converted_markdown  = []
+        markdown_output     = ""
         idx                 = 0
         total               = sum(1 for _ in self.CBLOCK_PATTERN.finditer( markdown ))
         count_now           = 0
@@ -194,15 +197,22 @@ class LinkEmbedsPlugin( BasePlugin ):
             input_accent            = self.clean_input( site.group( "accent" ) )
 
             lines                   = input_url.splitlines( )
-            html_output             = ""
-            
+            html_output             = []
+
             for i in lines:
                 i = i.replace( " ", "" )
 
                 if i[ 0 ] == "-" or i[ 0 ] == "*":
                     i = i[ 1: ]
 
-                soup                    = self.fetchurl.get_page( i )
+                # -----------------------------------------------------------------------------------------
+                #   optimize > do not execute get_page unless any of the input parameters are missing
+                # -----------------------------------------------------------------------------------------
+
+                if not input_name or not input_desc or not input_image or not input_favicon:
+                    soup                = self.fetchurl.initialize( i )
+
+                #   html template code for embedded links
                 html_view               = self.templ_view
                 link                    = i
 
@@ -288,6 +298,9 @@ class LinkEmbedsPlugin( BasePlugin ):
 
                 # -----------------------------------------------------------------------------------------
                 #   build template
+                #
+                #   within the html template for embedded links, replace all {{ VARIBLES }} with actual
+                #   values
                 # -----------------------------------------------------------------------------------------
 
                 html_view           = html_view.replace( "{{ link }}", link )
@@ -300,12 +313,22 @@ class LinkEmbedsPlugin( BasePlugin ):
                 html_view           = html_view.replace( "{{ target }}", box_target )
                 html_view           = html_view.replace( "{{ accent }}", box_accent )
 
-                html_output         += html_view
+                #   assign embedded html with filled out values to new var
+                #   {{ VARIABLES }} have been replaced with actual values for each link
+                html_output.append(html_view)
 
-            converted_markdown      += markdown[ idx:start ]
-            converted_markdown      += html_output
+            #   converted_markdown should still be empty at this point
+            #   all of the html before the next url embed
+            converted_markdown.append(markdown[ idx:start ])
+
+            #   add the embedded box html
+            converted_markdown.append(''.join(html_output))
             idx                     = end + 1
 
-        converted_markdown += markdown[ idx:len( markdown ) ]
+        #   append the remaining markdown to the converted_markdown
+        converted_markdown.append(markdown[ idx:len( markdown ) ])
 
-        return converted_markdown
+        #   combined string with output
+        markdown_output = ''.join(converted_markdown)
+
+        return markdown_output
