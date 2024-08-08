@@ -18,6 +18,12 @@ tags:
 
 <br />
 
+### <!-- md:version stable- --> 0.1.10 <small>Mar 22, 2024</small> { id="0.1.10" }
+
+- `feat`: integrated developer logging which ties into verbose mode
+
+<br />
+
 ### <!-- md:version stable- --> 0.1.9 <small>March 22, 2024</small> { id="0.1.9" }
 
 - `feat`: add `verbose` config
