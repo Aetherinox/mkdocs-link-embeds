@@ -97,7 +97,7 @@ jobs:
   #   JOBS > BUILD
   # ---------------------------------------------------------------------------------------
 
-  build:
+  job-build:
     name: Prepare Package
     runs-on: ubuntu-latest
     outputs:
@@ -207,12 +207,12 @@ jobs:
 #   JOBS > Pypi: Official Stable Release
 # ---------------------------------------------------------------------------------------
 
-  pypi-publish-official:
+  job-pypi-publish-official:
     name: >-
       📦 PyPI › Official
     if: ${{ github.event.inputs.OPT_PYPI_TYPE == 'Official' }}
     needs:
-    - build
+    - job-build
     runs-on: ubuntu-latest
     permissions:
       id-token: write  # IMPORTANT: mandatory for trusted publishing
@@ -247,12 +247,12 @@ jobs:
 #   JOBS > Pypi: Test API
 # ---------------------------------------------------------------------------------------
 
-  pypi-publish-test:
+  job-pypi-publish-test:
     name: >-
       📦 PyPI › Test Api
     if: ${{ github.event.inputs.OPT_PYPI_TYPE == 'Test' }}
     needs:
-    - build
+    - job-build
     runs-on: ubuntu-latest
     permissions:
       id-token: write  # IMPORTANT: mandatory for trusted publishing
@@ -286,12 +286,12 @@ jobs:
 #   only executed if user selects PYPI_TYPE == skip when starting action
 # ---------------------------------------------------------------------------------------
 
-  pypi-publish-skip:
+  job-pypi-publish-skip:
     name: >-
       📦 PyPI › Skip
     if: ${{ github.event.inputs.OPT_PYPI_TYPE == 'Skip' }}
     needs:
-    - build
+    - job-build
     runs-on: ubuntu-latest
     steps:
 
@@ -317,14 +317,14 @@ jobs:
   #   JOBS > Distribute Release on Github Releases
   # ---------------------------------------------------------------------------------------
 
-  dist-release:
+  job-dist-release:
     name: >-
       📦 Github › Release
     runs-on: ubuntu-latest
-    needs: [ build, pypi-publish-official, pypi-publish-skip ]
+    needs: [ job-build, job-pypi-publish-official ]
     env:
-      PACKAGE_VERSION: ${{ needs.build.outputs.package_version }}
-      PACKAGE_FILENAME: ${{ needs.build.outputs.package_filename }}
+      PACKAGE_VERSION: ${{ needs.job-build.outputs.package_version }}
+      PACKAGE_FILENAME: ${{ needs.job-build.outputs.package_filename }}
     if: |
       always()
       && contains(needs.*.result, 'success')
