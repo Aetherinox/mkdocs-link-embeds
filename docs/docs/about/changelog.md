@@ -6,7 +6,11 @@ tags:
 
 # Changelog
 
-![Version](https://img.shields.io/github/v/tag/Aetherinox/mkdocs-link-embeds?logo=GitHub&label=version&color=ba5225) ![Downloads](https://img.shields.io/github/downloads/Aetherinox/mkdocs-link-embeds/total) ![Repo Size](https://img.shields.io/github/repo-size/Aetherinox/mkdocs-link-embeds?label=size&color=59702a) ![Last Commit)](https://img.shields.io/github/last-commit/Aetherinox/mkdocs-link-embeds?color=b43bcc) ![PyPI - Version](https://img.shields.io/pypi/v/mkdocs-link-embeds-plugin)
+![Version](https://img.shields.io/github/v/tag/Aetherinox/mkdocs-link-embeds?logo=GitHub&label=version&color=ba5225)
+![Downloads](https://img.shields.io/github/downloads/Aetherinox/mkdocs-link-embeds/total)
+![Repo Size](https://img.shields.io/github/repo-size/Aetherinox/mkdocs-link-embeds?label=size&color=59702a)
+![Last Commit)](https://img.shields.io/github/last-commit/Aetherinox/mkdocs-link-embeds?color=b43bcc)
+![PyPI - Version](https://img.shields.io/pypi/v/mkdocs-link-embeds-plugin)
 
 ### <!-- md:version stable- --> 0.2.0 <small>Aug 07, 2024</small> { id="0.2.0" }
 
@@ -15,6 +19,8 @@ tags:
 - `perf`: use .join in favor of += for concat
 - `fix`: title, name site metadata not converted to string
 - `ci`: update github workflows
+- `style`: changed the overall code structure to combine statements, make things more streamline.
+- `docs`: new dark theme
 
 <br />
 
