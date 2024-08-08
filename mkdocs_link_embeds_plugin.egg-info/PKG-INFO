@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: mkdocs-link-embeds-plugin
-Version: 0.1.10
+Version: 0.2.0
 Summary: Mkdocs plugin which shows embedded links in a more elegant manner.
 Home-page: https://github.com/Aetherinox/mkdocs-link-embeds
 Author: Aetherinox
