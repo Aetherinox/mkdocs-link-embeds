@@ -1,7 +1,9 @@
+import os
 import logging
 import re
 import urllib.request
 import requests
+os.system("")
 
 from mkdocs.plugins import BasePlugin
 from bs4 import BeautifulSoup
@@ -10,6 +12,27 @@ from urllib.parse import urlparse, urljoin
 LOG             = logging.getLogger( "mkdocs.plugins." + __name__ )
 LOG.setLevel    ( logging.DEBUG )
 LOG.addHandler  ( logging.StreamHandler( ) )
+
+# ------------------------------------------------------------------------------------------------------------------------------------------
+#   Color ASCII
+# ------------------------------------------------------------------------------------------------------------------------------------------
+
+class clr():
+    BLACK = '\033[30m'
+    RED = '\033[31m'
+    GREEN = '\033[32m'
+    YELLOW = '\033[33m'
+    BLUE = '\033[34m'
+    MAGENTA = '\033[35m'
+    CYAN = '\033[36m'
+    WHITE = '\033[37m'
+    UNDERLINE = '\033[4m'
+    RESET = '\033[0m'
+    GREY = '\033[90m'
+
+# ------------------------------------------------------------------------------------------------------------------------------------------
+#   Fetch metadata from url
+# ------------------------------------------------------------------------------------------------------------------------------------------
 
 class FetchURL:
 
@@ -30,7 +53,9 @@ class FetchURL:
     #   with valid metadata. 
     # -----------------------------------------------------------------------------------------
 
-    def get_page( self, url ):
+    def initialize( self, url ):
+        if self.config.get( 'verbose' ):
+            print(clr.MAGENTA + 'VERBOSE - ' + clr.WHITE + ' activate fetchurl->initialize()')
 
         try:
             opener              = urllib.request.build_opener( )
@@ -53,6 +78,9 @@ class FetchURL:
     # -----------------------------------------------------------------------------------------
 
     def get_title( self, soup, title ):
+        if self.config.get( 'verbose' ):
+            print(clr.MAGENTA + 'VERBOSE - ' + clr.WHITE + ' activate fetchurl->get_title()')
+
         if soup.findAll( "meta", property="og:title" ):
             return soup.find( "meta", property="og:title")["content"]
         elif soup.findAll( 'title' ):
@@ -65,6 +93,9 @@ class FetchURL:
     # -----------------------------------------------------------------------------------------
 
     def get_description( self, soup, desc, url ):
+        if self.config.get( 'verbose' ):
+            print(clr.MAGENTA + 'VERBOSE - ' + clr.WHITE + ' activate fetchurl->get_description()')
+
         if soup.findAll( "meta", property="og:description" ):
             return soup.find( "meta", property="og:description")["content"]
         elif soup.findAll( 'meta', attrs={'name': 'description'} ):
@@ -77,6 +108,9 @@ class FetchURL:
     # -----------------------------------------------------------------------------------------
 
     def get_site_name( self, soup, name ):
+        if self.config.get( 'verbose' ):
+            print(clr.MAGENTA + 'VERBOSE - ' + clr.WHITE + ' activate fetchurl->get_site_name()')
+
         if soup.findAll( "meta", property="og:site_name" ):
             return soup.find( "meta", property="og:site_name")["content"]
         elif soup.findAll( 'title' ):
@@ -89,6 +123,9 @@ class FetchURL:
     # -----------------------------------------------------------------------------------------
 
     def get_image( self, soup, image ):
+        if self.config.get( 'verbose' ):
+            print(clr.MAGENTA + 'VERBOSE - ' + clr.WHITE + ' activate fetchurl->get_image()')
+
         if soup.findAll( "meta", property="og:image" ):
             return soup.find( "meta", property="og:image")["content"]
         elif soup.findAll( "meta", property="twitter:image" ):
@@ -104,6 +141,8 @@ class FetchURL:
     # -----------------------------------------------------------------------------------------
 
     def get_favicon( self, soup, url, favicon, input_favicon ):
+        if self.config.get( 'verbose' ):
+            print(clr.MAGENTA + 'VERBOSE - ' + clr.WHITE + ' activate fetchurl->get_favicon()')
 
         if input_favicon:
             return input_favicon
