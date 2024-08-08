@@ -104,14 +104,27 @@ jobs:
       package_version: ${{ steps.build_package_version.outputs.PACKAGE_VERSION }}
       package_filename: ${{ steps.build_handle_tarball.outputs.PACKAGE_FILENAME }}
     steps:
+
+      # ---------------------------------------------------------------------------------------
+      #   Start
+      # ---------------------------------------------------------------------------------------
+
       - name: "✅ Start"
         run: | 
               echo "Starting build: ${{ github.event.inputs.OPT_BUILD_METHOD }}" / ${{ inputs.OPT_BUILD_METHOD }}
+
+      # ---------------------------------------------------------------------------------------
+      #   Checkout
+      # ---------------------------------------------------------------------------------------
 
       - name: "☑️ Checkout"
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      # ---------------------------------------------------------------------------------------
+      #   Debug > Get Package Version
+      # ---------------------------------------------------------------------------------------
 
       - name: "👁️‍🗨️ Debug › Get Package Version"
         id: build_package_version
@@ -162,16 +175,28 @@ jobs:
           PACKAGE=$(find dist/*tar.gz -type f -printf "%f\n")
           echo "PACKAGE_FILENAME=dist/$PACKAGE" >> $GITHUB_OUTPUT
 
+      # ---------------------------------------------------------------------------------------
+      #   Debug > Print Package Info
+      # ---------------------------------------------------------------------------------------
+
       - name: "👁️‍🗨️ Debug › Print Package Info"
         id: build_print_package
         run: |
           echo ${{ steps.build_package_version.outputs.PACKAGE_VERSION }}
           echo ${{ steps.build_handle_tarball.outputs.PACKAGE_FILENAME }}
 
+      # ---------------------------------------------------------------------------------------
+      #   Twine > Check Dist
+      # ---------------------------------------------------------------------------------------
+
       - name: "🪢 Twine › Check Dist"
         run: |
           twine check dist/*
   
+      # ---------------------------------------------------------------------------------------
+      #   Upload Artifact
+      # ---------------------------------------------------------------------------------------
+
       - name: "📁 Upload › Artifact"
         uses: actions/upload-artifact@v4
         with:
@@ -194,14 +219,22 @@ jobs:
     environment:
       name: Orion
       url: https://pypi.org/p/mkdocs-link-embeds-plugin
-
     steps:
+
+      # ---------------------------------------------------------------------------------------
+      #   Pypi Publish (Official) > Download Saved Artifacts
+      # ---------------------------------------------------------------------------------------
+
     - name: "📁 Download › Saved Artifacts"
       uses: actions/download-artifact@v4
       with:
         name: python-package-distributions
         path: dist/
   
+      # ---------------------------------------------------------------------------------------
+      #   Pypi Publish (Official) > Release on Pypi
+      # ---------------------------------------------------------------------------------------
+
     - name: Release 📦 PyPI Official
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
@@ -226,13 +259,21 @@ jobs:
     environment:
       name: Orion
       url: https://test.pypi.org/p/mkdocs-link-embeds-plugin
-
     steps:
+
+      # ---------------------------------------------------------------------------------------
+      #   Pypi Publish (Test) > Download Saved Artifacts
+      # ---------------------------------------------------------------------------------------
+
     - name: "📁 Download › Saved Artifacts"
       uses: actions/download-artifact@v4
       with:
         name: python-package-distributions
         path: dist/
+
+      # ---------------------------------------------------------------------------------------
+      #   Pypi Publish (Test) > Release on Pypi Test Site
+      # ---------------------------------------------------------------------------------------
 
     - name: Release 📦 PyPI Test
       uses: pypa/gh-action-pypi-publish@release/v1
@@ -252,13 +293,21 @@ jobs:
     needs:
     - build
     runs-on: ubuntu-latest
-
     steps:
+
+      # ---------------------------------------------------------------------------------------
+      #   Pypi Publish (Skip) > Skips Pypi release and goes straight to Github
+      # ---------------------------------------------------------------------------------------
+
     - name: "📁 Download › Saved Artifacts"
       uses: actions/download-artifact@v4
       with:
         name: python-package-distributions
         path: dist/
+
+      # ---------------------------------------------------------------------------------------
+      #   Pypi Publish (Skip) > Skip
+      # ---------------------------------------------------------------------------------------
 
     - name: "❌ Skip Pypi.org upload"
       run: |
@@ -398,7 +447,7 @@ jobs:
           fetchViaCommits: true
           configurationJson: |
             {
-              "template": "## Release Info \n- <sub>**Version began on**: <sub>........</sub>`#{{FROM_TAG_DATE}}`</sub>\n- <sub>**SHA256**: <sub>................................</sub>`${{ env.SHA256SUM }} 🔺 ${{ env.FILE_ZIP }}`</sub>\n- <sub>**Stamp**: <sub>....................................</sub>`#{{FROM_TAG}}-#{{FROM_TAG_DATE}} 🔺 #{{TO_TAG}}-#{{TO_TAG_DATE}}`</sub>\n- <sub>**Last Release**: <sub>......................</sub>`#{{DAYS_SINCE}} days ago`</sub>\n\n<br>\n\n---\n\n<br>\n\n### What's New\nThis release contains the following changes:\n\n<br>\n\n---\n\n<br>\n\n### Statistics\nHow the files have changed:\n<ul><li><a href='#{{RELEASE_DIFF}}'>Changed files</a>  : <b>#{{CHANGED_FILES}}</b> </li><li>Commits : <b>#{{COMMITS}}</b> </li><li>Additions : <b>#{{ADDITIONS}}</b></li><li>Deletions : <b>#{{DELETIONS}}</b></li>\n<br />\n</ul>\n\n<br>\n\n---\n\n<br>\n\n### Pull Requests\nThis release is associated with the following pull requests:\n#{{CHANGELOG}}\n\n<br>\n\n---\n\n<br>\n\n"
+              "template": "## Release Info \n| Item | Value |\n| --- | --- |\n|<sub>🏷️ Version</sub>|<sub>${{ env.PACKAGE_VERSION }}</sub>|\n|<sub>#️⃣ SHA256</sub>|<sub>${{ env.SHA256SUM }} 🔺 ${{ env.FILE_ZIP }}</sub>|\n|<sub>🕟 Stamp</sub>|<sub>`#{{FROM_TAG}}-#{{FROM_TAG_DATE}} 🔺 #{{TO_TAG}}-#{{TO_TAG_DATE}}`</sub>|\n|<sub>📅 Last Release</sub>|<sub>`#{{DAYS_SINCE}} days ago`</sub>|\n\n<br>\n\n---\n\n<br>\n\n### What's New\nThis release contains the following changes:\n\n<br>\n\n---\n\n<br>\n\n### Statistics\nHow the files have changed:\n<ul><li><a href='#{{RELEASE_DIFF}}'>Changed files</a>  : <b>#{{CHANGED_FILES}}</b> </li><li>Changes  : <b>#{{CHANGES}}</b> </li><li>Commits : <b>#{{COMMITS}}</b> </li><li>Additions : <b>#{{ADDITIONS}}</b></li><li>Deletions : <b>#{{DELETIONS}}</b></li><li>PRs (categorized) : <b>#{{CATEGORIZED_COUNT}}</b></li><li>PRs (uncategorized) : <b>#{{UNCATEGORIZED_COUNT}}</b></li><li>PRs (open) : <b>#{{OPEN_COUNT}}</b></li>\n<br />\n</ul>\n\n<br>\n\n---\n\n<br>\n\n### Pull Requests\nThis release is associated with the following pull requests:\n#{{CHANGELOG}}\n\n<br>\n\n---\n\n<br>\n\n"
             }
         env:
           GITHUB_TOKEN: ${{ secrets.ADMINSERV_TOKEN }}
@@ -424,7 +473,7 @@ jobs:
           fetchViaCommits: true
           configurationJson: |
             {
-              "template": "## Release Info \n- <sub>**Version began on**: <sub>........</sub>`#{{FROM_TAG_DATE}}`</sub>\n- <sub>**SHA256**: <sub>................................</sub>`${{ env.SHA256SUM }} 🔺 ${{ env.FILE_ZIP }}`</sub>\n- <sub>**Stamp**: <sub>....................................</sub>`#{{FROM_TAG}}-#{{FROM_TAG_DATE}} 🔺 #{{TO_TAG}}-#{{TO_TAG_DATE}}`</sub>\n- <sub>**Last Release**: <sub>......................</sub>`#{{DAYS_SINCE}} days ago`</sub>\n\n<br>\n\n---\n\n<br>\n\n### What's New\nThis release contains the following changes:\n\n<br>\n\n---\n\n<br>\n\n### Statistics\nHow the files have changed:\n<ul><li><a href='#{{RELEASE_DIFF}}'>Changed files</a>  : <b>#{{CHANGED_FILES}}</b> </li><li>Commits : <b>#{{COMMITS}}</b> </li><li>Additions : <b>#{{ADDITIONS}}</b></li><li>Deletions : <b>#{{DELETIONS}}</b></li>\n<br />\n</ul>\n\n<br>\n\n---\n\n<br>\n\n### Commits (#{{UNCATEGORIZED_COUNT}})\nThe following commits are uncategorized:\n#{{UNCATEGORIZED}}\n\n<br>\n\n---\n\n<br>\n\n### Pull Requests\nThis release is associated with the following pull requests:\n#{{CHANGELOG}}\n\n<br>\n\n---\n\n<br>\n\n"
+              "template": "## Release Info \n| Item | Value |\n| --- | --- |\n|<sub>🏷️ Version</sub>|<sub>${{ env.PACKAGE_VERSION }}</sub>|\n|<sub>#️⃣ SHA256</sub>|<sub>${{ env.SHA256SUM }} 🔺 ${{ env.FILE_ZIP }}</sub>|\n|<sub>🕟 Stamp</sub>|<sub>`#{{FROM_TAG}}-#{{FROM_TAG_DATE}} 🔺 #{{TO_TAG}}-#{{TO_TAG_DATE}}`</sub>|\n|<sub>📅 Last Release</sub>|<sub>`#{{DAYS_SINCE}} days ago`</sub>|\n\n<br>\n\n---\n\n<br>\n\n### What's New\nThis release contains the following changes:\n\n<br>\n\n---\n\n<br>\n\n### Statistics\nHow the files have changed:\n<ul><li><a href='#{{RELEASE_DIFF}}'>Changed files</a>  : <b>#{{CHANGED_FILES}}</b> </li><li>Changes  : <b>#{{CHANGES}}</b> </li><li>Commits : <b>#{{COMMITS}}</b> </li><li>Additions : <b>#{{ADDITIONS}}</b></li><li>Deletions : <b>#{{DELETIONS}}</b></li><li>PRs (categorized) : <b>#{{CATEGORIZED_COUNT}}</b></li><li>PRs (uncategorized) : <b>#{{UNCATEGORIZED_COUNT}}</b></li><li>PRs (open) : <b>#{{OPEN_COUNT}}</b></li>\n<br />\n</ul>\n\n<br>\n\n---\n\n<br>\n\n### Pull Requests\nThis release is associated with the following pull requests:\n#{{CHANGELOG}}\n\n<br>\n\n"
             }
         env:
           GITHUB_TOKEN: ${{ secrets.ADMINSERV_TOKEN }}
