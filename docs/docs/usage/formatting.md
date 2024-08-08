@@ -97,3 +97,9 @@ When specifying an accent color for your embedded links, you may specify a hex c
     ```
     accent:  #d9204ce0
     ```
+
+<br />
+
+---
+
+<br />

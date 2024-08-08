@@ -1,5 +1,7 @@
 ---
 title: "Convention List"
+tags:
+  - internal
 ---
 
 # Conventions
@@ -63,3 +65,9 @@ This symbol denotes that the item described is a customization which affects the
 This symbol denotes that the item described is classified as something that changes the overall functionality of the plugin.
 
   [Insiders]: insiders/index.md
+
+<br />
+
+---
+
+<br />

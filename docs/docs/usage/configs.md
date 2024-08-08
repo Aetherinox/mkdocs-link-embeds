@@ -59,3 +59,9 @@ plugins:
 2.  Available options:
       - New Window:`blank`
       - Current Window: `self`
+
+<br />
+
+---
+
+<br />

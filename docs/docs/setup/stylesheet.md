@@ -43,4 +43,7 @@ extra_css:
 If you make changes to this plugin's `link-embeds.css` file and want to see the changes immediately; change `v1.0` to a higher number and then refresh your page.
 
 <br />
+
+---
+
 <br />
