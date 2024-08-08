@@ -1,9 +1,11 @@
+import os
 import logging
 import re
 import pkgutil
 from mkdocs.plugins import BasePlugin
 from mkdocs.config import config_options, Config
 from mkdocs_link_embeds_plugin.fetchurl import FetchURL
+os.system("")
 
 LOG = logging.getLogger( "mkdocs.plugins." + __name__ )
 
@@ -18,6 +20,23 @@ meta_def_favicon                = "https://github.com/Aetherinox/mkdocs-link-emb
 meta_def_favicon_size           = 25
 target_def_id                   = "new"
 accent_def                      = "#ffffff1a"
+
+# ------------------------------------------------------------------------------------------------------------------------------------------
+#   Color ASCII
+# ------------------------------------------------------------------------------------------------------------------------------------------
+
+class clr():
+    BLACK = '\033[30m'
+    RED = '\033[31m'
+    GREEN = '\033[32m'
+    YELLOW = '\033[33m'
+    BLUE = '\033[34m'
+    MAGENTA = '\033[35m'
+    CYAN = '\033[36m'
+    WHITE = '\033[37m'
+    UNDERLINE = '\033[4m'
+    RESET = '\033[0m'
+    GREY = '\033[90m'
 
 # ------------------------------------------------------------------------------------------------------------------------------------------
 #   Link Embed Plugin
@@ -39,6 +58,18 @@ class LinkEmbedsPlugin( BasePlugin ):
         val     = re.sub( "[\"\']", "", val )
 
         return val
+
+    # ------------------------------------------------------------------------------------------------------------------------------------------
+    #   Truncate string
+    # ------------------------------------------------------------------------------------------------------------------------------------------
+
+    def truncate( self, str, limit ):
+        truncated = re.search(fr'(.{{0,{limit}}})(?!\w)', str).group(1)
+
+        if len(truncated) < len(str):
+            truncated += "..."
+
+        return truncated
 
     # ------------------------------------------------------------------------------------------------------------------------------------------
     #   Config Options
@@ -102,10 +133,13 @@ class LinkEmbedsPlugin( BasePlugin ):
 
         converted_markdown  = ""
         idx                 = 0
+        total               = sum(1 for _ in self.CBLOCK_PATTERN.finditer( markdown ))
+        count_now           = 0
 
         for site in self.CBLOCK_PATTERN.finditer( markdown ):
             start           = site.start( )
             end             = site.end( ) - 1
+            count_now       += 1
 
             # -----------------------------------------------------------------------------------------
             #   set defaults
@@ -181,29 +215,36 @@ class LinkEmbedsPlugin( BasePlugin ):
                 box_desc                = not input_desc and self.fetchurl.get_description( soup, box_desc, link ) or input_desc
                 box_image               = not input_image and self.fetchurl.get_image( soup, box_image ) or input_image
                 box_favicon             = not self.config.get( 'favicon_disabled' ) and ( not input_favicon and self.fetchurl.get_favicon( soup, input_url, box_favicon, input_favicon ) or input_favicon ) or ""
-                box_favicon_size        = str( self.config[ 'favicon_size' ] )
-                box_target              = str( self.config[ 'target' ] )
+                box_favicon_size        = not input_favicon_size and str( self.config[ 'favicon_size' ] ) or input_favicon_size
+                box_target              = not input_target and str( self.config[ 'target' ] ) or input_target
 
                 # -----------------------------------------------------------------------------------------
-                #   Handle > Input Override > Name
-                # -----------------------------------------------------------------------------------------
-    
-                if input_name:
-                    box_name            = input_name
-
-                # -----------------------------------------------------------------------------------------
-                #   Handle > Input Override > Desc
+                #   verbose
                 # -----------------------------------------------------------------------------------------
 
-                if input_desc:
-                    box_desc            = input_desc
+                if self.config.get( 'verbose' ):
+                    i_truncate = 60
+
+                    if (count_now == 1):
+                        print(clr.GREY + '---------------------------------------------------------------------------------------' + clr.RESET)
+
+                    print(clr.YELLOW + '  [ Processing link #' + str(count_now) + ' of ' + str(total) + ' ]:' + '' + page.url + '' + clr.RESET)
+                    print()
+                    print(clr.GREY + '  box_name ........... :    ' + clr.WHITE + self.truncate( box_name, i_truncate ) )
+                    print(clr.GREY + '  box_desc ........... :    ' + clr.WHITE + self.truncate( box_desc, i_truncate ) )
+                    print(clr.GREY + '  box_image .......... :    ' + clr.WHITE + self.truncate( box_image, i_truncate ) )
+                    print(clr.GREY + '  box_favicon ........ :    ' + clr.WHITE + self.truncate( box_favicon, i_truncate ) )
+                    print(clr.GREY + '  box_favicon_size ... :    ' + clr.WHITE + self.truncate( box_favicon_size, i_truncate ) )
+                    print(clr.GREY + '  box_target ......... :    ' + clr.WHITE + self.truncate( box_target, i_truncate ) )
+
+                    if (count_now == total):
+                        print(clr.GREY + '---------------------------------------------------------------------------------------' + clr.RESET)
+                    else:
+                        print()
 
                 # -----------------------------------------------------------------------------------------
                 #   Handle > Input Override > Image
                 # -----------------------------------------------------------------------------------------
-
-                if input_image:
-                    box_image           = input_image
 
                 if ( box_image == 'false' ) or ( box_image is None ) or ( not box_image ) or ( self.config.get( 'image_disabled' ) ):
                     style_image         = "display:none;"
@@ -214,27 +255,14 @@ class LinkEmbedsPlugin( BasePlugin ):
                 #   Handle > Input Override > Favicon
                 # -----------------------------------------------------------------------------------------
 
-                if input_favicon:
-                    box_favicon         = input_favicon
-
                 if ( box_favicon == 'false' ) or ( box_favicon is None ) or ( not box_favicon ) or ( self.config.get( 'favicon_disabled' ) ):
                     style_favicon       = "display:none; padding-right: 0px;"
                 else:
                     style_favicon       = f"padding-right: 7px; width: {box_favicon_size}px"
 
                 # -----------------------------------------------------------------------------------------
-                #   Handle > Input Override > Favicon Size
-                # -----------------------------------------------------------------------------------------
-
-                if input_favicon_size:
-                    box_favicon_size    = input_favicon_size
-
-                # -----------------------------------------------------------------------------------------
                 #   Handle > Input Override > Target
                 # -----------------------------------------------------------------------------------------
-
-                if input_target:
-                    box_target          = input_target
 
                 if box_target == "_self" or box_target == "self" or box_target == "same" or box_target == "current":
                     box_target          = "_self"
