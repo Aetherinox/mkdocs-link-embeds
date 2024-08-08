@@ -8,10 +8,22 @@ tags:
 
 ![Version](https://img.shields.io/github/v/tag/Aetherinox/mkdocs-link-embeds?logo=GitHub&label=version&color=ba5225) ![Downloads](https://img.shields.io/github/downloads/Aetherinox/mkdocs-link-embeds/total) ![Repo Size](https://img.shields.io/github/repo-size/Aetherinox/mkdocs-link-embeds?label=size&color=59702a) ![Last Commit)](https://img.shields.io/github/last-commit/Aetherinox/mkdocs-link-embeds?color=b43bcc) ![PyPI - Version](https://img.shields.io/pypi/v/mkdocs-link-embeds-plugin)
 
+### <!-- md:version stable- --> 0.2.0 <small>Aug 07, 2024</small> { id="0.2.0" }
+
+- `feat`: add verbose printing and plugin setting
+- `perf`: disable fetchurl if user inputs custom values
+- `perf`: use .join in favor of += for concat
+- `fix`: title, name site metadata not converted to string
+- `ci`: update github workflows
+
+<br />
+
 ### <!-- md:version stable- --> 0.1.9 <small>March 22, 2024</small> { id="0.1.9" }
 
 - `feat`: add `verbose` config
     - outputs various detailed logs related to certain processes
+
+<br />
 
 ### <!-- md:version stable- --> 0.1.8 <small>March 21, 2024</small> { id="0.1.8" }
 
@@ -22,6 +34,8 @@ tags:
 - `change`: add backup metadata sources for all properties, e.g: `og:description` and `description`
 - `change`: added user agent to keep certain sites from blocking crawling
 - `fix`: certain websites returning nil values for missing metadata
+
+<br />
 
 ### <!-- md:version stable- --> 0.1.7 <small>March 21, 2024</small> { id="0.1.7" }
 
