@@ -162,7 +162,7 @@ nav:
     - Changelog: 'about/changelog.md'
     - License: 'about/license.md'
     - Conventions: 'about/conventions.md'
-
+    - Backers: 'backers/index.md'
 
 plugins:
   - tags
