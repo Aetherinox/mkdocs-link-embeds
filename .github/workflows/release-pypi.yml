@@ -435,7 +435,7 @@ jobs:
       - name: "📝 Changelog › Build (Categorized)"
         id: changelog-categorized
         if: ${{ startsWith( inputs.SHOW_UNCATEGORIZED, false ) }}
-        uses: mikepenz/release-changelog-builder-action@v4
+        uses: mikepenz/release-changelog-builder-action@v5
         with:
           token: ${{ secrets.ADMINSERV_TOKEN }}
           #fromTag: "${{ env.TAG_LAST }}"
@@ -461,7 +461,7 @@ jobs:
       - name: "📝 Changelog › Build (Uncategorized)"
         id: changelog-uncategorized
         if: ${{ startsWith( inputs.SHOW_UNCATEGORIZED, true ) }}
-        uses: mikepenz/release-changelog-builder-action@v4
+        uses: mikepenz/release-changelog-builder-action@v5
         with:
           token: ${{ secrets.ADMINSERV_TOKEN }}
           #fromTag: "${{ env.TAG_LAST }}"
