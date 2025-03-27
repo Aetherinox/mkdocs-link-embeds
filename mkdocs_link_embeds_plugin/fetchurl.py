@@ -13,9 +13,9 @@ LOG             = logging.getLogger( "mkdocs.plugins." + __name__ )
 LOG.setLevel    ( logging.DEBUG )
 LOG.addHandler  ( logging.StreamHandler( ) )
 
-# ------------------------------------------------------------------------------------------------------------------------------------------
+# #
 #   Color ASCII
-# ------------------------------------------------------------------------------------------------------------------------------------------
+# #
 
 class clr():
     BLACK = '\033[30m'
@@ -26,19 +26,19 @@ class clr():
     MAGENTA = '\033[35m'
     CYAN = '\033[36m'
     WHITE = '\033[37m'
+    GREY = '\033[90m'
     UNDERLINE = '\033[4m'
     RESET = '\033[0m'
-    GREY = '\033[90m'
 
-# ------------------------------------------------------------------------------------------------------------------------------------------
+# #
 #   Fetch metadata from url
-# ------------------------------------------------------------------------------------------------------------------------------------------
+# #
 
 class FetchURL:
 
-    # -----------------------------------------------------------------------------------------
+    # #
     #   Initialize
-    # -----------------------------------------------------------------------------------------
+    # #
 
     def __init__( self, config={} ):
         self.html_parser    = 'html.parser'
@@ -47,11 +47,11 @@ class FetchURL:
         self.config         = config
         pass
 
-    # -----------------------------------------------------------------------------------------
+    # #
     #   Get Page
-    #   URLs without data should be handled in the same fashion as properly propogated sites
+    #   URLs without data should be handled in the same fashion as properly propagated sites
     #   with valid metadata. 
-    # -----------------------------------------------------------------------------------------
+    # #
 
     def initialize( self, url ):
         if self.config.get( 'verbose' ):
@@ -73,9 +73,9 @@ class FetchURL:
 
         return soup
 
-    # -----------------------------------------------------------------------------------------
+    # #
     #   Get > Title
-    # -----------------------------------------------------------------------------------------
+    # #
 
     def get_title( self, soup, title ):
         if self.config.get( 'verbose' ):
@@ -88,9 +88,9 @@ class FetchURL:
         else:
             return title
 
-    # -----------------------------------------------------------------------------------------
+    # #
     #   Get > Description
-    # -----------------------------------------------------------------------------------------
+    # #
 
     def get_description( self, soup, desc, url ):
         if self.config.get( 'verbose' ):
@@ -103,9 +103,9 @@ class FetchURL:
         else:
             return desc
 
-    # -----------------------------------------------------------------------------------------
+    # #
     #   Get > Name
-    # -----------------------------------------------------------------------------------------
+    # #
 
     def get_site_name( self, soup, name ):
         if self.config.get( 'verbose' ):
@@ -118,9 +118,9 @@ class FetchURL:
         else:
             return name
 
-    # -----------------------------------------------------------------------------------------
+    # #
     #   Get > Image
-    # -----------------------------------------------------------------------------------------
+    # #
 
     def get_image( self, soup, image ):
         if self.config.get( 'verbose' ):
@@ -133,12 +133,12 @@ class FetchURL:
         else:
             return image
 
-    # -----------------------------------------------------------------------------------------
+    # #
     #   Get > Fav Icon
     #
     #   this is a very "step-by-step" manner of checking for fav icons. Just because there's
     #   so many ways that a favicon can be added.
-    # -----------------------------------------------------------------------------------------
+    # #
 
     def get_favicon( self, soup, url, favicon, input_favicon ):
         if self.config.get( 'verbose' ):
