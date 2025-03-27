@@ -55,6 +55,8 @@
     transition: border .25s,box-shadow .25s;
     border: 2px solid rgba( 255, 255, 255, 0.1 );
     background-color: var(--md-default-fg-color--lightest);
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .mkde-embed-container:hover
@@ -146,32 +148,18 @@
     padding: 8px 10px;
 }
 
-@media ( min-width: 360px )
-{
-    .mkde-right
-    {
-        padding: 12px 15px;
-    }
-}
-
-@media ( min-width: 600px )
-{
-    .mkde-right
-    {
-        padding: 12px 12px;
-    }
-}
-
 /*
     Left container
 */
 
 ._lc._sm:not( .xd ) .mkde-left
 {
-    min-width: 100px;
-    width: 100px;
-    min-height: 100px;
-    padding: 10px;
+    min-width: 70px;
+    width: 70px;
+    min-height: 70px;
+    height: 70px;
+    padding: 5px;
+    align-self: center;
     background: rgba( 255, 255, 255, 0.10 );
 }
 
@@ -179,9 +167,11 @@
 {
     ._lc._sm:not( .xd ) .mkde-left
     {
-        min-width: 110px;
-        width: 110px;
-        min-height: 110px;
+        min-width: 80px;
+        width: 80px;
+        min-height: 80px;
+        height: 80px;
+        align-self: center;
     }
 }
 
@@ -189,9 +179,11 @@
 {
     ._lc._sm:not( .xd ) .mkde-left
     {
-        min-width: 140px;
-        width: 140px;
-        min-height: 140px;
+        min-width: 110px;
+        width: 110px;
+        min-height: 110px;
+        height: 110px;
+        align-self: center;
     }
 }
 
@@ -199,9 +191,11 @@
 {
     ._lc._sm:not( .xd ) .mkde-left
     {
-        min-width: 160px;
-        width: 160px;
-        min-height: 160px;
+        min-width: 110px;
+        width: 110px;
+        min-height: 110px;
+        height: 110px;
+        align-self: center;
     }
 }
 
@@ -320,6 +314,8 @@
     padding: 0;
     background: none transparent;
     text-align: left;
+    padding-left: 2px;
+    border-radius: 10px;
 }
 
 .mkde-sub .item-footer-format:last-child
@@ -383,6 +379,7 @@
 ._f1p
 {
     font-size: 13px;
+    font-weight: 600;
 }
 
 @media ( min-width: 360px )
@@ -395,6 +392,7 @@
     ._f1p
     {
         font-size: 14px;
+        font-weight: 600;
     }
 }
 
@@ -413,6 +411,7 @@
     ._f1p
     {
         font-size: 15px;
+        font-weight: 600;
     }
 }
 
@@ -431,6 +430,7 @@
     ._f1p
     {
         font-size: 17px;
+        font-weight: 600;
     }
 }
 
@@ -469,7 +469,7 @@
 
     .mkde-left-s2
     {
-        border: 1px solid rgba( 255, 255, 255, 0.35 )
+        border: 1px solid rgba( 255, 255, 255, 0.35 );
     }
 }
 
@@ -478,7 +478,8 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    border: 1px solid rgba( 255, 255, 255, 0.10 )
+    border: 1px solid rgba( 255, 255, 255, 0.10 );
+    background-color: #272728;
 }
 
 .mkde-link-favicon
