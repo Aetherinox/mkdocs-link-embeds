@@ -31,7 +31,7 @@ classifiers = [
 ]
 dependencies = [
     "mkdocs>=1.4.0",
-    "beautifulsoup4>=4.11.0",
+    "beautifulsoup4>=4.13.0",
     "requests>=2.20.0",
 ]
 
